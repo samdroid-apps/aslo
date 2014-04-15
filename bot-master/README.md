@@ -4,7 +4,7 @@ This is the bot that controls all the slaves.
 
 It keeps ASLO records updated.
 
-## Running
+# Running
 
 [Note] Wanted to mine activities? See the /bot folder
 
