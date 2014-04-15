@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Sugar Activities</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"> 
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://login.persona.org/include.js"></script>
+    <script src="md5.js"></script>
+    <script async src="index.js"></script>
+    
+    <link rel="stylesheet" href="stars.css"/>
+  </head>
+  
+  <body>
+    <input class="search" type="search" placeholder="Search..."/>
+    
+    <ul class="activities">
+    </ul>
+    
+    <div class="detail" style="display: none;">
+      <img class="icon"/><h1 class="title"></h1>
+      <div class="by"></div>
+      <div class="screenshots"></div>
+      <p class="description"></p>
+      <p class="whatsnew"></p>
+      <a class="download">Download</a><br/>
+      <a class="download-devel">Download Devel Version</a>
+      <a class="github">Help make the activity GitHub!</a>
+      
+      <div class="comments">
+        <textarea class="add-content"></textarea>
+        <span class="star-rating">
+          <input type="radio" name="rating-i" value="1"><i></i>
+          <input type="radio" name="rating-i" value="2"><i></i>
+          <input type="radio" name="rating-i" value="3"><i></i>
+          <input type="radio" name="rating-i" value="4"><i></i>
+          <input type="radio" name="rating-i" value="5"><i></i>
+        </span>
+        <button class="add">Post</button>
+        <ul></ul>
+      </div>
+    </div>
+  </body>
+</html>
