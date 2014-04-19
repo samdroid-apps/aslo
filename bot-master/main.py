@@ -41,6 +41,12 @@ app = Flask(__name__)
 
 @app.route('/hook/<gh_user>/<gh_repo>/<bundle_id>', methods=['POST'])
 def hook(gh_user, gh_repo, bundle_id):
+    with open('data.json') as f:
+        data = json.loads(f.read())
+    if not bundle_id in data['activities']:
+        return """Please add your thing first to our github, 
+                  then the bots will come and help you fill it out"""
+        
     print 'Hook call from', bundle_id
     task_id = str(uuid.uuid4())
     tasks_sent[bundle_id] = task_id
@@ -48,6 +54,12 @@ def hook(gh_user, gh_repo, bundle_id):
     s = get_bot_for_repo(bundle_id, gh_user, gh_repo)
     s.send('TASK/%s/%s/%s/%s/' % (task_id, bundle_id, gh_user, gh_repo))
 
+    return "Cool Potatos"
+
+@app.route('/pull')
+def pull():
+    """Go here every time a new activity is added to refresh the data"""
+    call(['git', 'pull'])
     return "Cool Potatos"
 
 @app.route('/done', methods=['POST'])
@@ -97,6 +109,7 @@ def auth_socket(s, addr):
     while True:
         msg = s.recv(1024).strip()
         if msg == "CLOSE":
+          del bot_sockets[id_string]
           return
 
 port = 0
