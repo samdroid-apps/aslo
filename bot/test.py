@@ -66,13 +66,21 @@ def test_activity(bundle_id, gh):
     results = {}
     with open('dl/activity/activity.info') as f:
         text = f.read()
-        results['isWeb'] = is_web(text)
 
         v = get_activity_version(text)
         if v: results['version'] = v
 
+        results['isWeb'] = is_web(text)
+
     results['isGTK3'] = is_gtk3('dl/', bundle_id)
     results['hasOldToolbars'] = has_old_toolbars('dl/', bundle_id)
+
+    min_ = "0.100" if results['isWeb'] else (
+               "0.96" if results['isGTK3'] else (
+                   "0.86" if not results['hasOldToolbars'] else "0.82"
+            ))
+    results['minSugarVersion'] = min_
+                   
 
     latest = get_latest_version(gh)
     if latest: results['github_current_tag'] = latest
