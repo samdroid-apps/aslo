@@ -108,6 +108,7 @@ var focusOnActivity = function ( data, bundleId ) {
   $( ".icon", container ).attr( "src", data.icon );
   $( ".description", container ).html( getLang( data.description ) );
   $( ".whatsnew", container ).html( getLang( data.whats_new ) );
+  $( ".minversion", container ).html( data.minSugarVersion );
   
   if ( data.github_url !== undefined && data.github_current_tag !== undefined ) {
     var url = "https://github.com/" + data.github_url
