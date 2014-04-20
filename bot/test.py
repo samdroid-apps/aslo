@@ -3,6 +3,8 @@ import os
 
 import requests
 
+from po_crawl import get_translation_from_regex
+
 IS_WEB_RE = re.compile('exec\s*=\s*sugar-activity-web')
 def is_web(text):
     return bool(IS_WEB_RE.search(text))
@@ -65,6 +67,9 @@ def get_activity_version(text):
                 return None
     return None
 
+SUMMARY_REGEX = re.compile('summary\s*=\s*(.*)')
+NAME_REGEX = re.compile('name\s*=\s*(.*)')
+
 def test_activity(bundle_id, gh):
     results = {}
     with open('dl/activity/activity.info') as f:
@@ -72,6 +77,12 @@ def test_activity(bundle_id, gh):
 
         v = get_activity_version(text)
         if v: results['version'] = v
+
+        t = get_translation_from_regex(NAME_REGEX, text)
+        if t: results['title'] = t
+
+        t = get_translation_from_regex(SUMMARY_REGEX, text)
+        if t: results['description'] = t
 
         results['isWeb'] = is_web(text)
 
