@@ -21,7 +21,7 @@ UPLOADS_FOLDER = '../uploads/'
 if not os.path.isdir(UPLOADS_FOLDER):
     os.mkdir('../uploads')
 
-MY_ADDR = 'http://localhost:5000'
+MY_ADDR = 'http://localhost:5001'
 
 def get_new_bot():
   # FIXME
@@ -164,7 +164,7 @@ def run_sockets():
     s.close()
 
 thread.start_new_thread(run_sockets, ())
-app.run(debug=True)
+app.run(port=5001, debug=True)
 
 for s in bot_sockets:
     s.close()

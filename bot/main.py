@@ -9,7 +9,7 @@ from test import test_activity
 from build import compile_bundle
 
 HOST = 'localhost'
-PORT_HTTP = 5000
+PORT_HTTP = 5001
 PORT = int(requests.get('http://' + HOST + ':' + str(PORT_HTTP) + '/port').text)
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
