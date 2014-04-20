@@ -6,6 +6,7 @@ from subprocess import call
 import requests
 
 from test import test_activity
+from build import compile_bundle
 
 HOST = 'localhost'
 PORT_HTTP = 5000
@@ -33,7 +34,8 @@ while True:
           'dl'])
     result = test_activity(task[2], task[3] + '/' + task[4])
 
-    data = {'result': result, 'bundle_id': task[2], 'task_id': task[1]}
+    data = {'result': result, 'file': compile_bundle(),
+            'bundle_id': task[2], 'task_id': task[1]}
 
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     r = requests.post('http://' + HOST + ':' + str(PORT_HTTP) + '/done',

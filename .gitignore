@@ -3,3 +3,4 @@ bot/password.txt
 *.pyc
 bot-master/rethinkdb_data
 bot-master/git
+bot-master/uploads

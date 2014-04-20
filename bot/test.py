@@ -57,9 +57,12 @@ def get_activity_version(text):
     r = VERSION_REGEX.search(text)
     if r:
         try:
-            return float(r.group(1))
+            return int(r.group(1))
         except ValueError:
-            return None
+            try:
+                return float(r.group(1))
+            except ValueError:
+                return None
     return None
 
 def test_activity(bundle_id, gh):

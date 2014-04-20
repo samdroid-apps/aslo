@@ -7,7 +7,7 @@ import uuid
 import random
 from subprocess import call
 
-from flask import Flask, jsonify, abort, request
+from flask import Flask, jsonify, abort, request, send_from_directory
 import rethinkdb as r
 
 conn = r.connect('localhost', 28015)
@@ -16,6 +16,12 @@ repos = r.db('bot_master').table('repos')
 
 bot_sockets = {}
 tasks_sent = {}
+
+UPLOADS_FOLDER = '../uploads/'
+if not os.path.isdir(UPLOADS_FOLDER):
+    os.mkdir('../uploads')
+
+MY_ADDR = 'http://localhost:5000'
 
 def get_new_bot():
   # FIXME
@@ -76,6 +82,24 @@ def done():
     
     if not bundle_id in current['activities']:
         current['activities'][bundle_id] = {}
+
+    file_ = data['file'].decode('base64')
+    if file_:
+        v = data['result']['version']
+        sp = os.path.join(UPLOADS_FOLDER, bundle_id + '_stable.xo')
+        if (current['activities'][bundle_id]['version'] != v and v) or \
+            not os.path.isfile(sp):
+                with open(sp, 'wb') as f:
+                    f.write(file_)
+        lp = os.path.join(UPLOADS_FOLDER, bundle_id + '_latest.xo')
+        with open(lp, 'wb') as f:
+            f.write(file_)
+
+        data['result']['xo_url'] = \
+            '%s/uploads/%s_stable.xo' % (MY_ADDR, bundle_id)
+        data['result']['xo_url_latest'] = \
+            '%s/uploads/%s_latest.xo' % (MY_ADDR, bundle_id)
+
     current['activities'][bundle_id].update(data['result'])
     
     text = json.dumps(current, indent=4, sort_keys=True)
@@ -85,6 +109,15 @@ def done():
     call(['git', 'commit', '-m',
           'Bot from %s updated %s' % (request.remote_addr, bundle_id)])
     return "Cool Potatos"
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    p = os.path.join(UPLOADS_FOLDER, filename)
+    if os.path.isfile(p):
+        with open(p, 'rb') as f:
+            b = f.read()
+        return b
+    abort(404)
 
 def auth_socket(s, addr):
     id_string = addr[0]
