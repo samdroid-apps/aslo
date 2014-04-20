@@ -43,6 +43,11 @@ def get_bot_for_repo(bundle_id, gh_user, gh_repo):
                        'id': bundle_id, 'lastBot': new}]).run(conn)
         return bot_sockets[new]
 
+def verify_repo(gh_user, gh_repo, bundle_id):
+    d = repos.get(bundle_id).run(conn)
+    return d['ghUser'].lower() == gh_user.lower() and \
+           d['ghRepo'].lower() == gh_repo.lower()
+
 app = Flask(__name__)
 
 @app.route('/hook/<gh_user>/<gh_repo>/<bundle_id>', methods=['POST'])
@@ -50,8 +55,14 @@ def hook(gh_user, gh_repo, bundle_id):
     with open('data.json') as f:
         data = json.loads(f.read())
     if not bundle_id in data['activities']:
-        return """Please add your thing first to our github, 
-                  then the bots will come and help you fill it out"""
+        return ("Please add your thing first to our github, "
+                "then the bots will come and help you fill it out\n")
+
+    if not verify_repo(gh_user, gh_repo, bundle_id):
+        return ("You are using a different repo to the first one you used.\n\n"
+                "If this is an error in our system or "
+                "you really have made a change "
+                "**please create a github issue about it!**\n")
         
     print 'Hook call from', bundle_id
     task_id = str(uuid.uuid4())
