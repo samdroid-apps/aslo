@@ -119,24 +119,21 @@ var focusOnActivity = function ( data, bundleId ) {
   $( ".description", container ).html( getLang( data.description ) );
   $( ".whatsnew", container ).html( getLang( data.whats_new ) );
   $( ".minversion", container ).html( data.minSugarVersion );
-  
-  if ( data.github_url !== undefined && data.github_current_tag !== undefined ) {
-    var url = "https://github.com/" + data.github_url
-              + "/archive/" + data.github_current_tag + ".zip"
-    $( ".download", container ).attr( "href", url );
 
-    $( ".download-devel", container ).show();
-    url = "https://github.com/" + data.github_url + "/archive/master.zip"
-    $( ".download-devel", container ).attr( "href", url );
-    
+  $( ".github", container ).hide();
+  if ( data.github_url !== undefined ) {
     $( ".github", container ).show();
     $( ".github", container ).attr( "href", "https://www.github.com/" + data.github_url );
-  } else {
-    $( ".download", container ).attr( "href", data.xo_url );
-    $( ".download-devel", container ).hide();
-    $( ".github", container ).hide();
   }
-  
+
+  $( ".download", container ).attr( "href", data.xo_url );
+
+  $( ".download-devel", container ).hide();
+  if ( data.xo_url_latest ) {
+    $( ".download-devel", container ).show();
+    $( ".download-devel", container ).attr( "href", data.xo_url_latest );
+  }
+
   $( ".screenshots", container).html( "" );
   for ( i in getLang( data.screenshots ) ) {
     var ele = $( "<img>" );
@@ -145,7 +142,7 @@ var focusOnActivity = function ( data, bundleId ) {
     ele.attr( "src", imageSrc );
     $( ".screenshots", container ).append( ele );
   }
-  
+
   $( ".by", container).html( "" );
   for ( i in data.by ) {
     var ele = $( "<a>" );
@@ -154,7 +151,7 @@ var focusOnActivity = function ( data, bundleId ) {
     ele.html( person.name );
     $( ".by", container ).append( ele );
   }
-  
+
   commentsSetup( bundleId );
 };
 
@@ -163,7 +160,6 @@ var setupActivityList = function () {
     if ( activitiesData.hasOwnProperty( key ) ) {
       var ele = $( "<li>" );
       var data = activitiesData[ key ];
-      console.log( data )
       
       var title = $( "<h2>" +  getLang( data.title ) + "</h2>" );
       ele.append( title );
