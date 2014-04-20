@@ -7,12 +7,16 @@ import rethinkdb as r
 import requests
 
 from helpers import crossdomain
+from mailer import Mailer
 
 SITE_URL = 'http://0.0.0.0:8000'
 auths = {}  # Email => Assertion
 
 conn = r.connect('localhost', 28015)
 comments = r.db('comments').table('comments')
+emails = r.db('comments').table('emails')
+
+mailer = Mailer()
 
 app = Flask(__name__)
 
@@ -54,6 +58,8 @@ def post():
                      'text': request.form['content'],
                      'rating': int(request.form['rating']),
                      'time': time.time(),
+                     'flagged': False,
+                     'deleted': False,
                      }).run(conn)
     return 'Cool Potatos'
 
@@ -63,8 +69,38 @@ def get(bundle_id):
     if bundle_id == '':
         abort(400)
 
-    result = comments.filter({'bundle_id': bundle_id}).order_by('time').pluck(
-                              'text', 'rating', 'email_hash').run(conn)
+    result = comments.filter({'bundle_id': bundle_id,
+                              'flagged': False,
+                              'deleted': False}).order_by('time').pluck(
+                              'text', 'rating', 'email_hash', 'id').run(conn)
     return json.dumps(list(result))
+
+@app.route('/comments/report', methods=['POST'])
+@crossdomain(origin='*')
+def report():
+    id_ =  request.form['id']
+
+    c = comments.get(id_).run(conn)
+    comments.get(id_).update({'flagged': True}).run(conn)
+
+    mailer.send(id_, c['text'], c['email'])
+
+    return 'Reported'
+
+@app.route('/comments/keep/<id_>/<pw>')
+def keep(id_, pw):
+    if emails.get(id_).run(conn)['pw'] != pw:
+        return '[FAIL] Wrong password... Maybe a STALE EMAIL'
+
+    comments.get(id_).update({'flagged': False, 'deleted': False}).run(conn)
+    return '[SUCCESS] Comment no longer flagged'
+
+@app.route('/comments/kill/<id_>/<pw>')
+def kill(id_, pw):
+    if emails.get(id_).run(conn)['pw'] != pw:
+        return '[FAIL] Wrong password... Maybe a STALE EMAIL'
+
+    comments.get(id_).update({'flagged': False, 'deleted': True}).run(conn)
+    return '[SUCCESS] Comment hidden'
 
 app.run(debug=True)

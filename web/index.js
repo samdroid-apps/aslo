@@ -85,6 +85,16 @@ var commentsSetup = function ( bundleId ) {
       text.html( item.text );
       ele.append( text );
       
+      var report = $( "<button class='report'>Report</button>" );
+      report.data( "id", item.id );
+      report.click( function () {
+        $.post( authServer + "/comments/report", { id: report.data( "id" ) } );
+        $( this ).html( "Reported" );
+        $( this ).attr( "disabled", "true" );
+        $( this ).parent().addClass( "reported" );
+      });
+      ele.append( report );
+      
       if ( account !== undefined ) {
         if ( md5( account.email ) === item.email_hash ) {
           ele.prependTo( $( ".comments ul" ) );
