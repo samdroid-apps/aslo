@@ -11,7 +11,6 @@ from flask import Flask, jsonify, abort, request, send_from_directory
 import rethinkdb as r
 
 conn = r.connect('localhost', 28015)
-bots = r.db('bot_master').table('bots')
 repos = r.db('bot_master').table('repos')
 
 bot_sockets = {}
@@ -130,25 +129,11 @@ def uploaded_file(filename):
         return b
     abort(404)
 
-def auth_socket(s, addr):
+def run_socket(s, addr):
     id_string = addr[0]
+    bot_sockets[id_string] = s
 
-    i = bots.get(id_string).run(conn)
-    if i:
-      s.send('pw?')
-      pw = s.recv(1024).strip()
-      if pw == i['pw']:
-        bot_sockets[id_string] = s
-      else:
-        s.close()
-    else:
-      pw = str(uuid.uuid4())
-      s.send('pw=' + pw)
-      s.recv(1024)
-      bots.insert([{'id': id_string, 'pw': pw}]).run(conn)
-      bot_sockets[id_string] = s
-
-    print "Authed bot @", id_string
+    print "Connected bot @", id_string
     
     while True:
         msg = s.recv(1024).strip()
@@ -171,7 +156,7 @@ def run_sockets():
     while True:
       s.listen(1)
       client, addr = s.accept()
-      thread.start_new_thread(auth_socket, (client, addr))
+      thread.start_new_thread(run_socket, (client, addr))
     s.close()
 
 thread.start_new_thread(run_sockets, ())

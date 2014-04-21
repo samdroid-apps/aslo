@@ -15,14 +15,6 @@ PORT = int(requests.get('http://' + HOST + ':' + str(PORT_HTTP) + '/port').text)
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 
-handshake = s.recv(1024).strip()
-if handshake.startswith('pw='):
-    with open('password.txt', 'w') as f:
-        f.write(handshake[3:])
-else:
-    with open('password.txt') as f:
-        s.send(f.read().strip())
-
 print "Connected to remote"
 
 while True:
