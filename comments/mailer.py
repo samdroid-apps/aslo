@@ -1,3 +1,4 @@
+import os
 import uuid
 import smtplib
 import getpass
@@ -9,10 +10,19 @@ import rethinkdb as r
 conn = r.connect('localhost', 28015)
 emails = r.db('comments').table('emails')
 
-GMAIL_UNAME = raw_input('Gmail Username (eg. j.doe): ')
-GMAIL_PW = getpass.getpass('Gmail Password: ')
+if os.path.isfile('email.password'):
+    with open('email.password') as f:
+        i = f.read().strip().split('|')
+        EMAIL_UNAME = i[0]
+        EMAIL_PW = i[1]
+else:
+    EMAIL_UNAME = raw_input('SLO email username (eg. sam): ')
+    EMAIL_PW = getpass.getpass('Password: ')
+    with open('email.password', 'w') as f:
+        f.write(EMAIL_UNAME + '|' + EMAIL_PW)
+    print 'Email config now kept in email.password'
 
-MY_EMAIL = GMAIL_UNAME + '@gmail.com'
+MY_EMAIL = EMAIL_UNAME + '@sugarlabs.org'
 MODERATORS = ['sam.parkinson3@gmail.com']
 
 TEXT_TEMPLATE = """
@@ -54,10 +64,10 @@ class Mailer():
         msg.attach(MIMEText(text, 'plain'))
         msg.attach(MIMEText(html, 'html'))
 
-        s = smtplib.SMTP('smtp.gmail.com', 587)
+        s = smtplib.SMTP('smtp.sugarlabs.org', 587)
         s.ehlo()
         s.starttls()
         s.ehlo()
-        s.login(GMAIL_UNAME, GMAIL_PW)
+        s.login(EMAIL_UNAME, EMAIL_PW)
         s.sendmail(MY_EMAIL, [to], msg.as_string())
         s.quit()

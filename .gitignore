@@ -4,3 +4,4 @@ bot/password.txt
 bot-master/rethinkdb_data
 bot-master/git
 bot-master/uploads
+comments/email.password
