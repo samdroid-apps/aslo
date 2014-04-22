@@ -22,12 +22,8 @@ func recomendHandler(w http.ResponseWriter, req *http.Request) {
 		ourPerson[item.BundleId] = item.Rating
 	}
 
-	c, rec := DoRecommendation(ourPerson, email, conn)
-	respObj := JSONResponce{
-		Confidence: c,
-		Recommendations: rec,
-	}
-	respJ, _ := json.Marshal(respObj)
+	rec := DoRecommendation(ourPerson, email, conn)
+	respJ, _ := json.Marshal(rec)
 	fmt.Fprintln(w, string(respJ))
 }
 
