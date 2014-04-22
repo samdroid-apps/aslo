@@ -2,6 +2,7 @@ import socket
 import sys
 import os
 import thread
+import time
 import json
 import uuid
 import random
@@ -101,6 +102,7 @@ def done():
             not os.path.isfile(sp):
                 with open(sp, 'wb') as f:
                     f.write(file_)
+				data['result']['xo_url_timestamp'] = time.time()
         lp = os.path.join(UPLOADS_FOLDER, bundle_id + '_latest.xo')
         with open(lp, 'wb') as f:
             f.write(file_)
@@ -109,6 +111,7 @@ def done():
             '%s/uploads/%s_stable.xo' % (MY_ADDR, bundle_id)
         data['result']['xo_url_latest'] = \
             '%s/uploads/%s_latest.xo' % (MY_ADDR, bundle_id)
+		data['result']['xo_url_latest_timestamp'] = time.time()
 
     current['activities'][bundle_id].update(data['result'])
     
