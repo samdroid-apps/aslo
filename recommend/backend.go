@@ -15,12 +15,14 @@ func prepPerson(email string, mainPerson map[string]int, peopleChan chan Person,
 
 		_, ok := mainPerson[item.BundleId]
 		if !ok {
-			p.AddRecommendation(item.BundleId)
+			if (item.Rating >= 4) {
+				p.AddRecommendation(item.BundleId)
+			}
 		} else {
 			ourRating := mainPerson[item.BundleId]
 			theirRating := item.Rating
 
-			if (ourRating >= 4 && theirRating >= 4) || (ourRating <= 4 && theirRating <= 4) {
+			if (ourRating >= 4 && theirRating >= 4) || (ourRating <= 3 && theirRating <= 3) {
 				p.NumSame++
 			} else {
 				p.NumConflict++
