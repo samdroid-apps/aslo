@@ -26,13 +26,15 @@ def upload_image(img_name, current_hash, svg=False):
         h.update(content)
         hash_ = str(h.hexdigest())
 
-    if hash_ in current_hash or content == '':
-        return {}
+    if hash_ in current_hash:
+        return current_hash[hash_], hash_
 
-    # Noooooo, we have to upload the image :(
+    # Nobody accepts svgs :(
+    # GitHub raw just serves them as text :(
     if svg:
         content = cairosvg.svg2png(bytestring=content)
 
+    # Noooooo, we have to upload the image :(
     data = {'image': content.encode('base64'), 'type': 'base64'}
     r = requests.post('https://api.imgur.com/3/image', data=data, headers=AUTH)
     url = r.json()['data']['link']
@@ -53,7 +55,8 @@ def get_imgs(activity_info, bundle_id):
         return results
 
     url, hash_ = upload_image(os.path.join('dl/activity/', icon_name),
-                              [activity.get('iconHash')], svg=True)
+                              {activity.get('iconHash'): activity.get('icon')},
+                              svg=True)
     results.update({'icon': url, 'iconHash': hash_})
     return results
 
@@ -65,8 +68,8 @@ def upload_screenshots(activity):
     dirs = (i for i in os.listdir('dl/screenshots') if \
             os.path.isdir(os.path.join('dl/screenshots', i)))
     for dir_ in dirs:
-        local_hashes = hashes.get(dir_, [])
-        n_local_hashes = []
+        local_hashes = hashes.get(dir_, {})
+        n_local_hashes = {}
         n_screenshots = []
 
         for file_name in os.listdir(os.path.join('dl/screenshots', dir_)):
@@ -74,10 +77,11 @@ def upload_screenshots(activity):
                 break
             file_path = os.path.join('dl/screenshots', dir_, file_name)
             url, hash_ = upload_image(file_path, local_hashes)
-            n_local_hashes.append(hash_)
+            n_local_hashes[hash_] = url
             n_screenshots.append(url)
 
-        result['screenshots'][dir_] = n_screenshots
-        result['screenshotsHashes'][dir_] = n_local_hashes
+        tag = dir_.replace('_', '-')
+        result['screenshots'][tag] = n_screenshots
+        result['screenshotsHashes'][tag] = n_local_hashes
 
     return result if result != EMPTY else {}
