@@ -10,7 +10,7 @@ import (
 
 var conn *r.Session
 
-func recomendHandler(w http.ResponseWriter, req *http.Request) {
+func recomendHandler(rw http.ResponseWriter, req *http.Request) {
 	email := req.FormValue("email")
 
 	ourPerson := map[string]int{}
@@ -23,8 +23,12 @@ func recomendHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	rec := DoRecommendation(ourPerson, email, conn)
+	fmt.Println(rec)
 	respJ, _ := json.Marshal(rec)
-	fmt.Fprintln(w, string(respJ))
+
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
+	rw.Header().Set("Content-Type", "application/json")
+	fmt.Fprint(rw, string(respJ))
 }
 
 func StartServer(c *r.Session) {

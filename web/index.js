@@ -21,15 +21,36 @@ navigator.id.watch({
   onlogin: function ( assertion ) {
     $.post( authServer + "/login", { assertion: assertion } )
       .done( function ( data ) {
+		$( "button.login" ).hide()
         account = JSON.parse( data );
         account.code = assertion;
-        commentsSetup($( ".comments .add" ).data( "bundleId" ));
+		loadSuggestions();
+        commentsSetup( $( ".comments .add" ).data( "bundleId" ) );
       });
   },
   onlogout: function () {
     account = undefined;
   }
 });
+
+var suggestServer = "http://localhost:5002/recommend";
+var MAX_RECOMMENDED = 10;
+var loadSuggestions = function () {
+  $.post( suggestServer, { email: account.email } )
+    .done( function ( data ) {
+      console.log( data );
+
+      $( ".recommended-activities-container" ).show();
+      $( ".recommended-activities" ).html( "" );
+
+      for ( i in data ) {
+        item = data[ i ];
+        if ( i > MAX_RECOMMENDED || item.confidence <= 0)
+          return;
+        addActivityToList( ".recommended-activities", item.bundleId );
+      }
+    });
+};
   
 
 var commentsSetupEvents = function () {
@@ -53,6 +74,7 @@ var commentsSetupEvents = function () {
     } )
       .done( function ( _ ) {
         commentsSetup($( ".comments .add" ).data( "bundleId" ));
+        loadSuggestions()
       });
   });
 };
@@ -155,23 +177,27 @@ var focusOnActivity = function ( data, bundleId ) {
   commentsSetup( bundleId );
 };
 
+var addActivityToList = function (container, bundleId) {
+  var ele = $( "<li>" );
+  var data = activitiesData[ bundleId ];
+      
+  var title = $( "<h2>" +  getLang( data.title ) + "</h2>" );
+  ele.append( title );
+      
+  $( container ).append( ele );
+      
+  ele.data( "json", data );
+  ele.data( "bundleId", bundleId );
+  ele.data( "searchString", getLang( data.title ).toLowerCase() );
+  ele.click( function () {
+    focusOnActivity( $( this ).data( "json" ), $( this ).data( "bundleId" ) );
+  });
+}
+
 var setupActivityList = function () {
   for ( var key in activitiesData ) {
     if ( activitiesData.hasOwnProperty( key ) ) {
-      var ele = $( "<li>" );
-      var data = activitiesData[ key ];
-      
-      var title = $( "<h2>" +  getLang( data.title ) + "</h2>" );
-      ele.append( title );
-      
-      $( ".activities").append( ele );
-      
-      ele.data( "json", data );
-      ele.data( "bundleId", key );
-      ele.data( "searchString", getLang( data.title ).toLowerCase() );
-      ele.click( function () {
-        focusOnActivity( $( this ).data( "json" ), $( this ).data( "bundleId" ) );
-      });
+      addActivityToList( ".activities", key )
     }
   }
 };
@@ -212,5 +238,7 @@ $(document).ready( function () {
     lastQuery = term;
   });
   
+  $( "button.login" ).click( function () { navigator.id.request(); } )
+
   commentsSetupEvents();
 });
