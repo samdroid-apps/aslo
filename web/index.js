@@ -202,12 +202,14 @@ var setupActivityList = function () {
   }
 };
 
+// FIXME: don't use rawgit! They said bad stuff would happen :(
+var dataUrl = "https://rawgit.com/SAMdroid-apps/sugar-activities/master/data.json";
 $(document).ready( function () {
   var list = $(".activities");
   var detail = $(".detail");
   
   $.ajax({
-    url: "data.json"
+    url: dataUrl
   }).done( function ( data ) {
     activitiesData = data.activities;
     setupActivityList();
