@@ -1,2 +1,2 @@
 cd git
-python2 ../main.py
+python2.7 ../main.py
