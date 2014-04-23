@@ -4,6 +4,7 @@ import os
 import requests
 
 from po_crawl import get_translation_from_regex
+import img
 
 IS_WEB_RE = re.compile('exec\s*=\s*sugar-activity-web')
 def is_web(text):
@@ -85,6 +86,8 @@ def test_activity(bundle_id, gh):
         if t: results['description'] = t
 
         results['isWeb'] = is_web(text)
+
+        results.update(img.get_imgs(text, bundle_id))
 
     results['isGTK3'] = is_gtk3('dl/', bundle_id)
     results['hasOldToolbars'] = has_old_toolbars('dl/', bundle_id)
