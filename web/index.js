@@ -1,6 +1,9 @@
 var activitiesData = {};
 
 var getLang = function ( obj ) {
+  if ( obj === undefined )
+    return ""
+
   var ul = navigator.language || navigator.userLanguage;
   if ( obj[ ul ] !== undefined )  // Same
     return obj[ ul ];
