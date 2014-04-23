@@ -98,7 +98,7 @@ def done():
     if file_:
         v = data['result']['version']
         sp = os.path.join(UPLOADS_FOLDER, bundle_id + '_stable.xo')
-        if (current['activities'][bundle_id]['version'] != v and v) or \
+        if (current['activities'][bundle_id].get('version') != v and v) or \
             not os.path.isfile(sp):
                 with open(sp, 'wb') as f:
                     f.write(file_)
@@ -121,6 +121,7 @@ def done():
     call(['git', 'add', 'data.json'])
     call(['git', 'commit', '-m',
           'Bot from %s updated %s' % (request.remote_addr, bundle_id)])
+    call(['git', 'push'])
     return "Cool Potatos"
 
 @app.route('/uploads/<filename>')
