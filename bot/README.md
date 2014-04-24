@@ -9,10 +9,8 @@ First make sure you have:
 * Requests (Py2): `yum install python-requests`
 * PoLib (Py2): `pip install polib`
 * CairoSVG: `pip install cairosvg`
+* Sugar - not running, but just so the setup.py files can work
 
 Then just run `python2 main.py` and off you mine!
-
-> **Note**: you will automatically be booted of the network when the master restarts.
-> That is a good time to `git pull` and restart your bot.
 
 If you have any issues please contact me.
