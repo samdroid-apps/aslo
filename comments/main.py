@@ -7,9 +7,10 @@ import rethinkdb as r
 import requests
 
 from helpers import crossdomain
-from mailer import Mailer
+from mailer import Mailer, ReplyMailer
 
 SITE_URL = 'http://0.0.0.0:8000'
+DATA_JSON = 'https://raw.githubusercontent.com/SAMdroid-apps/sugar-activities/master/data.json'
 auths = {}  # Email => Assertion
 
 conn = r.connect('localhost', 28015)
@@ -17,6 +18,7 @@ comments = r.db('comments').table('comments')
 emails = r.db('comments').table('emails')
 
 mailer = Mailer()
+reply_mailer = ReplyMailer()
 
 app = Flask(__name__)
 
@@ -102,5 +104,32 @@ def kill(id_, pw):
 
     comments.get(id_).update({'flagged': False, 'deleted': True}).run(conn)
     return '[SUCCESS] Comment hidden'
+
+def is_by(bundle_id, email):
+    j = requests.get(DATA_JSON).json()
+    activity = j['activities'].get(bundle_id)
+    for p in activity['by']:
+        if p['email'] == email:
+            return True, p['name']
+    return False, None
+
+@app.route('/comments/reply', methods=['POST'])
+@crossdomain(origin='*')
+def reply():
+    email = request.form['email']
+    assertion = request.form['code']
+    if auths.get(email) != assertion:
+        abort(400)
+
+    id_ = request.form['id']
+    c = comments.get(id_).run(conn)
+    
+    ok, person = is_by(c['bundle_id'], email)
+    if not ok:
+        abort(400)
+
+    reply_mailer.send(person, email, request.form['content'], c['email'])
+
+    return 'Reported'
 
 app.run(debug=True)

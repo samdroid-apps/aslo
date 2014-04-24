@@ -2,7 +2,7 @@ var activitiesData = {};
 
 var getLang = function ( obj ) {
   if ( obj === undefined )
-    return ""
+    return "";
 
   var ul = navigator.language || navigator.userLanguage;
   if ( obj[ ul ] !== undefined )  // Same
@@ -119,6 +119,43 @@ var commentsSetup = function ( bundleId ) {
         $( this ).parent().addClass( "reported" );
       });
       ele.append( report );
+      
+      var reply = $("<button class='reply'>Reply (Activity Developer Only)</button>");
+      reply.data( "id", item.id );
+      reply.data( "text", item.text );
+      reply.click( function () {
+        if ( account === undefined ) {
+          navigator.id.request();
+          return;
+        }
+        
+        var d = $( ".comment-reply-popup" );
+        d.show();
+        
+        $( ".comment", d ).html( $( this ).data( "text" ) );
+        $( ".cancel", d ).click( function () {
+          d.hide();
+        });
+        
+        var id = $( this ).data( "id" );
+        $( ".send", d ).click( function () {
+          var sending = $( ".sending", d )
+          sending.show()
+          
+          $.post( authServer + "/comments/reply", {
+            email: account.email,
+            code: account.code,
+            content: $( ".reply", d ).val(),
+            id: id
+          }).always( function () {
+            d.hide();
+            sending.hide();
+          }).fail( function () {
+            alert( "You can not reply to that comment as you did not make the activity (says the by data)" );
+          });
+        });
+      });
+      ele.append( reply );
       
       if ( account !== undefined ) {
         if ( md5( account.email ) === item.email_hash ) {
