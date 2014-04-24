@@ -1,4 +1,4 @@
-import sys
+import os
 import json
 import time
 import socket
@@ -8,6 +8,9 @@ import requests
 
 from test import test_activity
 from build import compile_bundle
+
+# Fixes a weird bug... it might create some though :P
+os.environ['http_proxy'] = ''
 
 # HOST = 'http://localhost:5001'
 HOST = 'http://aslo-bot-master.sugarlabs.org'
