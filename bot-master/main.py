@@ -22,7 +22,7 @@ UPLOADS_FOLDER = '../uploads/'
 if not os.path.isdir(UPLOADS_FOLDER):
     os.mkdir('../uploads')
 
-MY_ADDR = 'http://localhost:5001'
+MY_ADDR = 'http://http://aslo-bot-master.sugarlabs.org'
 
 def verify_repo(gh_user, gh_repo, bundle_id):
     d = repos.get(bundle_id).run(conn)
