@@ -1,11 +1,8 @@
-import socket
-import sys
 import os
-import thread
 import time
 import json
 import uuid
-import random
+import threading
 from subprocess import call
 
 from flask import Flask, jsonify, abort, request, send_from_directory
@@ -15,8 +12,11 @@ from helpers import crossdomain
 conn = r.connect('localhost', 28015)
 repos = r.db('bot_master').table('repos')
 
-bot_sockets = {}
-tasks_sent = {}
+tasks_todo = {}  # bundle_id -> extra data
+tasks_sent = {}  # bundle_id -> code
+
+tasks_todo_lock = threading.Lock()
+git_lock = threading.Lock()
 
 UPLOADS_FOLDER = '../uploads/'
 if not os.path.isdir(UPLOADS_FOLDER):
@@ -24,28 +24,12 @@ if not os.path.isdir(UPLOADS_FOLDER):
 
 MY_ADDR = 'http://localhost:5001'
 
-def get_new_bot():
-  # FIXME
-  return random.choice(bot_sockets.keys())
-
-def get_bot_for_repo(bundle_id, gh_user, gh_repo):
-    result = repos.get(bundle_id).run(conn)
-    if result:
-        bot_addr = result['lastBot']
-        if bot_addr in bot_sockets:
-            return bot_sockets[bot_addr]
-        else:
-            new = get_new_bot()
-            repos.get(bundle_id).update({'lastBot': new}).run(conn)
-            return bot_sockets[new]
-    else:
-        new = get_new_bot()
-        repos.insert([{'ghUser': gh_user, 'ghRepo': gh_repo,
-                       'id': bundle_id, 'lastBot': new}]).run(conn)
-        return bot_sockets[new]
-
 def verify_repo(gh_user, gh_repo, bundle_id):
     d = repos.get(bundle_id).run(conn)
+    if d == None:
+        repos.insert([{'ghUser': gh_user, 'ghRepo': gh_repo,
+                       'id': bundle_id}]).run(conn)
+        return True
     return d['ghUser'].lower() == gh_user.lower() and \
            d['ghRepo'].lower() == gh_repo.lower()
 
@@ -69,16 +53,31 @@ def hook(gh_user, gh_repo, bundle_id):
     task_id = str(uuid.uuid4())
     tasks_sent[bundle_id] = task_id
 
-    s = get_bot_for_repo(bundle_id, gh_user, gh_repo)
-    s.send('TASK/%s/%s/%s/%s/' % (task_id, bundle_id, gh_user, gh_repo))
+    with tasks_todo_lock:
+        tasks_todo[bundle_id] = {'task_id': task_id,
+                                 'gh': gh_user + '/' + gh_repo}
 
     return "Cool Potatoes"
 
 @app.route('/pull', methods=['GET', 'POST'])
 def pull():
     """Go here every time a new activity is added to refresh the data"""
-    call(['git', 'pull'])
+    with git_lock:
+        call(['git', 'pull'])
     return "Cool Potatoes"
+
+@app.route('/task')
+def get_task():
+    with tasks_todo_lock:
+        ts = tasks_todo.items()
+        if ts:
+          t = ts.pop(0)
+          del tasks_todo[t[0]]
+          return jsonify(bundle_id=t[0],
+                         task_id=t[1]['task_id'],
+                         gh=t[1]['gh'])
+        else:
+             abort(404)
 
 @app.route('/done', methods=['POST'])
 def done():
@@ -87,6 +86,9 @@ def done():
     task_id = data['task_id']
     if not tasks_sent.get(bundle_id, None) == task_id:
       return "Bad code :("
+
+    # LOCK
+    git_lock.aquire()
 
     call(['git', 'pull'])
     with open('data.json') as f:
@@ -115,7 +117,7 @@ def done():
         data['result']['xo_url_latest_timestamp'] = time.time()
 
     current['activities'][bundle_id].update(data['result'])
-    
+
     text = json.dumps(current, indent=4, sort_keys=True)
     with open('data.json', 'w') as f:
         f.write(text)
@@ -123,6 +125,8 @@ def done():
     call(['git', 'commit', '-m',
           'Bot from %s updated %s' % (request.remote_addr, bundle_id)])
     call(['git', 'push'])
+
+    git_lock.release()
     return "Cool Potatoes"
 
 @app.route('/uploads/<filename>')
@@ -141,39 +145,9 @@ def get_data():
         j = f.read()
     return app.response_class(j, mimetype='application/json')
 
-def run_socket(s, addr):
-    id_string = addr[0]
-    bot_sockets[id_string] = s
-
-    print "Connected bot @", id_string
-    
-    while True:
-        msg = s.recv(1024).strip()
-        if msg == "CLOSE":
-          del bot_sockets[id_string]
-          return
-
-port = 0
-
 @app.route('/port')
 def get_port():
-    return str(port)
+    return "Please update to the latest bot"
 
-def run_sockets():
-    global port
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(('', 0))
-    port = s.getsockname()[1]
-    print "On port", port
-    while True:
-      s.listen(1)
-      client, addr = s.accept()
-      thread.start_new_thread(run_socket, (client, addr))
-    s.close()
-
-thread.start_new_thread(run_sockets, ())
 debug = os.path.isfile('../debug')
 app.run(port=5001, debug=debug)
-
-for s in bot_sockets:
-    s.close()

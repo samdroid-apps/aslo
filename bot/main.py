@@ -1,5 +1,6 @@
 import sys
 import json
+import time
 import socket
 from subprocess import call
 
@@ -8,31 +9,30 @@ import requests
 from test import test_activity
 from build import compile_bundle
 
-HOST = 'localhost'
-PORT_HTTP = 5001
-PORT = int(requests.get('http://' + HOST + ':' + str(PORT_HTTP) + '/port').text)
+# HOST = 'http://localhost:5001'
+HOST = 'http://aslo-bot-master.sugarlabs.org'
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
-
-print "Connected to remote"
+print 'Waiting for 1st task'
 
 while True:
-    task = s.recv(2048).strip().split('/')
-    # TASK/task_id/bundle_id/gh_user/gh_repo
+    r = requests.get(HOST + '/task')
+    if r.status_code == 404:
+        time.sleep(7)
+        continue
+    task = r.json()
 
     print 'Got new task'
-    call(['git', 'clone', 'https://www.github.com/%s/%s' % (task[3], task[4]),
+    call(['git', 'clone', 'https://www.github.com/' + task['gh'],
           'dl'])
-    result = test_activity(task[2], task[3] + '/' + task[4])
+    result = test_activity(task['bundle_id'], task['gh'])
 
     data = {'result': result, 'file': compile_bundle(),
-            'bundle_id': task[2], 'task_id': task[1]}
+            'bundle_id': task['bundle_id'], 'task_id': task['task_id']}
 
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    r = requests.post('http://' + HOST + ':' + str(PORT_HTTP) + '/done',
+    r = requests.post(HOST + '/done',
                       data=json.dumps(data), headers=headers)
 
     call(['rm', '-rf', 'dl'])
 
-    print 'Mined 1 activity:', task[2]
+    print 'Mined 1 activity:', task['bundle_id'], task['gh']
