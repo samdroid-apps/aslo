@@ -18,7 +18,10 @@ HOST = 'http://aslo-bot-master.sugarlabs.org'
 print 'Waiting for 1st task'
 
 while True:
-    r = requests.get(HOST + '/task')
+    try:
+        r = requests.get(HOST + '/task')
+    except requests.exceptions.ConnectionError, e:
+        continue
     if r.status_code == 404:
         time.sleep(7)
         continue
