@@ -10,6 +10,7 @@ from subprocess import call
 
 from flask import Flask, jsonify, abort, request, send_from_directory
 import rethinkdb as r
+from helpers import crossdomain
 
 conn = r.connect('localhost', 28015)
 repos = r.db('bot_master').table('repos')
@@ -71,13 +72,13 @@ def hook(gh_user, gh_repo, bundle_id):
     s = get_bot_for_repo(bundle_id, gh_user, gh_repo)
     s.send('TASK/%s/%s/%s/%s/' % (task_id, bundle_id, gh_user, gh_repo))
 
-    return "Cool Potatos"
+    return "Cool Potatoes"
 
-@app.route('/pull')
+@app.route('/pull', methods=['GET', 'POST'])
 def pull():
     """Go here every time a new activity is added to refresh the data"""
     call(['git', 'pull'])
-    return "Cool Potatos"
+    return "Cool Potatoes"
 
 @app.route('/done', methods=['POST'])
 def done():
@@ -122,7 +123,7 @@ def done():
     call(['git', 'commit', '-m',
           'Bot from %s updated %s' % (request.remote_addr, bundle_id)])
     call(['git', 'push'])
-    return "Cool Potatos"
+    return "Cool Potatoes"
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
@@ -132,6 +133,13 @@ def uploaded_file(filename):
             b = f.read()
         return b
     abort(404)
+
+@app.route('/data.json', methods=['GET', 'POST'])
+@crossdomain(origin='*')
+def get_data():
+    with open('data.json') as f:
+        j = f.read()
+    return app.response_class(j, mimetype='application/json')
 
 def run_socket(s, addr):
     id_string = addr[0]
@@ -164,7 +172,8 @@ def run_sockets():
     s.close()
 
 thread.start_new_thread(run_sockets, ())
-app.run(port=5001, debug=True)
+debug = os.path.isfile('../debug')
+app.run(port=5001, debug=debug)
 
 for s in bot_sockets:
     s.close()

@@ -5,3 +5,5 @@ bot-master/rethinkdb_data
 bot-master/git
 bot-master/uploads
 comments/email.password
+rethinkdb_data
+debug
