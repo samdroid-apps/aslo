@@ -10,7 +10,7 @@ from helpers import crossdomain
 from mailer import Mailer, ReplyMailer
 
 SITE_URL = 'http://0.0.0.0:8000'
-DATA_JSON = 'https://raw.githubusercontent.com/SAMdroid-apps/sugar-activities/master/data.json'
+DATA_JSON = 'http://aslo-bot-master.sugarlabs.org/data.json'
 auths = {}  # Email => Assertion
 
 conn = r.connect('localhost', 28015)

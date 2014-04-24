@@ -7,7 +7,7 @@ import requests
 import cairosvg
 
 # FIXME: this lags behind commits
-DATA_JSON = 'https://raw.githubusercontent.com/SAMdroid-apps/sugar-activities/master/data.json'
+DATA_JSON = 'http://aslo-bot-master.sugarlabs.org/data.json'
 ICON_RE = re.compile('icon\s*=\s*(.*)')
 # Don't steal this (for other apps)...
 #         you can get as many as you like for FREE
