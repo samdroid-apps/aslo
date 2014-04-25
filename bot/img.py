@@ -6,7 +6,6 @@ import hashlib
 import requests
 import cairosvg
 
-# FIXME: this lags behind commits
 DATA_JSON = 'http://aslo-bot-master.sugarlabs.org/data.json'
 ICON_RE = re.compile('icon\s*=\s*(.*)')
 # Don't steal this (for other apps)...
