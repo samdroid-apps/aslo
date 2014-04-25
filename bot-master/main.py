@@ -22,6 +22,10 @@ UPLOADS_FOLDER = '../uploads/'
 if not os.path.isdir(UPLOADS_FOLDER):
     os.mkdir('../uploads')
 
+LOG_FOLDER = '../logs/'
+if not os.path.isdir(LOG_FOLDER):
+    os.mkdir('../logs')
+
 MY_ADDR = 'http://http://aslo-bot-master.sugarlabs.org'
 
 def verify_repo(gh_user, gh_repo, bundle_id):
@@ -129,10 +133,18 @@ def done():
     git_lock.release()
     return "Cool Potatoes"
 
+def log_dl(filename, ip):
+    fn = '_'.join([str(i) for i in time.gmtime()[:3]]) + '_downloads.log'
+    fp = os.path.join(LOG_FOLDER, fn)
+    mode = 'a' if os.path.isfile(fp) else 'w'
+    with open(fp, mode) as f:
+        f.write("{}: {} {}\n".format(time.gmtime()[3:6], ip, filename))
+
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     p = os.path.join(UPLOADS_FOLDER, filename)
     if os.path.isfile(p):
+        log_dl(filename, request.remote_addr)
         with open(p, 'rb') as f:
             b = f.read()
         return b
