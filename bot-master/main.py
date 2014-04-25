@@ -92,7 +92,7 @@ def done():
       return "Bad code :("
 
     # LOCK
-    git_lock.aquire()
+    git_lock.acquire()
 
     call(['git', 'pull'])
     with open('data.json') as f:
