@@ -24,7 +24,7 @@ navigator.id.watch({
   onlogin: function ( assertion ) {
     $.post( authServer + "/login", { assertion: assertion } )
       .done( function ( data ) {
-		$( "button.login" ).hide()
+		$( ".login" ).html( "Logged in" );
         account = JSON.parse( data );
         account.code = assertion;
 		loadSuggestions();
@@ -110,7 +110,7 @@ var commentsSetup = function ( bundleId ) {
       text.html( item.text );
       ele.append( text );
       
-      var report = $( "<button class='report'>Report</button>" );
+      var report = $( "<i class='fa fa-flag' style='margin-right: 5px;'></i>" );
       report.data( "id", item.id );
       report.click( function () {
         $.post( authServer + "/comments/report", { id: report.data( "id" ) } );
@@ -120,7 +120,7 @@ var commentsSetup = function ( bundleId ) {
       });
       ele.append( report );
       
-      var reply = $("<button class='reply'>Reply (Activity Developer Only)</button>");
+      var reply = $("<i class='fa fa-reply'></i>");
       reply.data( "id", item.id );
       reply.data( "text", item.text );
       reply.click( function () {
@@ -131,6 +131,7 @@ var commentsSetup = function ( bundleId ) {
         
         var d = $( ".comment-reply-popup" );
         d.show();
+        window.scrollTo( 0, 0 )
         
         $( ".comment", d ).html( $( this ).data( "text" ) );
         $( ".cancel", d ).click( function () {
@@ -172,9 +173,14 @@ var commentsSetup = function ( bundleId ) {
 
 var focusOnActivity = function ( data, bundleId ) {
   window.location.hash = "!/view/" + bundleId;
+  window.scrollTo( 0, 0 );
   
   var container = $( ".detail" );
-  container.show();
+  container.removeClass( "hide" );
+  
+  $( ".close", container ).click( function () {
+    container.addClass( "hide" );
+  });
   
   $( ".title", container ).html( getLang( data.title ) );
   $( ".icon", container ).attr( "src", data.icon );
@@ -218,10 +224,14 @@ var focusOnActivity = function ( data, bundleId ) {
 };
 
 var addActivityToList = function (container, bundleId) {
-  var ele = $( "<li>" );
+  var ele = $( "<li class='activity'>" );
   var data = activitiesData[ bundleId ];
-      
-  var title = $( "<h2>" +  getLang( data.title ) + "</h2>" );
+  
+  var icon = $( "<img class='icon' />" );
+  icon.attr( "src", data.icon );
+  ele.append( icon );
+  
+  var title = $( "<span class='title'>" +  getLang( data.title ) + "</span>" );
   ele.append( title );
       
   $( container ).append( ele );
@@ -279,7 +289,7 @@ $(document).ready( function () {
     lastQuery = term;
   });
   
-  $( "button.login" ).click( function () { navigator.id.request(); } )
+  $( ".login" ).click( function () { navigator.id.request(); } )
 
   commentsSetupEvents();
 });

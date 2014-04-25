@@ -1,0 +1,249 @@
+$bg: "http://subtlepatterns.com/patterns/textured_paper.png"
+$maxw: "800px"
+=center()
+  margin-left: auto
+  margin-right: auto
+  
+
+@import colors
+
+body
+  font-family: sans-serif
+  background: url($bg)
+    
+  margin: 0
+
+hr
+  margin: 15px 0
+  border: 1px solid $gray
+  
+@keyframes stars
+  0%:
+    background-position: 0px 0px
+  50%
+    background-position: 798*0.5px 798px
+  100%
+    background-position: 798px 798*2px
+    
+nav
+  text-align: center
+    
+  background: url(http://subtlepatterns.com/patterns/stardust.png)
+  animation: 60s linear 0s normal none infinite stars
+    
+  margin-botom: 60px
+    
+  div
+    max-width: #{ $maxw }
+    +center()
+    
+    a
+      display: block
+      float: left
+      width: 33.33333333333%
+      width: calc(100% / 3)
+      height: 30px
+      padding-top: 10px // Guess
+      padding-top: calc(20px - (1em / 2))
+      
+      color: $white
+      background-color: $red // 1st child + backup
+      font-weight: bold
+      text-decoration: none
+        
+      transition: 0.75s ease transform
+        
+    a:hover
+      transform: scale(0.9)
+    
+    a:nth-child(2)
+      background-color: $orange
+      
+    a:nth-child(3)
+      background-color: $purple
+      clear: right
+        
+.all-activities
+  margin-top: 15px
+  
+  .search
+    float: none
+    clear: both
+    display: block
+      
+    +center()
+    padding: 10px
+    
+    width: 80%
+    max-width: #{ $maxw  }
+    
+    font-size: 20px
+    color: $black
+    
+    background-color: rgba(0,0,0,0)
+    border: none
+    border-bottom: 3px solid $gray
+
+@keyframes shake1
+  0%, 100%
+    transform: rotate(0deg)
+  50%
+    transform: rotate(2deg)
+    
+@keyframes shake2
+  0%, 100%
+    transform: rotate(-2deg) scale(1)
+  50%
+    transform: rotate(-3.5deg) sclae(1.1)
+      
+ul.activities
+  max-width: #{ $maxw }
+  +center()
+  
+  list-style: none
+  
+  li.activity
+    display: block
+    float: left
+      
+    width: 20%
+    margin-right: 1%
+    margin-bottom: 2%
+    padding: 1%
+    
+    border-radius: 5px
+    text-align: center
+    
+    background-color: $blue
+    &:nth-child(10n+2)
+      background-color: $aqua
+    &:nth-child(10n+3)
+      background-color: #39CCCC  // Teal
+    &:nth-child(10n+4)
+      background-color: $green
+    &:nth-child(10n+5)
+      background-color: $lime
+    &:nth-child(10n+6)
+      background-color: $yellow
+    &:nth-child(10n+7)
+      background-color: $orange
+    &:nth-child(10n+8)
+      background-color: $red
+    &:nth-child(10n+9)
+      background-color: $fuchsia
+    &:nth-child(10n+10)
+      background-color: $purple
+    
+    img.icon
+      display: block
+      +center()
+      background-color: rgba(255, 255, 255, 0.5)
+      padding: 5px
+      border-radius: 5px
+      
+    span
+      color: $white
+      font-weight: bold
+      font-size: 18px
+      
+    &:hover
+      animation: shake1 0.1s infinite
+      img.icon
+        animation: shake2 0.13s infinite
+          
+
+=cool_button()
+  display: inline-block
+  margin-bottom: 20px
+      
+  color: white
+  text-decoration: none
+  background-color: $red
+  box-shadow: 0 10px 0 $orange, 0 11px 3px $orange
+  
+  border: none
+  padding: 5px
+  width: auto
+    
+  transition: 0.7sec ease-in all
+  &:hover
+    margin-top: 5px
+    box-shadow: 0 5px 0 $orange, 0 6px 10px $orange
+    margin-bottom: 15px
+
+.recommended-activities-container
+  +center()
+  max-width: #{ $maxw }
+  
+.popup
+  display: block
+  +center()
+  padding: 10px  
+    
+.detail
+  display: block
+  overflow: hidden
+  clear: both
+    
+  position: relative
+  margin-top: 0
+  
+  border-radius: 0 0 20px 20px
+  background-color: rgba(255, 255, 255, 0.7)
+
+  padding: 20px 0
+  max-width: #{ $maxw }
+  height: auto
+
+  +center()
+  text-align: center
+    
+  transition: 1s ease all
+  &.hide
+    margin-top: -200px
+    height: 0
+    padding: 0
+  
+  .close
+    font-size: 36px
+    margin-left: 10px
+    text-align: left
+    
+  h1
+    margin-bottom: 0
+  
+  .by
+    margin-bottom: 10px
+    a
+      color: $gray
+  
+  .screenshots
+    img
+      display: block
+      float: left
+    overflow-x: scroll
+      
+  .description
+    font-size: 1.5em
+      
+  .download
+    +cool_button()
+    font-size: 2em
+
+  .comments
+    textarea
+      width: 100%
+    
+      background-color: rgba(0,0,0,0)
+      border: none
+      border-bottom: 2px solid $gray
+    .add
+      +cool_button()
+      
+    ul
+      list-style: none
+      .person
+        height: 50px
+        width: auto
+        border-radius: 50px
+        margin-right: 10px
