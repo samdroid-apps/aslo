@@ -1,0 +1,13 @@
+---
+layout: default
+---
+<div class="title">
+  <img class="person no-c" src="{{ page.by_avatar }}"/>
+  <h1 class="no-c">{{ page.title }}</h1>
+</div>
+<p class="meta">By {{ page.by }}, {{ page.date | date_to_string }}</p>
+<br/>
+
+<div class="post no-c">
+{{ content }}
+</div>
