@@ -6,6 +6,7 @@
     
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/i18next/1.6.3/i18next-1.6.3.min.js"></script>
     <script src="https://login.persona.org/include.js"></script>
     <!-- <script src="md5.js"></script> -->
     <script async src="index.js"></script>
@@ -16,22 +17,22 @@
   
   <body>
     <div class="comment-reply-popup popup" style="display: none;">
-      <h2>Reply to the comment:</h2>
-      <p><b>Note:</b> this will only send if you are the activity owner</p>
+      <h2 data-i18n="reply.replyToTheComment">Reply to the comment:</h2>
+      <p><b data-i18n="reply.note">Note</b>: <span data-i18n="reply.warning">this will only send if you are the activity owner</span></p>
       <blockquote class="comment"></blockquote>
-      <textarea class="reply">Type your reply</textarea>
+      <textarea class="reply" data-i18n="reply.typeYourReply">Type your reply</textarea>
       <br/>
-      <button class="cancel">Cancel</button>
-      <button class="send">Send</button>
-      <b class="sending" style="display: none;">Sending...</b>
+      <button class="cancel" data-i18n="reply.cancel">Cancel</button>
+      <button class="send" data-i18n="reply.send">Send</button>
+      <b class="sending" style="display: none;" data-i18n="reply.sending">Sending...</b>
     </div>
     
     <nav>
       <img src="http://samdroid-apps.github.io/slgio/res/logo.svg" alt="Sugar Labs" />
       <div>
-        <a href="http://activities.sugarlabs.org">Activities</a>
-        <a href="http://wiki.sugarlabs.org">Wiki</a>
-        <a class="login">Login</a>
+        <a href="http://activities.sugarlabs.org" data-i18n="nav.activities">Activities</a>
+        <a href="http://wiki.sugarlabs.org" data-i18n="nav.wiki">Wiki</a>
+        <a class="login" data-i18n="nav.login">Login</a>
       </div>
     </nav>
     <br/>
@@ -45,15 +46,15 @@
       <p class="description"></p>
       <p class="whatsnew"></p>
       
-      <a class="download">Download</a><br/>
-      <p>Min. Sugar Version <b class="minversion"></b></p>
-      <a class="download-devel">Download Devel Version</a>
-      <a class="github">Help make the activity GitHub!</a>
+      <a class="download" data-i18n="detail.download">Download</a><br/>
+      <p><span data-i18n="detail.minSugarVersion">Min. Sugar Version</span> <b class="minversion"></b></p>
+      <a class="download-devel" data-i18n="detail.downloadDevelVersion">Download Devel Version</a>
+      <a class="github" data-i18n="detail.github">GitHub</a>
       
       <hr class="sep"/>
       
       <div class="comments">
-        <textarea class="add-content">Review the activity</textarea>
+        <textarea class="add-content" data-i18n="detail.reviewTheActivity">Review the activity</textarea>
         <br/>
         <span class="star-rating">
           <input type="radio" name="rating-i" value="1"><i></i>
@@ -63,7 +64,7 @@
           <input type="radio" name="rating-i" value="5"><i></i>
         </span>
         <br/>
-        <button class="add">Post</button>
+        <button class="add" data-i18n="detail.post">Post</button>
         <hr/>
         <ul></ul>
       </div>
@@ -72,10 +73,10 @@
     </div>
 
     <div class="recommended-activities-container" style="display: none;">
-		<h2>Check these out:</h2>
+		<h2 data-i18n="recommend.title">Check these out:</h2>
 		<ul class="recommended-activities activities">
 		</ul>
-        <p>Want better recommendations? Make sure you rate the activities you use.</p>
+        <p data-i18n="recommend.wantMore">Want better recommendations? Make sure you rate the activities you use.</p>
         <hr/>
 	</div>
 

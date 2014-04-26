@@ -1,0 +1,33 @@
+{
+  "nav": {
+    "activities": "AA",
+    "wiki": "WW",
+    "login": "PERSONA"
+  },
+  "detail": {
+    "download": "get IT down",
+    "minSugarVersion": "MSV",
+    "downloadDevelVersion": "get The LATEST",
+    "github": "The code PLACE",
+    
+    "reviewTheActivity": "Review IT!",
+    "post": "PUSH post"
+  },
+  "recommend": {
+    "title": "CHECK THESE OUT:",
+    "wantMore": "Want MORE!!!"
+  },
+  "ui": {
+    "search": "FIND IT!!",
+    "reported": "We told 'em"
+  },
+  "reply": {
+    "replyToTheComment": "REPLY ta the comment",
+    "note": "NOTE",
+    "typeYourReply": "WRITE IT!",
+    "cancel": "QUITTER",
+    "send": "DO it",
+    "sending": "WAIT",
+    "cannot": "403 403 403"
+  }
+}

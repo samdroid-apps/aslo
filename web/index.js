@@ -46,7 +46,6 @@ var MAX_RECOMMENDED = 10;
 var loadSuggestions = function () {
   $.post( suggestServer, { email: account.email } )
     .done( function ( data ) {
-      console.log( data );
 
       $( ".recommended-activities-container" ).show();
       $( ".recommended-activities" ).html( "" );
@@ -87,6 +86,8 @@ var commentsSetupEvents = function () {
   });
 };
 
+var reported = "Reported";
+var youCannotReply = "You can not reply to that comment as you did not make the activity (says the by data)";
 var commentsSetup = function ( bundleId ) {
   $.post( authServer + "/comments/get/" + bundleId)  // We don't want to GET cached stuff
     .done( function ( strData ) {
@@ -120,7 +121,7 @@ var commentsSetup = function ( bundleId ) {
       report.data( "id", item.id );
       report.click( function () {
         $.post( authServer + "/comments/report", { id: report.data( "id" ) } );
-        $( this ).html( "Reported" );
+        $( this ).html( reported );
         $( this ).attr( "disabled", "true" );
         $( this ).parent().addClass( "reported" );
       });
@@ -158,7 +159,7 @@ var commentsSetup = function ( bundleId ) {
             d.hide();
             sending.hide();
           }).fail( function () {
-            alert( "You can not reply to that comment as you did not make the activity (says the by data)" );
+            alert( youCannotReply );
           });
         });
       });
@@ -211,7 +212,6 @@ var focusOnActivity = function ( data, bundleId ) {
     ele.attr( "src", imageSrc );
     $( ".screenshots", container ).append( ele );
   }
-  console.log( ss );
   if ( ss === "" || ss.length === 1 ) {
    $( ".icon", container ).hide();
   } else {
@@ -305,4 +305,17 @@ $(document).ready( function () {
   $( ".login" ).click( function () { navigator.id.request(OPTIONS); } )
 
   commentsSetupEvents();
+});
+
+i18n.init({ fallbackLng: 'en' }, function(t) {
+  $( "body" ).i18n();
+  
+  if ( t( "ui.search" ) !== "ui.search" )
+    $( ".search" ).attr( "placeholder", t( "ui.search" ) );
+  
+  if ( t( "reply.cannot" ) !== "reply.cannot" )
+    youCannotReply = t( "reply.cannot" );
+  
+  if ( t( "ui.reported" ) !== "ui.reported" )
+    reported = t( "ui.reported" );
 });
