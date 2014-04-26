@@ -13,7 +13,12 @@ ICON_RE = re.compile('icon\s*=\s*(.*)')
 AUTH = {'Authorization': 'Client-ID 7daeb235d4d80fc'}
 
 def get_activity_data(bundle_id):
-    r = requests.get(DATA_JSON)
+    while True:
+        try:
+            r = requests.get(DATA_JSON)
+            break
+        except:
+            pass
     d = r.json()
     return d['activities'][bundle_id]
 

@@ -36,8 +36,13 @@ while True:
             'bundle_id': task['bundle_id'], 'task_id': task['task_id']}
 
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    r = requests.post(HOST + '/done',
-                      data=json.dumps(data), headers=headers)
+    while True:
+        try:
+            r = requests.post(HOST + '/done',
+                data=json.dumps(data), headers=headers)
+            break
+        except:
+            pass
 
     call(['rm', '-rf', 'dl'])
 
