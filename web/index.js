@@ -78,6 +78,7 @@ var commentsSetupEvents = function () {
           content: text,
           bundle_id: $( ".comments .add" ).data( "bundleId" ),
           rating: rating,
+          lang: navigator.language || navigator.userLanguage,
     } )
       .done( function ( _ ) {
         commentsSetup($( ".comments .add" ).data( "bundleId" ));

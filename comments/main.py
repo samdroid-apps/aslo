@@ -65,6 +65,7 @@ def post():
                      'time': time.time(),
                      'flagged': False,
                      'deleted': False,
+                     'lang': request.form['lang']
                      }).run(conn)
     return 'Cool Potatos'
 
@@ -131,7 +132,7 @@ def reply():
     if not ok:
         abort(400)
 
-    reply_mailer.send(person, email, request.form['content'], c['email'])
+    reply_mailer.send(person, email, request.form['content'], c['email'], c['lang'])
 
     return 'Reported'
 

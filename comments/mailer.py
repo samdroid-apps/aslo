@@ -1,5 +1,6 @@
 import os
 import uuid
+import json
 import smtplib
 import getpass
 from email.mime.multipart import MIMEMultipart
@@ -73,35 +74,33 @@ class Mailer():
         s.quit()
 
 R_TEXT_TEMPLATE = """_____________________________________________________
-| One of the developers on activities.sugarlabs.org
-| wants to reply to your comment. If you want to 
-| talk with them, just reply to this email. If you
-| think this is rude or offencive please foward it
-| to <sam@sugarlabs.org> and we will have a look
-|____________________________________________________
+{}
+_____________________________________________________
 
 {}"""
 R_HTML_TEMPLATE = """<div style="border: 1px solid black; padding: 10px;">
-One of the developers on activities.sugarlabs.org
-wants to reply to your comment. If you want to
-talk with them, just reply to this email. If you
-think this is rude or offencive please foward it
-to <a href="mailto:sam@sugarlabs.org">sam@sugarlabs.org</a> 
-and we will have a look</div>
+{}</div>
 
 <p>{}</p>
 """
+R_FILLER = """One of the developers on activities.sugarlabs.org
+wants to reply to your comment. If you want to
+talk with them, just reply to this email. If you
+think this is rude or offencive please foward it
+to sam@sugarlabs.org and we will have a look"""
 
 class ReplyMailer():
-    def send(self, sender_name, sender_email, fw_msg, to):
+    def send(self, sender_name, sender_email, fw_msg, to, lang):
         msg = MIMEMultipart('alternative')
         msg['Subject'] = 'In Reply To Your Comment On ASLO'
         msg['From'] = '{} <{}>'.format(sender_name, sender_email)
         msg['To'] = to
+        
+        filler = self.get_trans(lang)
 
-        msg.attach(MIMEText(R_TEXT_TEMPLATE.format(fw_msg), 'plain'))
+        msg.attach(MIMEText(R_TEXT_TEMPLATE.format(filler, fw_msg), 'plain'))
         html_fw_msg = fw_msg.replace('\n', '<br/>')
-        msg.attach(MIMEText(R_HTML_TEMPLATE.format(html_fw_msg), 'html'))
+        msg.attach(MIMEText(R_HTML_TEMPLATE.format(filler, html_fw_msg), 'html'))
 
         s = smtplib.SMTP('smtp.sugarlabs.org', 587)
         s.ehlo()
@@ -110,3 +109,13 @@ class ReplyMailer():
         s.login(EMAIL_UNAME, EMAIL_PW)
         s.sendmail(MY_EMAIL, [to], msg.as_string())
         s.quit()
+    
+    def get_trans(self, lang):
+      with open("reply_trans.json") as f:
+          j = json.load(f)
+      if lang in j:
+          return j[lang]
+      for k in j.keys():
+          if k[:2] == lang[:2]:
+              return j[k]
+      return j['en-AU']
