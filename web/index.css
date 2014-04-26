@@ -163,7 +163,8 @@ ul.activities {
     ul.activities li.activity span {
       color: white;
       font-weight: bold;
-      font-size: 18px; }
+      font-size: 18px;
+      word-wrap: break-word; }
     ul.activities li.activity:hover {
       animation: shake1 0.1s infinite; }
       ul.activities li.activity:hover img.icon {
