@@ -24,6 +24,9 @@ body {
     font-size: 40px;
     margin-right: 5px; }
 
+@media screen and (max-width: 900px) {
+  .title img {
+    margin-left: 0; } }
 .person {
   height: 50px;
   width: 50px;
