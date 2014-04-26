@@ -20,6 +20,11 @@ var getLang = function ( obj ) {
 
 var account = undefined;
 var authServer = "http://localhost:5000"
+var OPTIONS = {
+  siteName: "Sugar Labs Activities",
+  termsOfService: "https://www.github.com/samdroid-apps/aslo/blob/master/TOS.md",
+  privacyPolicy: "https://www.github.com/samdroid-apps/aslo/blob/master/PP.md"
+}
 navigator.id.watch({
   onlogin: function ( assertion ) {
     $.post( authServer + "/login", { assertion: assertion } )
@@ -61,7 +66,7 @@ var commentsSetupEvents = function () {
     var text = $( ".comments .add-content" ).val();
     var rating = $( ".comments input[name=rating-i]:checked" ).attr( "value" );
     if ( account === undefined ) {
-      navigator.id.request()
+      navigator.id.request(OPTIONS)
       return;
     }
     
@@ -126,7 +131,7 @@ var commentsSetup = function ( bundleId ) {
       reply.data( "text", item.text );
       reply.click( function () {
         if ( account === undefined ) {
-          navigator.id.request();
+          navigator.id.request(OPTIONS);
           return;
         }
         
@@ -297,7 +302,7 @@ $(document).ready( function () {
     lastQuery = term;
   });
   
-  $( ".login" ).click( function () { navigator.id.request(); } )
+  $( ".login" ).click( function () { navigator.id.request(OPTIONS); } )
 
   commentsSetupEvents();
 });
