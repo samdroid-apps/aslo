@@ -89,6 +89,7 @@ var commentsSetup = function ( bundleId ) {
     container.html( "" );
     
     var data = JSON.parse( strData );
+    data.reverse()
     for ( i in data ) {
       var item = data[ i ];
       var ele = $( "<li>" );
@@ -98,11 +99,11 @@ var commentsSetup = function ( bundleId ) {
       ele.append( img );
       
       var stars = $( "<span class='star-rating'>" +
-                     "<input disabled type='radio' name='rating' value='1'><i></i>" +
-                     "<input disabled type='radio' name='rating' value='2'><i></i>" +
-                     "<input disabled type='radio' name='rating' value='3'><i></i>" +
-                     "<input disabled type='radio' name='rating' value='4'><i></i>" +
-                     "<input disabled type='radio' name='rating' value='5'><i></i></span>" );
+                     "<input disabled type='radio' name='rating" + i + "' value='1'><i></i>" +
+                     "<input disabled type='radio' name='rating" + i + "' value='2'><i></i>" +
+                     "<input disabled type='radio' name='rating" + i + "' value='3'><i></i>" +
+                     "<input disabled type='radio' name='rating" + i + "' value='4'><i></i>" +
+                     "<input disabled type='radio' name='rating" + i + "' value='5'><i></i></span>" );
       $( "input[value=" + item.rating.toString() + "]", stars ).attr( "checked", "" );
       ele.append( stars );
       
@@ -158,12 +159,6 @@ var commentsSetup = function ( bundleId ) {
       });
       ele.append( reply );
       
-      if ( account !== undefined ) {
-        if ( md5( account.email ) === item.email_hash ) {
-          ele.prependTo( $( ".comments ul" ) );
-          return;
-        }
-      }
       ele.appendTo( $( ".comments ul" ) );
     }
   });
@@ -202,14 +197,27 @@ var focusOnActivity = function ( data, bundleId ) {
     $( ".download-devel", container ).attr( "href", data.xo_url_latest );
   }
 
-  $( ".screenshots", container).html( "" );
-  for ( i in getLang( data.screenshots ) ) {
+  $( ".screenshots", container ).html( "" );
+  ss = getLang( data.screenshots );
+  for ( i in ss ) {
     var ele = $( "<img>" );
     var imageSrc = getLang( data.screenshots )[ i ]
     ele.addClass( "screenshot" );
     ele.attr( "src", imageSrc );
     $( ".screenshots", container ).append( ele );
   }
+  console.log( ss );
+  if ( ss === "" || ss.length === 1 ) {
+   $( ".icon", container ).hide();
+  } else {
+   $( ".icon", container ).show();
+  }
+      
+  
+  $( ".icon", container ).click( function () {
+    var s = $( ".screenshots", container );
+    s.toggleClass( "closed" );
+  });
 
   $( ".by", container).html( "" );
   for ( i in data.by ) {

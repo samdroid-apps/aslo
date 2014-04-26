@@ -206,11 +206,15 @@ ul.activities {
     margin-bottom: 10px; }
     .detail .by a {
       color: #aaaaaa; }
-  .detail .screenshots {
-    overflow-x: scroll; }
-    .detail .screenshots img {
-      display: block;
-      float: left; }
+  .detail .screenshots.closed img:nth-child(1n+2) {
+    height: 0px;
+    transition: 0.75s ease all; }
+  .detail .screenshots.closed + .icon {
+    transition: 0.75s ease all; }
+  .detail .screenshots:not(.closed) + .icon {
+    transform: rotate(180deg); }
+  .detail .icon:before {
+    font-size: 42px; }
   .detail .description {
     font-size: 1.5em; }
   .detail .download {
@@ -229,11 +233,18 @@ ul.activities {
       margin-top: 5px;
       box-shadow: 0 5px 0 #ff851b, 0 6px 10px #ff851b;
       margin-bottom: 15px; }
+  .detail hr.sep {
+    margin-bottom: 0; }
   .detail .comments textarea {
     width: 100%;
+    padding-top: 5px;
     background-color: transparent;
     border: none;
-    border-bottom: 2px solid #aaaaaa; }
+    border-bottom: 2px solid #aaaaaa;
+    font-family: sans-serif;
+    font-size: 1.2em; }
+  .detail .comments .star-rating {
+    margin-bottom: 10px; }
   .detail .comments .add {
     display: inline-block;
     margin-bottom: 20px;
@@ -256,3 +267,9 @@ ul.activities {
       width: auto;
       border-radius: 50px;
       margin-right: 10px; }
+    .detail .comments ul p {
+      margin-top: 2px;
+      margin-bottom: 0;
+      font-size: 1.2em; }
+    .detail .comments ul li {
+      margin-bottom: 10px; }

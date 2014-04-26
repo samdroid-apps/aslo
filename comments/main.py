@@ -49,6 +49,9 @@ def post():
         abort(400)
 
     email_hash = hashlib.md5(request.form['email']).hexdigest()
+    
+    text = request.form['content']
+    text = text.replace('\n', '<br/>')
 
     # Only 1 review per email
     comments.filter({'email': request.form['email'],
@@ -57,7 +60,7 @@ def post():
     comments.insert({'email_hash': email_hash,
                      'email': request.form['email'],
                      'bundle_id': request.form['bundle_id'],
-                     'text': request.form['content'],
+                     'text': text,
                      'rating': int(request.form['rating']),
                      'time': time.time(),
                      'flagged': False,
@@ -68,7 +71,7 @@ def post():
 @app.route('/comments/get/<bundle_id>', methods=['GET', 'POST'])
 @crossdomain(origin='*')
 def get(bundle_id):
-    if bundle_id == '':
+    if bundle_id == '' or bundle_id == 'undefined':
         abort(400)
 
     result = comments.filter({'bundle_id': bundle_id,

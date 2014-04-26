@@ -218,11 +218,17 @@ ul.activities
     a
       color: $gray
   
-  .screenshots
-    img
-      display: block
-      float: left
-    overflow-x: scroll
+  .screenshots.closed
+    img:nth-child(1n+2)
+      height: 0px
+      transition: 0.75s ease all
+    & + .icon
+      transition: 0.75s ease all
+  .screenshots:not(.closed)
+    & + .icon
+      transform: rotate(180deg)
+  .icon:before
+    font-size: 42px
       
   .description
     font-size: 1.5em
@@ -231,13 +237,22 @@ ul.activities
     +cool_button()
     font-size: 2em
 
+  hr.sep
+    margin-bottom: 0
+    
   .comments
     textarea
       width: 100%
+      padding-top: 5px
     
       background-color: rgba(0,0,0,0)
       border: none
       border-bottom: 2px solid $gray
+        
+      font-family: sans-serif
+      font-size: 1.2em
+    .star-rating
+      margin-bottom: 10px
     .add
       +cool_button()
       
@@ -248,3 +263,9 @@ ul.activities
         width: auto
         border-radius: 50px
         margin-right: 10px
+      p
+        margin-top: 2px
+        margin-bottom: 0
+        font-size: 1.2em
+      li
+        margin-bottom: 10px
