@@ -49,6 +49,9 @@ hr {
   margin: 15px 0;
   border: 1px solid #aaaaaa; }
 
+img {
+  max-width: 100%; }
+
 @keyframes stars {
   0% {
     background-position: 0px 0px; }
