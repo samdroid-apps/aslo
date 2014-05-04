@@ -1,5 +1,5 @@
 $bg: "http://subtlepatterns.com/patterns/textured_paper.png"
-$maxw: "800px"
+$maxw: "1100px"
 =center()
   margin-left: auto
   margin-right: auto
@@ -66,7 +66,9 @@ nav
     a:nth-child(3)
       background-color: $purple
       clear: right
-        
+
+// Actvities List
+      
 .all-activities
   margin-top: 15px
   
@@ -99,7 +101,9 @@ nav
     transform: rotate(-2deg) scale(1)
   50%
     transform: rotate(-3.5deg) sclae(1.1)
-      
+
+// Activity List Base
+
 ul.activities
   max-width: #{ $maxw }
   +center()
@@ -177,14 +181,13 @@ ul.activities
     box-shadow: 0 5px 0 $orange, 0 6px 10px $orange
     margin-bottom: 15px
 
+// Reccomended Activities
+
 .recommended-activities-container
   +center()
   max-width: #{ $maxw }
-  
-.popup
-  display: block
-  +center()
-  padding: 10px  
+
+// Detail View
     
 .detail
   display: block
@@ -244,7 +247,10 @@ ul.activities
 
   hr.sep
     margin-bottom: 0
-    
+
+// Comments
+
+.detail
   .comments
     textarea
       width: 100%
@@ -263,14 +269,130 @@ ul.activities
       
     ul
       list-style: none
-      .person
-        height: 50px
-        width: auto
-        border-radius: 50px
-        margin-right: 10px
-      p
-        margin-top: 2px
-        margin-bottom: 0
-        font-size: 1.2em
+      font-size: 1.1em
       li
         margin-bottom: 10px
+
+
+.person
+  height: 50px
+  width: auto
+  border-radius: 50px
+  margin-right: 10px
+
+.types
+  padding-bottom: 5px
+  input[type=radio]
+    display: none
+
+  label:before
+    font-size: 36px
+    font-family: FontAwesome
+
+    padding: 2px
+    width: 40px
+    height: 40px
+
+    text-align: center
+    border-radius: 50%
+    display: inline-block
+
+  input:checked + label:before
+    background-color: $gray
+    color: $white
+
+  label[for=review]:before
+    content: ""
+
+  label[for=question]:before
+    content: ""
+
+  label[for=idea]:before
+    content: ""
+
+  label[for=problem]:before
+    content: ""
+
+  label[for=reply]:before
+    content: ""
+  input#reply:not(:checked) + label[for=reply]
+    display: none
+
+.type-icon:before
+  font-size: 48px
+  font-family: FontAwesome
+
+  padding: 2px
+  width: 50px
+  height: 50px
+
+  text-align: center
+  border-radius: 50%
+  display: inline-block
+  vertical-align: top
+
+  background-color: $gray
+  color: $white
+
+.type-icon.question:before
+  content: ""
+
+.type-icon.idea:before
+  content: ""
+
+.type-icon.reply:before
+  content: ""
+
+.type-icon.problem:before
+  content: ""
+
+  label[for=problem]:before
+    content: ""
+
+.types input#review:not(:checked) ~ .star-sel
+  display: none
+
+.types input#problem:not(:checked) ~ .bug-tip
+  display: none
+
+blockquote
+  background-color: $silver
+  border-left: 8px solid $gray
+
+  padding: 5px
+  text-align: left
+
+  .fa-flag
+    display: none
+
+// Done animation
+
+@keyframes doneAni
+  0%
+    opacity: 0
+    transform: scale(0)
+  35%, 65%
+    opacity: 1
+    transform: scale(1)
+  100%
+    opacity: 0
+    transform: scale(3)
+
+.done:before
+  content: ""
+  font: 300px FontAwesome
+
+  animation: 2s doneAni
+  position: fixed
+
+  display: block
+  width: 160px
+  height: 160px
+
+  left: 45%
+  left: calc(50% - 150px)
+  top: 45%
+  top: calc(50% - 150px)
+
+.load:before
+  content: ""

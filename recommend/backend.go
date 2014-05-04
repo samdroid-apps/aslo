@@ -8,7 +8,7 @@ import (
 func prepPerson(email string, mainPerson map[string]int, peopleChan chan Person, conn *r.Session) {
 	p := Person{Id: email}
 
-	items, _ := r.Table("comments").Filter(r.Row.Field("email").Eq(email)).Run(conn)
+	items, _ := r.Table("comments").Filter(r.Row.Field("email").Eq(email)).Filter(r.Row.Field("type").Eq("review")).Run(conn)
 	for items.Next() {
 		var item DBRating
 		items.Scan(&item)
@@ -38,7 +38,7 @@ func DoRecommendation(ourPerson map[string]int, email string, conn *r.Session) [
 	peopleChan := make(chan Person)
 	peopleToGo := 0
 
-	query := r.Table("comments").Filter(r.Row.Field("email").Ne(email))
+	query := r.Table("comments").Filter(r.Row.Field("email").Ne(email)).Filter(r.Row.Field("type").Eq("review"))
 	emails, _ := query.Pluck("email").Distinct().Run(conn)
 	for emails.Next() {
 		var emailObj JustEmail

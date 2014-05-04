@@ -1,4 +1,31 @@
 var activitiesData = {};
+var myUrl = window.location.origin
+
+var doneAnimation = function () {
+  var ele = $( "<span class='done'></span>" );
+  $( "body" ).append( ele );
+
+  setTimeout( function () {
+    ele.remove();
+  }, 2000);
+}
+
+var loadingAnimation = function () {
+  var ele = $( "<span class='done load'></span>" );
+  $( "body" ).append( ele );
+
+  setTimeout( function () {
+    ele.remove();
+  }, 2000);
+}
+
+var repeatS = function (s, t) {
+  var r = "";
+  for ( var i = 0; i < t; i++ ) {
+    r += s;
+  }
+  return r;
+}
 
 var getLang = function ( obj ) {
   if ( obj === undefined )
@@ -12,7 +39,10 @@ var getLang = function ( obj ) {
     if ( obj.hasOwnProperty( key ) )
       if ( key.substr( 0, 2 ) == ul.substr( 0, 2 ) )
         return obj[ key ];
-  
+
+  if ( "en-US" in obj )
+    return obj[ "en-US" ]; 
+
   for ( key in obj )  // Anything
     if ( obj.hasOwnProperty( key ) )
       return obj[ key ];
@@ -62,57 +92,85 @@ var loadSuggestions = function () {
 
 var commentsSetupEvents = function () {
   $( ".comments .add" ).click( function () {
-    var text = $( ".comments .add-content" ).val();
-    var rating = $( ".comments input[name=rating-i]:checked" ).attr( "value" );
     if ( account === undefined ) {
       navigator.id.request(OPTIONS)
       return;
     }
+
+
+    var text = $( ".comments .add-content" ).val();
+    var rating = $( ".star-sel" ).data( "selected" );
+    var type = $( ".comments input[name=type]:checked" ).attr( "value" );
+
+    var replyContent, replyId;
+    if ( type === "reply" ) {
+      replyContent = $( ".comments > blockquote" ).html();
+      replyId = $( ".comments > blockquote" ).data( "id" );
+    }
     
     if ( $( ".comments .add" ).data( "bundleId" ) === undefined )
       return
-      
+
+    loadingAnimation();
     $.post( authServer + "/comments/post", {
           email: account.email,
           code: account.code,
-          content: text,
           bundle_id: $( ".comments .add" ).data( "bundleId" ),
+
+          content: text,
+          type: type,
           rating: rating,
+
           lang: navigator.language || navigator.userLanguage,
+          reply_content: replyContent,
+          reply_id: replyId,
     } )
       .done( function ( _ ) {
+        doneAnimation()
         commentsSetup($( ".comments .add" ).data( "bundleId" ));
         loadSuggestions()
       });
   });
 };
 
-var reported = "Reported";
-var youCannotReply = "You can not reply to that comment as you did not make the activity (says the by data)";
+var focusOnComment = null;
 var commentsSetup = function ( bundleId ) {
+  $( ".comments > blockquote" ).hide();
+  $( ".comments > input#reply" ).prop( "checked", false );
+
   $.post( authServer + "/comments/get/" + bundleId)  // We don't want to GET cached stuff
     .done( function ( strData ) {
     var container = $( ".comments ul" );
     container.html( "" );
     
     var data = JSON.parse( strData );
-    data.reverse()
     for ( i in data ) {
       var item = data[ i ];
       var ele = $( "<li>" );
+      ele.attr( "id", item.id );
       
       var img = $( "<img class='person'/>" );
       img.attr( "src", "http://www.gravatar.com/avatar/" + item.email_hash + "?d=monsterid" );
       ele.append( img );
+
+      var type = $( "<span class='type-icon'></span>" );
+      type.addClass( item.type );
+      ele.append( type );
+
+      if ( item.type === "reply" ) {
+        var bq = $( "<blockquote class='reply-content'>" );
+        bq.html( item.reply_content );
+        ele.append( bq );
+      }
       
-      var stars = $( "<span class='star-rating'>" +
-                     "<input disabled type='radio' name='rating" + i + "' value='1'><i></i>" +
-                     "<input disabled type='radio' name='rating" + i + "' value='2'><i></i>" +
-                     "<input disabled type='radio' name='rating" + i + "' value='3'><i></i>" +
-                     "<input disabled type='radio' name='rating" + i + "' value='4'><i></i>" +
-                     "<input disabled type='radio' name='rating" + i + "' value='5'><i></i></span>" );
-      $( "input[value=" + item.rating.toString() + "]", stars ).attr( "checked", "" );
-      ele.append( stars );
+      if ( item.type === "review" || item.type === undefined ) {
+        var stars = $( "<span class='stars'>" +
+                   repeatS( "<i class='fa fa-star'></i>", item.rating ) +
+                   repeatS( "<i class='fa fa-star-o'></i>", 5 - item.rating ) +
+                   "</span>" );
+        $( "input[value=" + item.rating.toString() + "]", stars ).attr( "checked", "" );
+        ele.append( stars );
+      }
       
       var text = $( "<p>" );
       text.html( item.text );
@@ -122,51 +180,50 @@ var commentsSetup = function ( bundleId ) {
       report.data( "id", item.id );
       report.click( function () {
         $.post( authServer + "/comments/report", { id: report.data( "id" ) } );
-        $( this ).html( reported );
+        doneAnimation();
         $( this ).attr( "disabled", "true" );
         $( this ).parent().addClass( "reported" );
       });
       ele.append( report );
+
+      var link = $( "<a><i class='fa fa-link' style='margin-right: 5px;'></i></a>" );
+      var bundleId = $( ".comments .add" ).data( "bundleId" );
+      link.attr( "href", myUrl + "/#!/view/" + bundleId + "/comment=>" + item.id );
+      link.data( "id", item.id );
+      link.click( function () {
+        var id = $( this ).data( "id" );
+        $( "html, body" ).animate( {
+	      scrollTop: $( ".comments ul li#" + id ).offset().top - 10
+        }, 500 );
+      });
+      ele.append( link )
       
       var reply = $("<i class='fa fa-reply'></i>");
       reply.data( "id", item.id );
-      reply.data( "text", item.text );
+      reply.data( "text", ele.html() );
       reply.click( function () {
-        if ( account === undefined ) {
-          navigator.id.request(OPTIONS);
-          return;
-        }
-        
-        var d = $( ".comment-reply-popup" );
-        d.show();
-        window.scrollTo( 0, 0 )
-        
-        $( ".comment", d ).html( $( this ).data( "text" ) );
-        $( ".cancel", d ).click( function () {
-          d.hide();
-        });
-        
-        var id = $( this ).data( "id" );
-        $( ".send", d ).click( function () {
-          var sending = $( ".sending", d )
-          sending.show()
-          
-          $.post( authServer + "/comments/reply", {
-            email: account.email,
-            code: account.code,
-            content: $( ".reply", d ).val(),
-            id: id
-          }).always( function () {
-            d.hide();
-            sending.hide();
-          }).fail( function () {
-            alert( youCannotReply );
-          });
-        });
+        $( ".comments > blockquote" ).show();
+        $( ".comments > blockquote" ).data( "id", $( this ).data( "id" ) );
+        $( ".comments > blockquote" ).html(
+            $( this ).data( "text" ).replace(
+                    /<blockquote class=\"reply-content\">.*<\/blockquote>/, "" )
+        );
+        $( ".comments > input#reply" ).prop( "checked", true );
+
+        $( "html, body" ).animate( {
+	      scrollTop: $( ".comments > blockquote" ).offset().top - 10
+        }, 500 );
       });
       ele.append( reply );
       
       ele.appendTo( $( ".comments ul" ) );
+    }
+
+    if ( focusOnComment !== null ) {
+        $( "html, body" ).animate( {
+	      scrollTop: $( ".comments ul li#" + focusOnComment ).offset().top - 10
+        }, 500 );
+        focusOnComment = null
     }
   });
   
@@ -278,9 +335,26 @@ $(document).ready( function () {
     setupActivityList();
     
     if ( window.location.hash ) {
-      var bundleId = window.location.hash.substr( "!/view/".length + 1 );
-      var itemData = activitiesData[ bundleId ];
-      focusOnActivity( itemData, bundleId );
+      var testString = window.location.hash;
+
+      var r = /!\/view\/([^\/]*)$/;
+      match = r.exec(testString);
+      if ( match ) {
+        var bundleId = match[1]
+        var itemData = activitiesData[ bundleId ];
+        focusOnActivity( itemData, bundleId );
+        return;
+      }
+      
+      var r = /!\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/
+      match = r.exec(testString);
+      if ( match ) {
+        var bundleId = match[1]
+        var itemData = activitiesData[ bundleId ];
+        focusOnActivity( itemData, bundleId );
+
+        focusOnComment = match[2]
+      }
     }
   });
   
@@ -306,6 +380,28 @@ $(document).ready( function () {
   $( ".login" ).click( function () { navigator.id.request(OPTIONS); } )
 
   commentsSetupEvents();
+
+  $( ".comments > input[type=radio]" ).click( function () {
+    var type = $( ".comments input[name=type]:checked" ).attr( "value" );
+    if ( type !== "reply" ) {
+      $( ".comments > blockquote" ).hide();
+    }
+  });
+
+  $( ".star-sel" ).data( "selected", 1 );
+  $( ".star-sel i" ).click( function () {
+    var n = parseInt( $( this ).attr( "id" ) )
+    $( ".star-sel" ).data( "selected", n );
+  
+    $( ".star-sel i" ).removeClass( "fa-star" );
+    $( ".star-sel i" ).addClass( "fa-star-o" );
+  
+    while ( n > 0 ) {
+      $( ".star-sel i#" + n ).removeClass( "fa-star-o" );
+      $( ".star-sel i#" + n ).addClass( "fa-star" );
+      n--;
+    }
+  });
 });
 
 i18n.init({ fallbackLng: 'en' }, function(t) {
@@ -313,10 +409,4 @@ i18n.init({ fallbackLng: 'en' }, function(t) {
   
   if ( t( "ui.search" ) !== "ui.search" )
     $( ".search" ).attr( "placeholder", t( "ui.search" ) );
-  
-  if ( t( "reply.cannot" ) !== "reply.cannot" )
-    youCannotReply = t( "reply.cannot" );
-  
-  if ( t( "ui.reported" ) !== "ui.reported" )
-    reported = t( "ui.reported" );
 });

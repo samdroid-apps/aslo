@@ -16,17 +16,6 @@
   </head>
   
   <body>
-    <div class="comment-reply-popup popup" style="display: none;">
-      <h2 data-i18n="reply.replyToTheComment">Reply to the comment:</h2>
-      <p><b data-i18n="reply.note">Note</b>: <span data-i18n="reply.warning">this will only send if you are the activity owner</span></p>
-      <blockquote class="comment"></blockquote>
-      <textarea class="reply" data-i18n="reply.typeYourReply">Type your reply</textarea>
-      <br/>
-      <button class="cancel" data-i18n="reply.cancel">Cancel</button>
-      <button class="send" data-i18n="reply.send">Send</button>
-      <b class="sending" style="display: none;" data-i18n="reply.sending">Sending...</b>
-    </div>
-    
     <nav>
       <img src="http://samdroid-apps.github.io/slgio/res/logo.svg" alt="Sugar Labs" />
       <div>
@@ -53,16 +42,33 @@
       
       <hr class="sep"/>
       
-      <div class="comments">
+      <div class="comments types">
+        <blockquote style="display: none"></blockquote><br/>
         <textarea class="add-content" data-i18n="detail.reviewTheActivity">Review the activity</textarea>
         <br/>
-        <span class="star-rating">
-          <input type="radio" name="rating-i" value="1"><i></i>
-          <input type="radio" name="rating-i" value="2"><i></i>
-          <input type="radio" name="rating-i" value="3"><i></i>
-          <input type="radio" name="rating-i" value="4"><i></i>
-          <input type="radio" name="rating-i" value="5"><i></i>
-        </span>
+    		<input id="review" type="radio" name="type" value="review" checked>
+    		<label for="review"></label>
+    		<input id="question" type="radio" name="type" value="question">
+    		<label for="question"></label>
+			<input id="idea" type="radio" name="type" value="idea">
+    		<label for="idea"></label>
+    		<input id="problem" type="radio" name="type" value="problem">
+    		<label for="problem"></label>
+            <input id="reply" type="radio" name="type" value="reply">
+    		<label for="reply"></label>
+		<br/>
+		<p data-i18n="detail.bugTip" class="bug-tip">
+			Tip:
+			Put your bug reports on <a href="http://fpaste.org">fpaste</a> and
+			put the link in your comment!
+		</p>
+        <div class="star-sel">
+          <i class="fa fa-star-o" id="5"></i>
+          <i class="fa fa-star-o" id="4"></i>
+          <i class="fa fa-star-o" id="3"></i>
+          <i class="fa fa-star-o" id="2"></i>
+          <i class="fa fa-star" id="1"></i>
+        </div>
         <br/>
         <button class="add" data-i18n="detail.post">Post</button>
         <hr/>
@@ -76,6 +82,7 @@
 		<h2 data-i18n="recommend.title">Check these out:</h2>
 		<ul class="recommended-activities activities">
 		</ul>
+        <br>
         <p data-i18n="recommend.wantMore">Want better recommendations? Make sure you rate the activities you use.</p>
         <hr/>
 	</div>

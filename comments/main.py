@@ -12,6 +12,7 @@ from mailer import Mailer, ReplyMailer
 SITE_URL = 'http://0.0.0.0:8000'
 DATA_JSON = 'http://aslo-bot-master.sugarlabs.org/data.json'
 auths = {}  # Email => Assertion
+MD_CONTEXT = 'sugarlabs/sugar'
 
 conn = r.connect('localhost', 28015)
 comments = r.db('comments').table('comments')
@@ -51,22 +52,36 @@ def post():
     email_hash = hashlib.md5(request.form['email']).hexdigest()
     
     text = request.form['content']
-    text = text.replace('\n', '<br/>')
+    dataS = json.dumps({'text': text, 'mode': 'gfm', 'context': MD_CONTEXT})
+    resp = requests.post("https://api.github.com/markdown", data=dataS)
+    if not resp.ok:
+        abort(500)
+    html = resp.text
 
     # Only 1 review per email
-    comments.filter({'email': request.form['email'],
-                 'bundle_id': request.form['bundle_id'],}).delete().run(conn)
-
-    comments.insert({'email_hash': email_hash,
-                     'email': request.form['email'],
+    if request.form['type'] == 'review':
+        comments.filter({'email': request.form['email'],
                      'bundle_id': request.form['bundle_id'],
-                     'text': text,
-                     'rating': int(request.form['rating']),
+                     'type': 'review'}).delete().run(conn)
+
+    f = request.form
+    comments.insert({'email_hash': email_hash,
+                     'email': f['email'],
+                     'bundle_id': f['bundle_id'],
+
+                     'type': f['type'],
+                     'text': html,
+                     'rating': int(f['rating']),
+
+                     'reply_id': f.get('reply_id'),
+                     'reply_content': f.get('reply_content'),
+
                      'time': time.time(),
                      'flagged': False,
                      'deleted': False,
-                     'lang': request.form['lang']
+                     'lang': f['lang']
                      }).run(conn)
+
     return 'Cool Potatos'
 
 @app.route('/comments/get/<bundle_id>', methods=['GET', 'POST'])
@@ -78,7 +93,8 @@ def get(bundle_id):
     result = comments.filter({'bundle_id': bundle_id,
                               'flagged': False,
                               'deleted': False}).order_by('time').pluck(
-                              'text', 'rating', 'email_hash', 'id').run(conn)
+                              'text', 'rating', 'email_hash', 'id', 'type',
+                              'is_reply', 'reply_id', 'reply_content').run(conn)
     return json.dumps(list(result))
 
 @app.route('/comments/report', methods=['POST'])

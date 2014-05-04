@@ -1,4 +1,5 @@
 bot/password.txt
+*.save
 *~
 *.pyc
 bot-master/rethinkdb_data
@@ -6,5 +7,5 @@ bot-master/git
 bot-master/uploads
 bot-master/logs
 comments/email.password
-rethinkdb_data
+rethinkdb_data 
 debug
