@@ -396,3 +396,34 @@ blockquote
 
 .load:before
   content: ""
+
+@keyframes newItemAni
+  0%, 100%
+    opacity: 0
+    transform: scale(0.75) translate(0, -100px)
+  20%, 80%
+    opacity: 1
+    transform: scale(1) translate(0, 0)
+
+.new-item
+  animation: 3s newItemAni
+  position: fixed
+
+  display: block
+  width: 500px
+  max-width: 90%
+  padding: 8px
+  border-radius: 4px
+
+  left: 40%
+  left: -webkit-calc(50% - 250px)
+  left: -moz-calc(50% - 250px)
+  left: calc(50% - 250px)
+  top: 20px
+
+  background-color: $blue
+  color: $white
+
+  font-size: 24px
+  font-weight: bold
+  text-align: center

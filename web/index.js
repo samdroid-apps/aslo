@@ -1,5 +1,6 @@
 var activitiesData = {};
-var myUrl = window.location.origin
+var myUrl = window.location.origin;
+var host = window.location.hostname;
 
 var doneAnimation = function () {
   var ele = $( "<span class='done'></span>" );
@@ -17,6 +18,16 @@ var loadingAnimation = function () {
   setTimeout( function () {
     ele.remove();
   }, 2000);
+}
+
+var newCommentText = "New Comment - Scroll Up to See";
+var addCommentAnimation = function () {
+  var ele = $( "<span class='new-item'>" + newCommentText + "</span>" );
+  $( "body" ).append( ele );
+
+  setTimeout( function () {
+    ele.remove();
+  }, 3000);
 }
 
 var repeatS = function (s, t) {
@@ -49,7 +60,7 @@ var getLang = function ( obj ) {
 };
 
 var account = undefined;
-var authServer = "http://localhost:5000"
+var authServer = "http://" + host + ":5000"
 var OPTIONS = {
   siteName: "Sugar Labs Activities",
   termsOfService: "https://www.github.com/samdroid-apps/aslo/blob/master/TOS.md",
@@ -71,7 +82,7 @@ navigator.id.watch({
   }
 });
 
-var suggestServer = "http://localhost:5002/recommend";
+var suggestServer = "http://" + host + ":5002/recommend";
 var MAX_RECOMMENDED = 10;
 var loadSuggestions = function () {
   $.post( suggestServer, { email: account.email } )
@@ -133,6 +144,27 @@ var commentsSetupEvents = function () {
   });
 };
 
+var socketIOUrl = 'ws://' + host + ':9999';
+var connectCommentWS = function () {
+  var socket = new WebSocket( socketIOUrl );
+
+  socket.onmessage = function ( info ) {
+    var data = JSON.parse( info.data );
+    console.log( data )
+    if ( data.event == "add_comment" ) {
+      if ( $( ".comments ul #" + event.data.id ).length == 0 ) {
+        addComment( data.data );
+        addCommentAnimation();
+      }
+
+    } else if ( data.event == "remove_comment" ) {
+      console.log( "rm", data )
+      $( ".comments ul #" + data.data ).remove();
+
+    } else { console.log( "Unknown WS message: ", data ); };
+  };
+}
+
 var focusOnComment = null;
 var commentsSetup = function ( bundleId ) {
   $( ".comments > blockquote" ).hide();
@@ -146,77 +178,7 @@ var commentsSetup = function ( bundleId ) {
     var data = JSON.parse( strData );
     for ( i in data ) {
       var item = data[ i ];
-      var ele = $( "<li>" );
-      ele.attr( "id", item.id );
-      
-      var img = $( "<img class='person'/>" );
-      img.attr( "src", "http://www.gravatar.com/avatar/" + item.email_hash + "?d=monsterid" );
-      ele.append( img );
-
-      var type = $( "<span class='type-icon'></span>" );
-      type.addClass( item.type );
-      ele.append( type );
-
-      if ( item.type === "reply" ) {
-        var bq = $( "<blockquote class='reply-content'>" );
-        bq.html( item.reply_content );
-        ele.append( bq );
-      }
-      
-      if ( item.type === "review" || item.type === undefined ) {
-        var stars = $( "<span class='stars'>" +
-                   repeatS( "<i class='fa fa-star'></i>", item.rating ) +
-                   repeatS( "<i class='fa fa-star-o'></i>", 5 - item.rating ) +
-                   "</span>" );
-        $( "input[value=" + item.rating.toString() + "]", stars ).attr( "checked", "" );
-        ele.append( stars );
-      }
-      
-      var text = $( "<p>" );
-      text.html( item.text );
-      ele.append( text );
-      
-      var report = $( "<i class='fa fa-flag' style='margin-right: 5px;'></i>" );
-      report.data( "id", item.id );
-      report.click( function () {
-        $.post( authServer + "/comments/report", { id: report.data( "id" ) } );
-        doneAnimation();
-        $( this ).attr( "disabled", "true" );
-        $( this ).parent().addClass( "reported" );
-      });
-      ele.append( report );
-
-      var link = $( "<a><i class='fa fa-link' style='margin-right: 5px;'></i></a>" );
-      var bundleId = $( ".comments .add" ).data( "bundleId" );
-      link.attr( "href", myUrl + "/#!/view/" + bundleId + "/comment=>" + item.id );
-      link.data( "id", item.id );
-      link.click( function () {
-        var id = $( this ).data( "id" );
-        $( "html, body" ).animate( {
-	      scrollTop: $( ".comments ul li#" + id ).offset().top - 10
-        }, 500 );
-      });
-      ele.append( link )
-      
-      var reply = $("<i class='fa fa-reply'></i>");
-      reply.data( "id", item.id );
-      reply.data( "text", ele.html() );
-      reply.click( function () {
-        $( ".comments > blockquote" ).show();
-        $( ".comments > blockquote" ).data( "id", $( this ).data( "id" ) );
-        $( ".comments > blockquote" ).html(
-            $( this ).data( "text" ).replace(
-                    /<blockquote class=\"reply-content\">.*<\/blockquote>/, "" )
-        );
-        $( ".comments > input#reply" ).prop( "checked", true );
-
-        $( "html, body" ).animate( {
-	      scrollTop: $( ".comments > blockquote" ).offset().top - 10
-        }, 500 );
-      });
-      ele.append( reply );
-      
-      ele.appendTo( $( ".comments ul" ) );
+      addComment( item );
     }
 
     if ( focusOnComment !== null ) {
@@ -228,6 +190,80 @@ var commentsSetup = function ( bundleId ) {
   });
   
   $( ".comments .add" ).data( "bundleId", bundleId );
+};
+
+var addComment = function ( item ) {
+  var ele = $( "<li>" );
+  ele.attr( "id", item.id );
+  
+  var img = $( "<img class='person'/>" );
+  img.attr( "src", "http://www.gravatar.com/avatar/" + item.email_hash + "?d=monsterid" );
+  ele.append( img );
+  
+  var type = $( "<span class='type-icon'></span>" );
+  type.addClass( item.type );
+  ele.append( type );
+  
+  if ( item.type === "reply" ) {
+    var bq = $( "<blockquote class='reply-content'>" );
+    bq.html( item.reply_content );
+    ele.append( bq );
+  }
+  
+  if ( item.type === "review" || item.type === undefined ) {
+    var stars = $( "<span class='stars'>" +
+    repeatS( "<i class='fa fa-star'></i>", item.rating ) +
+    repeatS( "<i class='fa fa-star-o'></i>", 5 - item.rating ) +
+    "</span>" );
+    $( "input[value=" + item.rating.toString() + "]", stars ).attr( "checked", "" );
+    ele.append( stars );
+  }
+  
+  var text = $( "<p>" );
+  text.html( item.text );
+  ele.append( text );
+  
+  var report = $( "<i class='fa fa-flag' style='margin-right: 5px;'></i>" );
+  report.data( "id", item.id );
+  report.click( function () {
+    $.post( authServer + "/comments/report", { id: report.data( "id" ) } );
+    doneAnimation();
+    $( this ).attr( "disabled", "true" );
+    $( this ).parent().addClass( "reported" );
+  });
+  ele.append( report );
+  
+  var link = $( "<a><i class='fa fa-link' style='margin-right: 5px;'></i></a>" );
+  var bundleId = $( ".comments .add" ).data( "bundleId" );
+  link.attr( "href", myUrl + "/#!/view/" + bundleId + "/comment=>" + item.id );
+  link.data( "id", item.id );
+  link.click( function () {
+    var id = $( this ).data( "id" );
+    $( "html, body" ).animate( {
+      scrollTop: $( ".comments ul li#" + id ).offset().top - 10
+    }, 500 );
+  });
+  ele.append( link )
+  
+  var reply = $("<i class='fa fa-reply'></i>");
+  reply.data( "id", item.id );
+  reply.data( "text", ele.html() );
+  reply.click( function () {
+    $( ".comments > blockquote" ).show();
+    $( ".comments > blockquote" ).data( "id", $( this ).data( "id" ) );
+    $( ".comments > blockquote" ).html(
+    $( this ).data( "text" ).replace(
+    /<blockquote class=\"reply-content\">.*<\/blockquote>/, "" )
+    );
+    $( ".comments > input#reply" ).prop( "checked", true );
+    
+    $( "html, body" ).animate( {
+      scrollTop: $( ".comments > blockquote" ).offset().top - 10
+    }, 500 );
+  });
+  ele.append( reply );
+  
+  ele.prependTo( $( ".comments ul" ) );
 };
 
 var focusOnActivity = function ( data, bundleId ) {
@@ -380,6 +416,7 @@ $(document).ready( function () {
   $( ".login" ).click( function () { navigator.id.request(OPTIONS); } )
 
   commentsSetupEvents();
+  connectCommentWS();
 
   $( ".comments > input[type=radio]" ).click( function () {
     var type = $( ".comments input[name=type]:checked" ).attr( "value" );
@@ -409,4 +446,7 @@ i18n.init({ fallbackLng: 'en' }, function(t) {
   
   if ( t( "ui.search" ) !== "ui.search" )
     $( ".search" ).attr( "placeholder", t( "ui.search" ) );
+
+  if ( t( "ui.newCommentText" ) !== "ui.newCommentText" )
+    newCommentText = $( "ui.newCommentText" );
 });

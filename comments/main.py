@@ -6,6 +6,13 @@ from flask import Flask, jsonify, abort, request
 import rethinkdb as r
 import requests
 
+from twisted.internet import reactor
+from twisted.web.wsgi import WSGIResource
+from twisted.web.server import Site
+from twisted.internet.protocol import Factory
+from twisted.protocols.basic import LineReceiver
+from txws import WebSocketFactory
+
 from helpers import crossdomain
 from mailer import Mailer, ReplyMailer
 
@@ -22,6 +29,10 @@ mailer = Mailer()
 reply_mailer = ReplyMailer()
 
 app = Flask(__name__)
+
+
+### Login Stuff ###
+
 
 @app.route('/login', methods=['POST'])
 @crossdomain(origin='*')
@@ -41,16 +52,23 @@ def login():
 
     abort(500)
 
+
+
+
+
+### Posting A Comment ###
+
 @app.route('/comments/post', methods=['POST'])
 @crossdomain(origin='*')
 def post():
+    print 1
     email = request.form['email']
     assertion = request.form['code']
     if auths.get(email) != assertion:
         abort(400)
 
     email_hash = hashlib.md5(request.form['email']).hexdigest()
-    
+
     text = request.form['content']
     dataS = json.dumps({'text': text, 'mode': 'gfm', 'context': MD_CONTEXT})
     resp = requests.post("https://api.github.com/markdown", data=dataS)
@@ -60,29 +78,85 @@ def post():
 
     # Only 1 review per email
     if request.form['type'] == 'review':
-        comments.filter({'email': request.form['email'],
-                     'bundle_id': request.form['bundle_id'],
-                     'type': 'review'}).delete().run(conn)
+        review = comments.filter({'email': request.form['email'],
+            'bundle_id': request.form['bundle_id'],
+            'type': 'review'})
+        try:
+            deleted_id = list(review.run(conn))[0]['id']
+        except IndexError:
+            # Caused when there is nothing to delete
+            pass
+        else:
+            comment_stream.remove_comment(deleted_id)
+            review.delete().run(conn)
 
     f = request.form
-    comments.insert({'email_hash': email_hash,
-                     'email': f['email'],
-                     'bundle_id': f['bundle_id'],
+    added_obj = {
+                'email_hash': email_hash,
+                'email': f['email'],
+                'bundle_id': f['bundle_id'],
 
-                     'type': f['type'],
-                     'text': html,
-                     'rating': int(f['rating']),
+                'type': f['type'],
+                'text': html,
+                'rating': int(f['rating']),
 
-                     'reply_id': f.get('reply_id'),
-                     'reply_content': f.get('reply_content'),
+                'reply_id': f.get('reply_id'),
+                'reply_content': f.get('reply_content'),
 
-                     'time': time.time(),
-                     'flagged': False,
-                     'deleted': False,
-                     'lang': f['lang']
-                     }).run(conn)
-
+                'time': time.time(),
+                'flagged': False,
+                'deleted': False,
+                'lang': f['lang']
+               }
+    added_obj['id'] = comments.insert(added_obj).run(conn)['generated_keys'][0]
+    comment_stream.add_comment(added_obj)
     return 'Cool Potatos'
+
+
+
+
+
+
+### Sockets to keep people updated ###
+
+class CommentStreamP(LineReceiver):
+    def __init__(self, factory):
+        self.f = factory
+
+    def connectionMade(self):
+        self.f.sockets[id(self)] = self
+        print "Joined", id(self)
+
+    def connectionLost(self, reason):
+        print "Left", id(self), reason
+        del self.f.sockets[id(self)]
+
+
+class CommentStreamF(Factory):
+    sockets = {}
+
+    def buildProtocol(self, addr):
+        return CommentStreamP(self)
+
+    def add_comment(self, comment_json):
+        data = json.dumps({'event': 'add_comment', 'data':comment_json})
+        for i in self.sockets.values():
+            i.sendLine(data)
+
+    def remove_comment(self, comment_id):
+        data = json.dumps({'event': 'remove_comment', 'data':comment_id})
+        for i in self.sockets.values():
+            i.sendLine(data)
+
+comment_stream = CommentStreamF()
+
+
+
+
+
+
+
+### Get the comments ###
 
 @app.route('/comments/get/<bundle_id>', methods=['GET', 'POST'])
 @crossdomain(origin='*')
@@ -96,6 +170,12 @@ def get(bundle_id):
                               'text', 'rating', 'email_hash', 'id', 'type',
                               'is_reply', 'reply_id', 'reply_content').run(conn)
     return json.dumps(list(result))
+
+
+
+
+
+### Reporting ###
 
 @app.route('/comments/report', methods=['POST'])
 @crossdomain(origin='*')
@@ -125,31 +205,14 @@ def kill(id_, pw):
     comments.get(id_).update({'flagged': False, 'deleted': True}).run(conn)
     return '[SUCCESS] Comment hidden'
 
-def is_by(bundle_id, email):
-    j = requests.get(DATA_JSON).json()
-    activity = j['activities'].get(bundle_id)
-    for p in activity['by']:
-        if p['email'] == email:
-            return True, p['name']
-    return False, None
 
-@app.route('/comments/reply', methods=['POST'])
-@crossdomain(origin='*')
-def reply():
-    email = request.form['email']
-    assertion = request.form['code']
-    if auths.get(email) != assertion:
-        abort(400)
 
-    id_ = request.form['id']
-    c = comments.get(id_).run(conn)
-    
-    ok, person = is_by(c['bundle_id'], email)
-    if not ok:
-        abort(400)
 
-    reply_mailer.send(person, email, request.form['content'], c['email'], c['lang'])
 
-    return 'Reported'
+resource = WSGIResource(reactor, reactor.getThreadPool(), app)
+site = Site(resource)
+reactor.listenTCP(5000, site)
 
-app.run(debug=True)
+reactor.listenTCP(9999, WebSocketFactory(comment_stream))
+
+reactor.run()

@@ -8,6 +8,8 @@ It also logs the users in via Persona.
 First install
 
 * Flask (Py2)
+* Twisted (Py2)
+* TxWS (`pip install txws`)
 * RethinkDB
 
 Start RethinkDB and make sure you have the `comments` table in the `comments` database.
