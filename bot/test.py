@@ -71,6 +71,31 @@ def get_activity_version(text):
 SUMMARY_REGEX = re.compile('summary\s*=\s*(.*)')
 NAME_REGEX = re.compile('name\s*=\s*(.*)')
 
+def get_news_file(path):
+    with open(path) as f:
+        r = ''
+        started = False
+        for line in f:
+            line = line.strip()
+            if line.isdigit() and not started:
+                started = True
+            elif line.isdigit():
+                return r
+            elif line != '':
+                r = r + '<br/>' + line
+            else:
+                pass
+
+def get_news():
+    r = {}
+    if os.path.isfile('dl/NEWS'):
+        r['en_US'] = get_news_file('dl/NEWS')
+
+    for lang in [i.split('.')[1] for i in os.listdir('dl') \
+                       if i.startswith('NEWS.')]:
+        r[lang] = get_news_file('dl/NEWS.' + lang)
+    return r
+
 def test_activity(bundle_id, gh):
     results = {}
     with open('dl/activity/activity.info') as f:
@@ -92,6 +117,8 @@ def test_activity(bundle_id, gh):
     results['isGTK3'] = is_gtk3('dl/', bundle_id)
     results['hasOldToolbars'] = has_old_toolbars('dl/', bundle_id)
 
+    results['whats_new'] = get_news()
+
     min_ = "0.100" if results['isWeb'] else (
                "0.96" if results['isGTK3'] else (
                    "0.86" if not results['hasOldToolbars'] else "0.82"
@@ -104,4 +131,4 @@ def test_activity(bundle_id, gh):
     return results
 
 if __name__ == '__main__':
-  print test_activity(raw_input('Bundle ID: '))
+    print test_activity(raw_input('Bundle ID: '), raw_input('GitHub: '))
