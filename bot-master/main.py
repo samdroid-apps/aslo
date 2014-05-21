@@ -26,7 +26,10 @@ LOG_FOLDER = '../logs/'
 if not os.path.isdir(LOG_FOLDER):
     os.mkdir('../logs')
 
-MY_ADDR = 'http://http://aslo-bot-master.sugarlabs.org'
+MY_ADDR = 'http://aslo-bot-master.sugarlabs.org'
+
+with open('data.json') as f:
+    data_json_cache = f.read()
 
 def verify_repo(gh_user, gh_repo, bundle_id):
     d = repos.get(bundle_id).run(conn)
@@ -41,8 +44,8 @@ app = Flask(__name__)
 
 @app.route('/hook/<gh_user>/<gh_repo>/<bundle_id>', methods=['POST'])
 def hook(gh_user, gh_repo, bundle_id):
-    with open('data.json') as f:
-        data = json.loads(f.read())
+    global data_json_cache
+    data = json.loads(data_json_cache)
     if not bundle_id in data['activities']:
         return ("Please add your thing first to our github, "
                 "then the bots will come and help you fill it out\n")
@@ -66,8 +69,11 @@ def hook(gh_user, gh_repo, bundle_id):
 @app.route('/pull', methods=['GET', 'POST'])
 def pull():
     """Go here every time a new activity is added to refresh the data"""
+    global data_json_cache
     with git_lock:
         call(['git', 'pull'])
+    with open('data.json') as f:
+        data_json_cache = f.read()
     return "Cool Potatoes"
 
 @app.route('/task')
@@ -85,6 +91,8 @@ def get_task():
 
 @app.route('/done', methods=['POST'])
 def done():
+    global data_json_cache
+
     data = request.get_json()
     bundle_id = data['bundle_id']
     task_id = data['task_id']
@@ -96,7 +104,8 @@ def done():
 
     call(['git', 'pull'])
     with open('data.json') as f:
-        current = json.loads(f.read())
+        data_json_cache = f.read()
+        current = json.loads(data_json_cache)
     
     if not bundle_id in current['activities']:
         current['activities'][bundle_id] = {}
@@ -125,6 +134,8 @@ def done():
     text = json.dumps(current, indent=4, sort_keys=True)
     with open('data.json', 'w') as f:
         f.write(text)
+    data_json_cache = text
+
     call(['git', 'add', 'data.json'])
     call(['git', 'commit', '-m',
           'Bot from %s updated %s' % (request.remote_addr, bundle_id)])
@@ -153,9 +164,8 @@ def uploaded_file(filename):
 @app.route('/data.json', methods=['GET', 'POST'])
 @crossdomain(origin='*')
 def get_data():
-    with open('data.json') as f:
-        j = f.read()
-    return app.response_class(j, mimetype='application/json')
+    global data_json_cache
+    return app.response_class(data_json_cache, mimetype='application/json')
 
 @app.route('/port')
 def get_port():
