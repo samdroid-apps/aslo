@@ -12,7 +12,7 @@
     <!-- <script src="md5.js"></script> -->
     <script async src="index.js"></script>
     
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="index.css"/>
   </head>
   
@@ -36,7 +36,10 @@
       <p class="description"></p>
       <p class="whatsnew"></p>
       
-      <a class="download" data-i18n="detail.download">Download</a><br/>
+      <a class="download">
+        <i class="fa fa-download fa-lg"></i>
+        <span data-i18n="detail.download">Download</span>
+      </a><br/>
       <p><span data-i18n="detail.minSugarVersion">Min. Sugar Version</span> <b class="minversion"></b></p>
       <a class="download-devel" data-i18n="detail.downloadDevelVersion">Download Devel Version</a>
       <a class="github" data-i18n="detail.github">GitHub</a>
@@ -45,24 +48,24 @@
       
       <div class="comments types">
         <blockquote style="display: none"></blockquote><br/>
-        <textarea class="add-content" data-i18n="detail.reviewTheActivity">Review the activity</textarea>
+        <textarea class="add-content" data-i18n="detail.reviewTheActivity">Type your review...</textarea>
         <br/>
     		<input id="review" type="radio" name="type" value="review" checked>
-    		<label for="review"></label>
+    		<label for="review" data-i18n="[title]reviewtype.rating" title="Rating"></label>
     		<input id="question" type="radio" name="type" value="question">
-    		<label for="question"></label>
+    		<label for="question" data-i18n="[title]reviewtype.question" title="Question"></label>
 			<input id="idea" type="radio" name="type" value="idea">
-    		<label for="idea"></label>
+    		<label for="idea" data-i18n="[title]reviewtype.idea" title="Idea"></label>
     		<input id="problem" type="radio" name="type" value="problem">
-    		<label for="problem"></label>
+    		<label for="problem" data-i18n="[title]reviewtype.problem" title="Problem"></label>
             <input id="reply" type="radio" name="type" value="reply">
-    		<label for="reply"></label>
+    		<label for="reply" data-i18n="[title]reviewtype.reply" title="Reply"></label>
 		<br/>
-		<p data-i18n="detail.bugTip" class="bug-tip">
+		<p data-i18n="detail.bugTip" class="bug-tip"><a href="http://fpaste.org">
 			Tip:
-			Put your bug reports on <a href="http://fpaste.org">fpaste</a> and
+			Put your bug reports on fpaste and
 			put the link in your comment!
-		</p>
+		</a></p>
         <div class="star-sel">
           <i class="fa fa-star-o" id="5"></i>
           <i class="fa fa-star-o" id="4"></i>
@@ -71,7 +74,10 @@
           <i class="fa fa-star" id="1"></i>
         </div>
         <br/>
-        <button class="add" data-i18n="detail.post">Post</button>
+        <button class="add">
+          <i class="fa fa-paper-plane-o fa-lg"></i>
+          <span data-i18n="detail.post">Post</span>
+        </button>
         <hr/>
         <ul></ul>
       </div>
