@@ -8,8 +8,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/i18next/1.6.3/i18next-1.6.3.min.js"></script>
     <script src="https://login.persona.org/include.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.6/socket.io.min.js"></script>
-    <!-- <script src="md5.js"></script> -->
     <script async src="index.js"></script>
     
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
@@ -28,7 +26,7 @@
     <br/>
     
     <div class="detail hide">
-      <div class="close"><i class="fa fa-arrow-circle-left"></i></div>
+      <div class="close"><i class="fa fa-arrow-circle-left fa-lg"></i></div>
       <img class="icon"/><h1 class="title"></h1>
       <div class="by"></div>
       <div class="screenshots closed"></div>
@@ -42,28 +40,26 @@
       </a><br/>
       <p><span data-i18n="detail.minSugarVersion">Min. Sugar Version</span> <b class="minversion"></b></p>
       <a class="download-devel" data-i18n="detail.downloadDevelVersion">Download Devel Version</a>
-      <a class="github" data-i18n="detail.github">GitHub</a>
+      <a class="github">
+        <i class="fa fa-github-alt fa-lg"></i>
+        <span data-i18n="detail.github">Check it out on GitHub</span>
+      </a>
       
       <hr class="sep"/>
       
-      <div class="comments types">
+      <div class="comments">
         <blockquote style="display: none"></blockquote><br/>
-        <textarea class="add-content" data-i18n="detail.reviewTheActivity">Type your review...</textarea>
-        <br/>
-    		<input id="review" type="radio" name="type" value="review" checked>
-    		<label for="review" data-i18n="[title]reviewtype.rating" title="Rating"></label>
-    		<input id="question" type="radio" name="type" value="question">
-    		<label for="question" data-i18n="[title]reviewtype.question" title="Question"></label>
-			<input id="idea" type="radio" name="type" value="idea">
-    		<label for="idea" data-i18n="[title]reviewtype.idea" title="Idea"></label>
-    		<input id="problem" type="radio" name="type" value="problem">
-    		<label for="problem" data-i18n="[title]reviewtype.problem" title="Problem"></label>
-            <input id="reply" type="radio" name="type" value="reply">
-    		<label for="reply" data-i18n="[title]reviewtype.reply" title="Reply"></label>
-		<br/>
-		<p data-i18n="detail.bugTip" class="bug-tip"><a href="http://fpaste.org">
+        <textarea class="add-content" data-i18n="detail.reviewTheActivity">Click then type your review...</textarea>
+        <br/><span class="types">
+    		<i value="review" data-i18n="[title]reviewtype.rating" title="Rating" class="checked"></i>
+    		<i value="question" data-i18n="[title]reviewtype.question" title="Question"></i>
+    		<i value="idea" data-i18n="[title]reviewtype.idea" title="Idea"></i>
+    		<i value="problem" data-i18n="[title]reviewtype.problem" title="Problem"></i>
+    		<i value="reply" data-i18n="[title]reviewtype.reply" title="Reply"></i>
+		</span><br/>
+		<p class="bug-tip" style="display: none"><a data-i18n="detail.bugTip" href="https://gist.github.com">
 			Tip:
-			Put your bug reports on fpaste and
+			Put your bug logs in a GitHub Gist and
 			put the link in your comment!
 		</a></p>
         <div class="star-sel">
@@ -82,7 +78,7 @@
         <ul></ul>
       </div>
       
-      <div class="close"><i class="fa fa-arrow-circle-left"></i></div>
+      <div class="close"><i class="fa fa-arrow-circle-left fa-lg"></i></div>
     </div>
 
     <div class="recommended-activities-container" style="display: none;">

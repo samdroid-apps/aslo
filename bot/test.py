@@ -98,6 +98,8 @@ def get_news():
 
 def test_activity(bundle_id, gh):
     results = {}
+    results['github_url'] = gh
+
     with open('dl/activity/activity.info') as f:
         text = f.read()
 

@@ -111,7 +111,7 @@ var commentsSetupEvents = function () {
 
     var text = $( ".comments .add-content" ).val();
     var rating = $( ".star-sel" ).data( "selected" );
-    var type = $( ".comments input[name=type]:checked" ).attr( "value" );
+    var type = $( ".comments .types i.checked" ).attr( "value" );
 
     var replyContent, replyId;
     if ( type === "reply" ) {
@@ -168,7 +168,7 @@ var connectCommentWS = function () {
 var focusOnComment = null;
 var commentsSetup = function ( bundleId ) {
   $( ".comments > blockquote" ).hide();
-  $( ".comments > input#reply" ).prop( "checked", false );
+  $( ".comments .types i[value=reply]" ).removeClass( "checked" );
 
   $.post( authServer + "/comments/get/" + bundleId)  // We don't want to GET cached stuff
     .done( function ( strData ) {
@@ -255,7 +255,8 @@ var addComment = function ( item ) {
     $( this ).data( "text" ).replace(
     /<blockquote class=\"reply-content\">.*<\/blockquote>/, "" )
     );
-    $( ".comments > input#reply" ).prop( "checked", true );
+    $( ".comments .types i" ).removeClass( "checked" );
+    $( ".comments .types i[value=reply]" ).addClass( "checked" );
     
     $( "html, body" ).animate( {
       scrollTop: $( ".comments > blockquote" ).offset().top - 10
@@ -267,6 +268,7 @@ var addComment = function ( item ) {
 };
 
 var focusOnActivity = function ( data, bundleId ) {
+  window.location.changedByProgram = true;
   window.location.hash = "!/view/" + bundleId;
   window.scrollTo( 0, 0 );
   
@@ -359,6 +361,32 @@ var setupActivityList = function () {
   }
 };
 
+var goBasedOnUrl = function () {
+  if ( window.location.hash && !window.location.changedByProgram ) {
+    var testString = window.location.hash;
+
+    var r = /!\/view\/([^\/]*)$/;
+    match = r.exec(testString);
+    if ( match ) {
+      var bundleId = match[1]
+      var itemData = activitiesData[ bundleId ];
+      focusOnActivity( itemData, bundleId );
+      return;
+    }
+      
+    var r = /!\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/
+    match = r.exec(testString);
+    if ( match ) {
+      var bundleId = match[1]
+      var itemData = activitiesData[ bundleId ];
+      focusOnActivity( itemData, bundleId );
+
+      focusOnComment = match[2]
+    }
+  }
+  window.location.changedByProgram = false;
+}
+
 var dataUrl = "http://aslo-bot-master.sugarlabs.org/data.json";
 $(document).ready( function () {
   var list = $(".activities");
@@ -369,30 +397,10 @@ $(document).ready( function () {
   }).done( function ( data ) {
     activitiesData = data.activities;
     setupActivityList();
-    
-    if ( window.location.hash ) {
-      var testString = window.location.hash;
 
-      var r = /!\/view\/([^\/]*)$/;
-      match = r.exec(testString);
-      if ( match ) {
-        var bundleId = match[1]
-        var itemData = activitiesData[ bundleId ];
-        focusOnActivity( itemData, bundleId );
-        return;
-      }
-      
-      var r = /!\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/
-      match = r.exec(testString);
-      if ( match ) {
-        var bundleId = match[1]
-        var itemData = activitiesData[ bundleId ];
-        focusOnActivity( itemData, bundleId );
-
-        focusOnComment = match[2]
-      }
-    }
+    goBasedOnUrl();
   });
+  window.onhashchange = goBasedOnUrl;
   
   var lastQuery = "";
   $( "input.search" ).on( "input", function () {
@@ -418,10 +426,25 @@ $(document).ready( function () {
   commentsSetupEvents();
   connectCommentWS();
 
-  $( ".comments > input[type=radio]" ).click( function () {
-    var type = $( ".comments input[name=type]:checked" ).attr( "value" );
+  $( ".comments .types i" ).click( function () {
+    $( ".comments .types i" ).removeClass( "checked" );
+    $( this ).addClass( "checked" );
+    var type = $( this ).attr( "value" );
+
     if ( type !== "reply" ) {
       $( ".comments > blockquote" ).hide();
+    }
+
+    if ( type !== "review" ) {
+      $( ".comments > .star-sel" ).hide();
+    } else {
+      $( ".comments > .star-sel" ).show();
+    }
+
+    if ( type !== "problem" ) {
+      $( ".comments > .bug-tip" ).hide();
+    } else {
+      $( ".comments > .bug-tip" ).show();
     }
   });
 
@@ -441,7 +464,7 @@ $(document).ready( function () {
   });
 });
 
-i18n.init({ fallbackLng: 'en' }, function(t) {
+i18n.init({ fallbackLng: "en" }, function(t) {
   $( "body" ).i18n();
   
   if ( t( "ui.search" ) !== "ui.search" )
