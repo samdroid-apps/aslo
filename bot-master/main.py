@@ -94,6 +94,9 @@ def done():
     global data_json_cache
 
     data = request.get_json()
+    if not 'releases' in data['result']:
+        data['releases'] = []
+
     bundle_id = data['bundle_id']
     task_id = data['task_id']
     if not tasks_sent.get(bundle_id, None) == task_id:
@@ -113,21 +116,30 @@ def done():
     file_ = data['file'].decode('base64')
     if file_:
         v = data['result']['version']
-        sp = os.path.join(UPLOADS_FOLDER, bundle_id + '_stable.xo')
-        if (current['activities'][bundle_id].get('version') != v and v) or \
-            not os.path.isfile(sp):
-                with open(sp, 'wb') as f:
-                    f.write(file_)
-                data['result']['xo_url_timestamp'] = time.time()
+        sp = os.path.join(UPLOADS_FOLDER,
+                          '{}_stable_{}.xo'.format(bundle_id, v))
+        if not os.path.isfile(sp):
+            # If we havn't written version V
+            with open(sp, 'wb') as f:
+                f.write(file_)
+            data['result']['xo_url_timestamp'] = time.time()
+
         lp = os.path.join(UPLOADS_FOLDER, bundle_id + '_latest.xo')
         with open(lp, 'wb') as f:
             f.write(file_)
 
         data['result']['xo_url'] = \
-            '%s/uploads/%s_stable.xo' % (MY_ADDR, bundle_id)
+            '{}/uploads/{}_stable_{}.xo'.format(MY_ADDR, bundle_id, v)
         data['result']['xo_url_latest'] = \
-            '%s/uploads/%s_latest.xo' % (MY_ADDR, bundle_id)
+            '{}/uploads/{}_latest.xo'.format(MY_ADDR, bundle_id)
         data['result']['xo_url_latest_timestamp'] = time.time()
+
+        new_v_data = {'xo_url': data['result']['xo_url'],
+                      'version': v,
+                      'minSugarVersion': data['result']['minSugarVersion'],
+                      'whats_new': data['result']['whats_new'],
+                      'screenshots': data['result']['screenshots']}
+        data['result']['versions'].insert(0, new_v_data)
 
     current['activities'][bundle_id].update(data['result'])
 
