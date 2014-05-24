@@ -5,7 +5,7 @@ import uuid
 import threading
 from subprocess import call
 
-from flask import Flask, jsonify, abort, request, send_from_directory
+from flask import Flask, jsonify, abort, request, send_from_directory, Responce
 import rethinkdb as r
 from helpers import crossdomain
 
@@ -170,7 +170,7 @@ def uploaded_file(filename):
         log_dl(filename, request.remote_addr)
         with open(p, 'rb') as f:
             b = f.read()
-        return b
+        return Responce(b, mimetype='application/vnd.olpc-sugar')
     abort(404)
 
 @app.route('/data.json', methods=['GET', 'POST'])
