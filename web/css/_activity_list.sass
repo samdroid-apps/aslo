@@ -1,0 +1,97 @@
+@import util
+
+.all-activities
+  margin-top: 15px
+  
+  .search
+    float: none
+    clear: both
+    display: block
+      
+    +center()
+    padding: 10px
+
+    width: 100%
+    max-width: #{ $maxw }
+    
+    font-size: 1.25em
+    color: $black
+    
+    background-color: rgba(0,0,0,0)
+    border: none
+    border-bottom: 3px solid $gray
+
+@keyframes shake1
+  0%, 100%
+    transform: rotate(0deg)
+  50%
+    transform: rotate(2deg)
+    
+@keyframes shake2
+  0%, 100%
+    transform: rotate(-3deg) scale(1)
+  50%
+    transform: rotate(-5deg) sclae(1.1)
+
+ul.activities
+  max-width: #{ $maxw }
+  +center()
+  padding-left: 0
+  
+  list-style: none
+  
+  li.activity
+    display: block
+    float: left
+      
+    width: 30%
+    margin-right: 1%
+    margin-bottom: 2%
+    padding: 1%
+    
+    border-radius: 5px
+    text-align: center
+    
+    background-color: $blue
+    &:nth-child(10n+2)
+      background-color: $aqua
+    &:nth-child(10n+3)
+      background-color: $green
+    &:nth-child(10n+4)
+      background-color: $lime
+    &:nth-child(10n+5)
+      background-color: $yellow
+    &:nth-child(10n+6)
+      background-color: $orange
+    &:nth-child(10n+7)
+      background-color: $red
+    &:nth-child(10n+8)
+      background-color: $fuchsia
+    &:nth-child(10n+9)
+      background-color: $purple
+    &:nth-child(10n+10)
+      background-color: $maroon
+    
+    img.icon
+      display: block
+      +center()
+      background-color: rgba(255, 255, 255, 0.5)
+      padding: 5px
+      border-radius: 5px
+      
+    span
+      color: $white
+      font-weight: bold
+      font-size: 1.25em
+      
+      word-wrap: break-word
+      
+    &:hover
+      animation: shake1 0.1s infinite
+      img.icon
+        animation: shake2 0.13s infinite
+
+
+.recommended-activities-container
+  +center()
+  max-width: #{ $maxw }

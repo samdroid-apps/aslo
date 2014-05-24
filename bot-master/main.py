@@ -139,7 +139,7 @@ def done():
                       'minSugarVersion': data['result']['minSugarVersion'],
                       'whats_new': data['result']['whats_new'],
                       'screenshots': data['result']['screenshots']}
-        data['result']['versions'].insert(0, new_v_data)
+        data['result']['releases'].insert(0, new_v_data)
 
     current['activities'][bundle_id].update(data['result'])
 

@@ -8,10 +8,10 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/i18next/1.6.3/i18next-1.6.3.min.js"></script>
     <script src="https://login.persona.org/include.js"></script>
-    <script async src="index.js"></script>
+    <script async src="js/outp.js"></script>
     
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" href="index.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
   </head>
   
   <body>
@@ -27,11 +27,18 @@
     
     <div class="detail hide">
       <div class="close"><i class="fa fa-arrow-circle-left fa-lg"></i></div>
+      <div class="error noversion">
+        <i class="fa fa-exclamation-triangle fa-lg"></i>
+        <span  data-i18n="detail.noVersion">
+          We can't find a version that will run with your system, be careful!
+        </span>
+      </div>
       <img class="icon"/><h1 class="title"></h1>
       <div class="by"></div>
       <div class="screenshots closed"></div>
       <i class="fa fa-angle-double-down icon"></i>
       <p class="description"></p>
+      <p class="whatsnewlabel"><b data-i18n="detail.whatsnew">What's New:</b></p>
       <p class="whatsnew"></p>
       
       <a class="download">

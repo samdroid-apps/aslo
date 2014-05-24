@@ -1,0 +1,38 @@
+@import util
+
+nav
+  text-align: center
+    
+  background: url(http://subtlepatterns.com/patterns/stardust.png)
+    
+  margin-botom: 60px
+    
+  div
+    max-width: #{ $maxw }
+    +center()
+    
+    a
+      display: block
+      float: left
+      width: 33.33333333333%
+      width: calc(100% / 3)
+      height: 30px
+      padding-top: 10px // Guess
+      padding-top: calc(20px - (1em / 2))
+      
+      color: $white
+      background-color: $red // 1st child + backup
+      font-weight: bold
+      text-decoration: none
+        
+      transition: 0.75s ease transform
+        
+    a:hover
+      transform: scale(0.9)
+    
+    a:nth-child(2)
+      background-color: $orange
+      
+    a:nth-child(3)
+      background-color: $purple
+      clear: right

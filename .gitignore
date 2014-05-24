@@ -9,3 +9,4 @@ bot-master/logs
 comments/email.password
 rethinkdb_data 
 debug
+/web/js/.fuse_hidden*

@@ -52,7 +52,8 @@ def has_old_toolbars(bundle_path, bundle_id):
 def get_latest_version(gh):
     resp = requests.get('https://api.github.com/repos/%s/tags' % gh)
     if resp.ok:
-        return resp.json()[0]['name']
+        if len(resp.json()):
+            return resp.json()[0]['name']
     return None
 
 VERSION_REGEX = re.compile('activity_version\s*=\s*([0-9.]*)')
