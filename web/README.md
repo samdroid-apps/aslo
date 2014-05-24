@@ -17,4 +17,4 @@ It is a bit uguly now so we must work on that now.
 Then goto `0.0.0.0:8000` in your browser
 
 You also need to setup your SASS auto-compiler. 
-[Try Koal](http://koala-app.com/).
+[Try Koala](http://koala-app.com/).
