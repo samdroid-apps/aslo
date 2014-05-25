@@ -136,9 +136,9 @@ def done():
 
         new_v_data = {'xo_url': data['result']['xo_url'],
                       'version': v,
-                      'minSugarVersion': data['result']['minSugarVersion'],
-                      'whats_new': data['result']['whats_new'],
-                      'screenshots': data['result']['screenshots']}
+                      'minSugarVersion': data['result'].get('minSugarVersion'),
+                      'whats_new': data['result'].get('whats_new' {}),
+                      'screenshots': data['result'].get('screenshots', [])}
         data['result']['releases'].insert(0, new_v_data)
 
     current['activities'][bundle_id].update(data['result'])
