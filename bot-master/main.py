@@ -95,7 +95,7 @@ def done():
 
     data = request.get_json()
     if not 'releases' in data['result']:
-        data['releases'] = []
+        data['result']['releases'] = []
 
     bundle_id = data['bundle_id']
     task_id = data['task_id']
