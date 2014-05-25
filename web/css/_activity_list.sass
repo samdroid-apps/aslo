@@ -21,6 +21,55 @@
     border: none
     border-bottom: 3px solid $gray
 
+=colorClass($x, $y)
+  .#{ $x }
+    color: $y
+
+  .#{ $x }.checked
+    color: $white
+    background-color: $y
+
+.categories
+  margin-top: 10px
+  +center()
+  max-width: #{ $maxw }
+
+  +colorClass(red, $red)
+  +colorClass(yellow, $yellow)
+  +colorClass(green, $green)
+  +colorClass(blue, $blue)
+  +colorClass(aq, $aqua)
+  +colorClass(lime, $lime)
+  +colorClass(navy, $navy)
+  +colorClass(orange, $orange)
+  +colorClass(purple, $purple)
+  +colorClass(f, $fuchsia)
+  +colorClass(black, $black)
+
+  .any
+    color: $black
+  .any.checked
+    color: $white
+    background: linear-gradient($red, $yellow)
+    box-shadow: 1px 1px 2px $green, -1px -1px 2px $blue
+
+  .fa
+    padding: 7px
+    height: 1em   // Because 1em = 1 x the font size!?
+    width: 1em
+
+    text-align: center
+    border-radius: 50%
+    display: inline-block
+
+    text-shadow: 0 0 0 transparent
+    transition: 0.5s ease all
+
+    &:hover
+      transform: scale(0.8)
+      text-shadow: 1px 3px 3px $black
+  
+
 @keyframes shake1
   0%, 100%
     transform: rotate(0deg)

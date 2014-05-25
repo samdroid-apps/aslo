@@ -56,19 +56,36 @@
       
       <div class="comments">
         <blockquote style="display: none"></blockquote><br/>
-        <textarea class="add-content" data-i18n="detail.reviewTheActivity">Click then type your review...</textarea>
-        <br/><span class="types">
-    		<i value="review" data-i18n="[title]reviewtype.rating" title="Rating" class="checked"></i>
-    		<i value="question" data-i18n="[title]reviewtype.question" title="Question"></i>
-    		<i value="idea" data-i18n="[title]reviewtype.idea" title="Idea"></i>
-    		<i value="problem" data-i18n="[title]reviewtype.problem" title="Problem"></i>
-    		<i value="reply" data-i18n="[title]reviewtype.reply" title="Reply"></i>
-		</span><br/>
+        <textarea class="add-content" data-i18n="detail.reviewTheActivity">
+                  Click then type your review...
+        </textarea>
+        <br/>
+
+        <span class="types">
+    		<i class="fa fa-star checked" value="review"
+               data-i18n="[title]reviewtype.rating"
+               title="Rating"></i>
+    		<i class="fa fa-question" value="question"
+               data-i18n="[title]reviewtype.question"
+               title="Question"></i>
+    		<i class="fa fa-lightbulb-o" value="idea"
+               data-i18n="[title]reviewtype.idea"
+               title="Idea"></i>
+    		<i class="fa fa-bug" value="problem"
+               data-i18n="[title]reviewtype.problem"
+               title="Problem"></i>
+    		<i class="fa fa-reply" value="reply"
+               data-i18n="[title]reviewtype.reply"
+               title="Reply"></i>
+		</span>
+        <br/>
+
 		<p class="bug-tip" style="display: none"><a data-i18n="detail.bugTip" href="https://gist.github.com">
 			Tip:
 			Put your bug logs in a GitHub Gist and
 			put the link in your comment!
 		</a></p>
+
         <div class="star-sel">
           <i class="fa fa-star-o" id="5"></i>
           <i class="fa fa-star-o" id="4"></i>
@@ -77,6 +94,7 @@
           <i class="fa fa-star" id="1"></i>
         </div>
         <br/>
+
         <button class="add">
           <i class="fa fa-paper-plane-o fa-lg"></i>
           <span data-i18n="detail.post">Post</span>
@@ -90,15 +108,67 @@
 
     <div class="recommended-activities-container" style="display: none;">
 		<h2 data-i18n="recommend.title">Check these out:</h2>
-		<ul class="recommended-activities activities">
-		</ul>
+		<ul class="recommended-activities activities"></ul>
         <br>
-        <p data-i18n="recommend.wantMore">Want better recommendations? Make sure you rate the activities you use.</p>
+
+        <p data-i18n="recommend.wantMore">
+           Want better recommendations? Make sure you rate the activities you use.
+        </p>
         <hr/>
 	</div>
 
     <div class="all-activities">
       <input class="search" type="search" placeholder="Search..."/>
+      <div class="categories">
+        <i class="fa fa-check-square-o fa-2x any checked"
+           data-i18n="[title]cat.all"
+           title="All Activities"
+           filter="any"></i>
+        <i class="fa fa-gamepad fa-2x red"
+           data-i18n="[title]cat.games"
+           title="Games"
+           filter="game"></i>
+        <i class="fa fa-code fa-2x yellow"
+           data-i18n="[title]cat.programming"
+           title="Programming Activities"
+           filter="programming"></i>
+        <i class="fa fa-globe fa-2x blue"
+           data-i18n="[title]cat.internet"
+           title="Internet Activities"
+           filter="internet"></i>
+        <i class="fa fa-flask fa-2x green"
+           data-i18n="[title]cat.science"
+           title="Science Activities"
+           filter="science"></i>
+        <i class="fa fa-money fa-2x aq"
+           data-i18n="[title]cat.maths"
+           title="Maths Activities"
+           filter="maths"></i>
+        <i class="fa fa-language fa-2x lime"
+           data-i18n="[title]cat.language"
+           title="Language Activities"
+           filter="language"></i>
+        <i class="fa fa-map-marker fa-2x navy"
+           data-i18n="[title]cat.geography"
+           title="Geography Activities"
+           filter="geography"></i>
+        <i class="fa fa-pencil-square-o fa-2x orange"
+           data-i18n="[title]cat.office"
+           title="Office Activities"
+           filter="office"></i>
+        <i class="fa fa-picture-o fa-2x purple"
+           data-i18n="[title]cat.creative"
+           title="Creative Activities"
+           filter="creative"></i>
+        <i class="fa fa-wrench fa-2x f"
+           data-i18n="[title]cat.tools"
+           title="Tools"
+           filter="tools"></i>
+        <i class="fa fa-linux fa-2x black"
+           data-i18n="[title]cat.system"
+           title="System Activities"
+           filter="system"></i>
+      </div>
     
       <ul class="activities">
       </ul>

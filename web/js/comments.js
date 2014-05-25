@@ -194,8 +194,11 @@ var addComment = function ( item ) {
   var text = $( "<p>" );
   text.html( item.text );
   ele.append( text );
+
+  var trans = $( "body" ).data( "commentIconsTitles" );
   
   var report = $( "<i class='fa fa-flag' style='margin-right: 5px;'></i>" );
+  report.attr( "title", trans.flag );
   report.data( "id", item.id );
   report.click( function () {
     $.post( SERVER + "/comments/report", { id: report.data( "id" ) } );
@@ -207,6 +210,7 @@ var addComment = function ( item ) {
   
   var link = $( "<a><i class='fa fa-link' style='margin-right: 5px;'></i></a>" );
   var bundleId = $( ".comments .add" ).data( "bundleId" );
+  link.attr( "title", trans.link );
   link.attr( "href", "/#!/view/" + bundleId + "/comment=>" + item.id );
   link.data( "id", item.id );
   link.click( function () {
@@ -218,6 +222,7 @@ var addComment = function ( item ) {
   ele.append( link )
   
   var reply = $("<i class='fa fa-reply'></i>");
+  reply.attr( "title", trans.reply );
   reply.data( "id", item.id );
   reply.data( "text", ele.html() );
   reply.click( function () {

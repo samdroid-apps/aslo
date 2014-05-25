@@ -17,10 +17,15 @@ exports.add = function ( container, bundleId ) {
   ele.append( title );
       
   $( container ).append( ele );
+
+  var l = data.categories || [];
+  for ( i in l )
+    ele.addClass( "category-" + data.categories[i] );
       
   ele.data( "json", data );
   ele.data( "bundleId", bundleId );
   ele.data( "searchString", search.makeSearchString( data ) );
+  console.log( search.makeSearchString( data ) );
   ele.click( function () {
     mainActivity.load( $( this ).data( "json" ), $( this ).data( "bundleId" ) );
   });

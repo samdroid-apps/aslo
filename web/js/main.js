@@ -12,7 +12,7 @@ var goBasedOnUrl = function () {
     if ( match ) {
       var bundleId = match[1]
       var itemData = $( "body" ).data( "activitiesData" )[ bundleId ];
-      mainActivity.load( itemData, bundleId );
+      mainActivity.load( itemData, bundleId, false );
       return;
     }
       
@@ -21,7 +21,7 @@ var goBasedOnUrl = function () {
     if ( match ) {
       var bundleId = match[1]
       var itemData = $( "body" ).data( "activitiesData" )[ bundleId ];
-      focusOnActivity( itemData, bundleId );
+      mainActivity.load( itemData, bundleId, false );
 
       $( "body" ).data( "focusOnComment", match[2] );
     }
@@ -56,4 +56,17 @@ i18n.init({ fallbackLng: "en" }, function(t) {
 
   if ( t( "ui.newCommentText" ) !== "ui.newCommentText" )
     $( "body" ).data( "newCommentText", t( "ui.newCommentText" ) );
+
+  var obj;
+  if ( t( "comment.flag" ) !== "comment.flag" ) {
+    obj = {"flag":  t( "comment.flag" ),
+           "link":  t( "comment.link" ),
+           "reply": t( "comment.reply" )};
+  } else {
+    obj = {"flag":  "Flag this comment for review",
+           "link":  "Link to this comment",
+           "reply": "Reply to this comment"};
+  };
+  $( "body" ).data( "commentIconsTitles", obj );
+
 });

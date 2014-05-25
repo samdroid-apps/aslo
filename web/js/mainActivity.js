@@ -1,9 +1,10 @@
 var util = require( "./util.js" );
 var comments = require( "./comments.js" );
 
-exports.load = function ( data, bundleId ) {
+exports.load = function ( data, bundleId, setUrl ) {
   window.location.changedByProgram = true;
-  window.location.hash = "!/view/" + bundleId;
+  if ( setUrl )
+    window.location.hash = "!/view/" + bundleId;
   window.scrollTo( 0, 0 );
   
   var container = $( ".detail" );
