@@ -7,7 +7,6 @@ import requests
 import cairosvg
 
 DATA_JSON = 'http://aslo-bot-master.sugarlabs.org/data.json'
-ICON_RE = re.compile('icon\s*=\s*(.*)')
 # Don't steal this (for other apps)...
 #         you can get as many as you like for FREE
 AUTH = {'Authorization': 'Client-ID 7daeb235d4d80fc'}
@@ -20,7 +19,7 @@ def get_activity_data(bundle_id):
         except:
             pass
     d = r.json()
-    return d['activities'][bundle_id]
+    return d['activities'].get(bundle_id, {})
 
 def upload_image(img_name, current_hash, svg=False):
     content = ''
@@ -44,14 +43,17 @@ def upload_image(img_name, current_hash, svg=False):
     url = r.json()['data']['link']
     return url, hash_
 
-def get_imgs(activity_info, bundle_id):
+def get_imgs(cp, bundle_id):
     results = {}
     activity = get_activity_data(bundle_id)
+    if activity == {}:
+        if os.path.isdir('dl/screenshots'):
+            results.update(upload_screenshots(activity))
 
-    if os.path.isdir('dl/screenshots'):
-        results.update(upload_screenshots(activity))
+    if not cp.has_option('Activity', 'icon'):
+        return results
 
-    icon_name = ICON_RE.search(activity_info).group(1)
+    icon_name = cp.get('Activity', 'icon')
     if not icon_name.endswith('.svg'):
         icon_name = icon_name + '.svg'
 

@@ -1,14 +1,16 @@
 import re
 import os
+from ConfigParser import ConfigParser
 
 import requests
 
-from po_crawl import get_translation_from_regex
+from po_crawl import get_translation_for_field
 import img
 
-IS_WEB_RE = re.compile('exec\s*=\s*sugar-activity-web')
-def is_web(text):
-    return bool(IS_WEB_RE.search(text))
+def is_web(cp):
+    if cp.has_option('Activity', 'exec'):
+      return cp.get('Activity', 'exec') == 'sugar-activity-web'
+    return False  # Fallback
 
 
 GTK3_IMPORT_TYPES = {'sugar3': 3, 'from gi.repository import Gtk': 3,
@@ -56,21 +58,25 @@ def get_latest_version(gh):
             return resp.json()[0]['name']
     return None
 
-VERSION_REGEX = re.compile('activity_version\s*=\s*([0-9.]*)')
-def get_activity_version(text):
-    r = VERSION_REGEX.search(text)
-    if r:
-        try:
-            return int(r.group(1))
-        except ValueError:
-            try:
-                return float(r.group(1))
-            except ValueError:
-                return None
-    return None
+def get_activity_version(cp):
+    if not cp.has_option('Activity', 'activity_version'):
+        return None
 
-SUMMARY_REGEX = re.compile('summary\s*=\s*(.*)')
-NAME_REGEX = re.compile('name\s*=\s*(.*)')
+    v = cp.get('Activity', 'activity_version')
+    try:
+        return int(v)
+    except ValueError:
+        try:
+            return float(v)
+        except ValueError:
+            return None
+
+def get_categories(cp):
+    if not cp.has_option('Activity', 'categories'):
+        return None
+
+    c = cp.get('Activity', 'categories')
+    return c.strip().split(' ')
 
 def get_news_file(path):
     with open(path) as f:
@@ -102,20 +108,24 @@ def test_activity(bundle_id, gh):
     results['github_url'] = gh
 
     with open('dl/activity/activity.info') as f:
-        text = f.read()
+        cp = ConfigParser()
+        cp.readfp(f)
 
-        v = get_activity_version(text)
+        v = get_activity_version(cp)
         if v: results['version'] = v
 
-        t = get_translation_from_regex(NAME_REGEX, text)
+        c = get_categories(cp)
+        if c: results['categories'] = c
+
+        t = get_translation_for_field(cp, 'name')
         if t: results['title'] = t
 
-        t = get_translation_from_regex(SUMMARY_REGEX, text)
+        t = get_translation_for_field(cp, 'summary')
         if t: results['description'] = t
 
-        results['isWeb'] = is_web(text)
+        results['isWeb'] = is_web(cp)
 
-        results.update(img.get_imgs(text, bundle_id))
+        results.update(img.get_imgs(cp, bundle_id))
 
     results['isGTK3'] = is_gtk3('dl/', bundle_id)
     results['hasOldToolbars'] = has_old_toolbars('dl/', bundle_id)

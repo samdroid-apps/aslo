@@ -1,4 +1,3 @@
-import re
 import os
 
 from polib import pofile
@@ -20,8 +19,7 @@ def get_translations(base, base_tag='en_US'):
 
     return results
 
-def get_translation_from_regex(regex, text):
-    r = regex.search(text)
-    if r:
-        return get_translations(r.group(1))
-    return None
+def get_translation_for_field(cp, field):
+    if not cp.has_option('Activity', field):
+        return None
+    return get_translations(cp.get('Activity', field))
