@@ -1,33 +1,30 @@
 {
   "nav": {
-    "activities": "AA",
-    "wiki": "WW",
-    "login": "PERSONA"
+    "activities": "Activities",
+    "wiki": "Wiki",
+    "login": "Login"
   },
   "detail": {
-    "download": "get IT down",
-    "minSugarVersion": "MSV",
-    "downloadDevelVersion": "get The LATEST",
-    "github": "The code PLACE",
+    "download": "Download",
+    "minSugarVersion": "Min. Sugar Version",
+    "downloadDevelVersion": "Download Devel Version",
+    "github": "Check it out on GitHub",
     
-    "reviewTheActivity": "Review IT!",
-    "post": "PUSH post"
+    "reviewTheActivity": "Click then type your review...",
+    "post": "Post"
+  },
+  "reviewtype": {
+    "rating": "Rating",
+    "question": "Question",
+    "idea": "Idea",
+    "problem": "Problem",
+    "reply": "Reply"
   },
   "recommend": {
     "title": "CHECK THESE OUT:",
     "wantMore": "Want MORE!!!"
   },
   "ui": {
-    "search": "FIND IT!!",
-    "reported": "We told 'em"
-  },
-  "reply": {
-    "replyToTheComment": "REPLY ta the comment",
-    "note": "NOTE",
-    "typeYourReply": "WRITE IT!",
-    "cancel": "QUITTER",
-    "send": "DO it",
-    "sending": "WAIT",
-    "cannot": "403 403 403"
+    "search": "Search..."
   }
 }
