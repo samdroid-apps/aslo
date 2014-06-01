@@ -1,0 +1,16 @@
+---
+layout: default
+---
+<div class="activity-bg no-c" style="background: url({{page.pattern}})">
+  <div class="title">
+    <img class="person no-c" src="{{ page.by_avatar }}"/>
+    <h1 class="no-c">{{ page.title }}</h1>
+  </div>
+
+  <p class="meta">By {{ page.by }}, {{ page.date | date_to_string }}</p>
+  <br/>
+</div>
+
+<div class="post no-c">
+{{ content }}
+</div>

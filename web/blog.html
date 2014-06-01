@@ -1,0 +1,33 @@
+---
+layout: default
+title: ASLO Blog
+---
+
+<div id="home" class="no-c">
+  <div class="activity-bg no-c" style="background: url(http://thepatternlibrary.com/img/u.png)">
+    <div class="activity">
+      <h1>The ASLO Blog</h1>
+      <p>Get updates on the latest activities, new store imporvements and more.</p><br/>
+      <p>New <b>top 10</b> every <b>Sunday</b></p><br/>
+      <p>Noteworthy new releases any time.</p><br/>
+      <p>
+        <img src="http://www.gravatar.com/avatar/673cabf7d0713b0c64b9d54f5ee5b2e2" class="person"/>
+        <img src="https://avatars2.githubusercontent.com/u/1234567?s=50" class="person"/>
+        <img src="https://avatars1.githubusercontent.com/u/2345678?s=50" class="person"/>
+      </p>
+      </p>
+    </div>
+  </div>
+
+  <ul class="posts">
+    {% for post in site.posts %}
+      <li class="no-style"><a href="{{ post.url }}" class="no-style">
+        <div class="title">
+          <img class="person no-c" src="{{ post.by_avatar }}"/>
+          <h2 class="no-c">{{ post.title }}</h2>
+        </div>
+        <p class="meta">By {{ post.by }}, {{ post.date | date_to_string }}</p>
+      </a></li>
+    {% endfor %}
+  </ul>
+</div>
