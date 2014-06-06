@@ -2,37 +2,53 @@
 
 nav
   text-align: center
-    
-  background: url(http://subtlepatterns.com/patterns/stardust.png)
-    
+
   margin-botom: 60px
-    
+
   div
     max-width: #{ $maxw }
     +center()
-    
+
+    /*&:before
+      display: block
+      float: left
+
+      width: 2em
+      height: 0
+      margin-left: -1.5em
+      margin-top: -8px
+
+      content: "S"
+
+      font-size: 2.5em
+      font-family: cursive, 'OpenDyslexic', sans-serif
+      
+      color: #6E008C
+      text-shadow: 0px 2px 0px #FF7800, 0px -2px 0px #FF7800, 2px 0px 0px #FF7800, -2px 0px 0px #FF7800*/
+
     a
       display: block
       float: left
       width: 33.33333333333%
+      width: -webkit-calc(100% / 3)
       width: calc(100% / 3)
-      height: 30px
-      padding-top: 10px // Guess
-      padding-top: calc(20px - (1em / 2))
-      
+      height: 1.75em
+      padding-top: 0.5em
+
       color: $white
-      background-color: $red // 1st child + backup
+      background-color: $red  // 1st child + backup
       font-weight: bold
+      font-size: 1em
       text-decoration: none
-        
+
       transition: 0.75s ease transform
-        
+
     a:hover
       transform: scale(0.9)
-    
+
     a:nth-child(2)
       background-color: $orange
-      
+
     a:nth-child(3)
       background-color: $purple
       clear: right

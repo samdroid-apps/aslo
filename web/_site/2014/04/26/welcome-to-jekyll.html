@@ -6,21 +6,11 @@
         <title>Top Activities Round 1</title>
         <meta name="viewport" content="width=device-width">
 
-        <!-- syntax highlighting CSS -->
-        <link rel="stylesheet" href="/css/syntax.css">
-
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="/css/index.css">
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/i18next/1.6.3/i18next-1.6.3.min.js"></script>
-        <script src="https://login.persona.org/include.js"></script>
-
+        <script src="/js/outpWithDeps.js"></script>
+        <link rel="stylesheet" href="/css/index.css"/>
     </head>
     <body class="blog">
           <nav>
-            <img src="http://samdroid-apps.github.io/slgio/res/logo.svg" alt="Sugar Labs" />
             <div>
               <a href="/blog.html">Blog Home</a>
               <a href="/">Activities</a>
@@ -29,7 +19,8 @@
           </nav>
 
           <div class="content">
-          <div class="activity-bg no-c" style="background: url(http://thepatternlibrary.com/img/al.png)">
+          <div class="activity-bg no-c" style="background: linear-gradient(45deg, #f06, yellow);
+                                     background-size: ">
   <div class="title">
     <img class="person no-c" src="http://www.gravatar.com/avatar/673cabf7d0713b0c64b9d54f5ee5b2e2"/>
     <h1 class="no-c">Top Activities Round 1</h1>
@@ -56,7 +47,7 @@ all of different types.  Get ready for: Slides, 2048 and Turtle Art!</p>
 <p>Here is the syntax to do the activities banners:</p>
 
 <p><code>
-    {% activity Slides me.samdroid.sugar.slides http://i.imgur.com/f1l9xH4.png http://thepatternlibrary.com/img/p.gif %}
+    {% activity Slides me.samdroid.sugar.slides http://i.imgur.com/f1l9xH4.png url(http://thepatternlibrary.com/img/p.gif) %}
 </code></p>
 
 </div>

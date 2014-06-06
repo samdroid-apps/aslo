@@ -6,19 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width">
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/i18next/1.6.3/i18next-1.6.3.min.js"></script>
     <script src="https://login.persona.org/include.js"></script>
-    <script async src="js/outp.js"></script>
+    <script async src="js/outpWithDeps.js"></script>
 
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css"/>
   </head>
 
   <body>
     <nav>
-      <img src="http://samdroid-apps.github.io/slgio/res/logo.svg" alt="Sugar Labs" />
       <div>
         <a href="http://activities.sugarlabs.org" data-i18n="nav.activities">Activities</a>
         <a href="http://wiki.sugarlabs.org" data-i18n="nav.wiki">Wiki</a>
@@ -120,18 +115,19 @@
 
 
     <div class="activity-bg no-c"
-         style="background: url({{ site.posts[0].pattern }});
+         style="background: {{ site.posts[-1].pattern }};
+                background-size: {{ site.posts[-1].bg_size or '' }}
                 margin-top: -13px">
-      <a href="{{ site.posts[0].url }}" class="no-style">
+      <a href="{{ site.posts[-1].url }}" class="no-style">
         <p class="latest-aslo-info">Here is the latest from the ASLO blog:</p>
 
         <div class="title please-center">
-          <img class="person no-c" src="{{ site.posts[0].by_avatar }}"/>
-          <h1 class="no-c">{{ site.posts[0].title }}</h1>
+          <img class="person no-c" src="{{ site.posts[-1].by_avatar }}"/>
+          <h1 class="no-c">{{ site.posts[-1].title }}</h1>
         </div>
 
-        <p class="meta please-center">By {{ site.posts[0].by }},
-          {{ site.posts[0].date | date_to_string }}</p>
+        <p class="meta please-center">By {{ site.posts[-1].by }},
+          {{ site.posts[-1].date | date_to_string }}</p>
         <br/>
       </a>
     </div>

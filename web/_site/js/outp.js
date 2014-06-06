@@ -8,26 +8,28 @@ exports.add = function ( container, bundleId ) {
 
   activitiesData = $( "body" ).data( "activitiesData" );
   var data = activitiesData[ bundleId ];
-  
+
   var icon = $( "<img class='icon' />" );
   icon.attr( "src", data.icon );
   ele.append( icon );
-  
-  var title = $( "<span class='title'>" + 
+
+  var title = $( "<span class='title'>" +
                  util.trans( data.title ) + "</span>" );
   ele.append( title );
-      
+
   $( container ).append( ele );
 
   var l = data.categories || [];
   for ( i in l )
     ele.addClass( "category-" + data.categories[i] );
-      
+
   ele.data( "json", data );
   ele.data( "bundleId", bundleId );
   ele.data( "searchString", search.makeSearchString( data ) );
   ele.click( function () {
-    mainActivity.load( $( this ).data( "json" ), $( this ).data( "bundleId" ) );
+    mainActivity.load( $( this ).data( "json" ),
+                       $( this ).data( "bundleId" ),
+                       true );
   });
 }
 
@@ -330,6 +332,9 @@ var search = require( "./search.js" );
 var comments = require( "./comments.js" );
 
 var goBasedOnUrl = function () {
+  if ( !window.location.hash )
+    $( "detail" ).addClass( "hide" );
+
   if ( window.location.hash && !window.location.changedByProgram ) {
     var testString = window.location.hash;
 
@@ -341,7 +346,7 @@ var goBasedOnUrl = function () {
       mainActivity.load( itemData, bundleId, false );
       return;
     }
-      
+
     var r = /!\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/
     match = r.exec(testString);
     if ( match ) {
@@ -357,26 +362,33 @@ var goBasedOnUrl = function () {
 
 var dataUrl = "http://aslo-bot-master.sugarlabs.org/data.json";
 $(document).ready( function () {
-  var list = $(".activities");
-  var detail = $(".detail");
-  
-  $.ajax({
-    url: dataUrl
-  }).done( function ( data ) {
-    $( "body" ).data( "activitiesData", data.activities );
-    activityList.setup();
+  if ( window.location.pathname === "/" ) {
+    var list = $(".activities");
+    var detail = $(".detail");
 
-    goBasedOnUrl();
-  });
-  window.onhashchange = goBasedOnUrl;
-  
-  search.setup();
-  comments.setup();
+    $.ajax({
+      url: dataUrl
+    }).done( function ( data ) {
+      $( "body" ).data( "activitiesData", data.activities );
+      activityList.setup();
+
+      goBasedOnUrl();
+    });
+    window.onhashchange = goBasedOnUrl;
+
+    search.setup();
+    comments.setup();
+  }
+
+  // Fix blog titles
+  StyleFix.styleAttribute( $( ".activity-bg" )[0] );
+
 });
 
+if ( window.location.pathname === "/" ) {
 i18n.init({ fallbackLng: "en" }, function(t) {
   $( "body" ).i18n();
-  
+
   if ( t( "ui.search" ) !== "ui.search" )
     $( ".search" ).attr( "placeholder", t( "ui.search" ) );
 
@@ -396,6 +408,7 @@ i18n.init({ fallbackLng: "en" }, function(t) {
   $( "body" ).data( "commentIconsTitles", obj );
 
 });
+}
 
 },{"./activityList.js":1,"./comments.js":3,"./mainActivity.js":5,"./search.js":7}],5:[function(require,module,exports){
 var util = require( "./util.js" );

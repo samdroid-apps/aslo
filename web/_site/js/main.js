@@ -4,6 +4,9 @@ var search = require( "./search.js" );
 var comments = require( "./comments.js" );
 
 var goBasedOnUrl = function () {
+  if ( !window.location.hash )
+    $( "detail" ).addClass( "hide" );
+
   if ( window.location.hash && !window.location.changedByProgram ) {
     var testString = window.location.hash;
 
@@ -15,7 +18,7 @@ var goBasedOnUrl = function () {
       mainActivity.load( itemData, bundleId, false );
       return;
     }
-      
+
     var r = /!\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/
     match = r.exec(testString);
     if ( match ) {
@@ -31,26 +34,33 @@ var goBasedOnUrl = function () {
 
 var dataUrl = "http://aslo-bot-master.sugarlabs.org/data.json";
 $(document).ready( function () {
-  var list = $(".activities");
-  var detail = $(".detail");
-  
-  $.ajax({
-    url: dataUrl
-  }).done( function ( data ) {
-    $( "body" ).data( "activitiesData", data.activities );
-    activityList.setup();
+  if ( window.location.pathname === "/" ) {
+    var list = $(".activities");
+    var detail = $(".detail");
 
-    goBasedOnUrl();
-  });
-  window.onhashchange = goBasedOnUrl;
-  
-  search.setup();
-  comments.setup();
+    $.ajax({
+      url: dataUrl
+    }).done( function ( data ) {
+      $( "body" ).data( "activitiesData", data.activities );
+      activityList.setup();
+
+      goBasedOnUrl();
+    });
+    window.onhashchange = goBasedOnUrl;
+
+    search.setup();
+    comments.setup();
+  }
+
+  // Fix blog titles
+  StyleFix.styleAttribute( $( ".activity-bg" )[0] );
+
 });
 
+if ( window.location.pathname === "/" ) {
 i18n.init({ fallbackLng: "en" }, function(t) {
   $( "body" ).i18n();
-  
+
   if ( t( "ui.search" ) !== "ui.search" )
     $( ".search" ).attr( "placeholder", t( "ui.search" ) );
 
@@ -70,3 +80,4 @@ i18n.init({ fallbackLng: "en" }, function(t) {
   $( "body" ).data( "commentIconsTitles", obj );
 
 });
+}

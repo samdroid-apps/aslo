@@ -14,7 +14,7 @@ module Jekyll
     end
 
     def render(context)
-      "<div class='activity-bg no-c' style='background: url(#{ @data[:bg] })'>
+      "<div class='activity-bg no-c' style='background: #{ @data[:bg] }'>
         <div class='activity'>
           <a class='no-style' href='/#!/view/#{ @data[:id] }'>
             <img src='#{ @data[:icon] }'/>

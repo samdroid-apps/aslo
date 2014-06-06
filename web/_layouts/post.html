@@ -1,7 +1,8 @@
 ---
 layout: default
 ---
-<div class="activity-bg no-c" style="background: url({{page.pattern}})">
+<div class="activity-bg no-c" style="background: {{page.pattern}};
+                                     background-size: {{page.bg_size or ''}}">
   <div class="title">
     <img class="person no-c" src="{{ page.by_avatar }}"/>
     <h1 class="no-c">{{ page.title }}</h1>
