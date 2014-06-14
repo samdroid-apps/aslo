@@ -8,8 +8,9 @@ var doSearch = function () {
   term = $( "input.search" ).val().toLowerCase();
 
   var catTerm = "";
-  if ( currentCategory !== "any" )
+  if ( currentCategory !== "any" ) {
     catTerm = "CATEGORY:" + currentCategory;
+  }
 
   if ( term === "" && catTerm === "" ) {
     $( ".activities li" ).each( function (index) {
@@ -28,8 +29,9 @@ var doSearch = function () {
     console.log( termList );
     ele.each( function ( index ) {
       var ss = $( this ).data( "searchString" ) || "";
-      if ( ss === "" )
+      if ( ss === "" ) {
         $( this ).hide();
+      }
 
       var found = true;
       var i = 0;
@@ -38,10 +40,11 @@ var doSearch = function () {
           i++;
       };
 
-      if ( found )
+      if ( found ) {
         $( this ).show()
-      else
+      } else {
         $( this ).hide();
+      }
     });
   };
   lastCategory = catTerm;
@@ -61,8 +64,9 @@ exports.setup = function () {
 
 exports.makeSearchString = function ( data ) {
   catString = "";
-  for ( i in ( data.categories || [] ) )
+  for ( i in ( data.categories || [] ) ) {
     catString += " CATEGORY:" + data.categories[ i ];
+  }
 
   return util.trans( data.title ).toLowerCase() +
          "  " +

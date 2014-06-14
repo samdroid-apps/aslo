@@ -19,8 +19,9 @@ exports.add = function ( container, bundleId ) {
   $( container ).append( ele );
 
   var l = data.categories || [];
-  for ( i in l )
+  for ( i in l ) {
     ele.addClass( "category-" + data.categories[i] );
+  }
 
   ele.data( "json", data );
   ele.data( "bundleId", bundleId );
@@ -37,7 +38,7 @@ exports.setup = function () {
 
   for ( var key in activitiesData ) {
     if ( activitiesData.hasOwnProperty( key ) ) {
-      exports.add( ".activities", key )
+      exports.add( ".activities", key );
     }
   }
 };

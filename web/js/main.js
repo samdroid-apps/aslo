@@ -4,8 +4,9 @@ var search = require( "./search.js" );
 var comments = require( "./comments.js" );
 
 var goBasedOnUrl = function () {
-  if ( !window.location.hash )
+  if ( !window.location.hash ) {
     $( "detail" ).addClass( "hide" );
+  }
 
   if ( window.location.hash && !window.location.changedByProgram ) {
     var testString = window.location.hash;
@@ -19,7 +20,7 @@ var goBasedOnUrl = function () {
       return;
     }
 
-    var r = /!\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/
+    var r = /!\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/;
     match = r.exec(testString);
     if ( match ) {
       var bundleId = match[1]
@@ -61,11 +62,13 @@ if ( window.location.pathname === "/" ) {
 i18n.init({ fallbackLng: "en" }, function(t) {
   $( "body" ).i18n();
 
-  if ( t( "ui.search" ) !== "ui.search" )
+  if ( t( "ui.search" ) !== "ui.search" ) {
     $( ".search" ).attr( "placeholder", t( "ui.search" ) );
+  }
 
-  if ( t( "ui.newCommentText" ) !== "ui.newCommentText" )
+  if ( t( "ui.newCommentText" ) !== "ui.newCommentText" ) {
     $( "body" ).data( "newCommentText", t( "ui.newCommentText" ) );
+  }
 
   var obj;
   if ( t( "comment.flag" ) !== "comment.flag" ) {

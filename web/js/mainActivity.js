@@ -3,17 +3,18 @@ var comments = require( "./comments.js" );
 
 exports.load = function ( data, bundleId, setUrl ) {
   window.location.changedByProgram = true;
-  if ( setUrl )
+  if ( setUrl ) {
     window.location.hash = "!/view/" + bundleId;
+  }
   window.scrollTo( 0, 0 );
-  
+
   var container = $( ".detail" );
   container.removeClass( "hide" );
-  
+
   $( ".close", container ).click( function () {
     container.addClass( "hide" );
   });
-  
+
   $( ".title", container ).html( util.trans( data.title ) );
   $( ".icon", container ).attr( "src", data.icon );
   $( ".description", container ).html( util.trans( data.description ) );
@@ -54,33 +55,31 @@ exports.load = function ( data, bundleId, setUrl ) {
   $( ".minversion", container ).html( versionData.minSugarVersion );
 
   $( ".screenshots", container ).html( "" );
-  ss = util.trans( versionData.screenshots );
-  for ( i in ss ) {
+  screenshots = util.trans( versionData.screenshots );
+  for ( i in screenshots ) {
     var ele = $( "<img>" );
-    var imageSrc = util.trans( versionData.screenshots )[ i ]
+    var imageSrc = screenshots[ i ]
     ele.addClass( "screenshot" );
     ele.attr( "src", imageSrc );
     $( ".screenshots", container ).append( ele );
   }
+
+  if ( screenshots === "" || screenshots.length === 1 ) {
+   $( ".icon", container ).hide();
+  } else {
+   $( ".icon", container ).show();
+  }
+
+  $( ".icon", container ).click( function () {
+    var s = $( ".screenshots", container );
+    s.toggleClass( "closed" );
+  });
 
   $( ".download-devel", container ).hide();
   if ( data.xo_url_latest ) {
     $( ".download-devel", container ).show();
     $( ".download-devel", container ).attr( "href", data.xo_url_latest );
   }
-
-  
-  if ( ss === "" || ss.length === 1 ) {
-   $( ".icon", container ).hide();
-  } else {
-   $( ".icon", container ).show();
-  }
-      
-  
-  $( ".icon", container ).click( function () {
-    var s = $( ".screenshots", container );
-    s.toggleClass( "closed" );
-  });
 
   $( ".by", container).html( "" );
   for ( i in data.by ) {

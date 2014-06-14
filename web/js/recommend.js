@@ -12,8 +12,9 @@ exports.r = function ( account ) {
 
       for ( i in data ) {
         item = data[ i ];
-        if ( i > MAX || item.confidence <= 0)
+        if ( i > MAX || item.confidence <= 0) {
           return;
+        }
         activityList.add( ".recommended-activities", item.bundleId );
       }
     });

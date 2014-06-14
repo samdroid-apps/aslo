@@ -18,10 +18,10 @@ navigator.id.watch({
   onlogin: function ( assertion ) {
     $.post( SERVER + "/login", { assertion: assertion } )
       .done( function ( data ) {
-		$( ".login" ).html( "Logged in" );
+		    $( ".login" ).html( "Logged in" );
         account = JSON.parse( data );
         account.code = assertion;
-		recommend.r( account );
+		    recommend.r( account );
       });
   },
   onlogout: function () {
@@ -48,7 +48,7 @@ exports.setup = function () {
       replyContent = $( ".comments > blockquote" ).html();
       replyId = $( ".comments > blockquote" ).data( "id" );
     }
-    
+
     if ( $( ".comments .add" ).data( "bundleId" ) === undefined )
       return
 
@@ -125,10 +125,10 @@ var setupSelectors = function () {
   $( ".star-sel i" ).click( function () {
     var n = parseInt( $( this ).attr( "id" ) )
     $( ".star-sel" ).data( "selected", n );
-  
+
     $( ".star-sel i" ).removeClass( "fa-star" );
     $( ".star-sel i" ).addClass( "fa-star-o" );
-  
+
     while ( n > 0 ) {
       $( ".star-sel i#" + n ).removeClass( "fa-star-o" );
       $( ".star-sel i#" + n ).addClass( "fa-star" );
@@ -145,7 +145,7 @@ exports.load = function ( bundleId ) {
     .done( function ( strData ) {
     var container = $( ".comments ul" );
     container.html( "" );
-    
+
     var data = JSON.parse( strData );
     for ( i in data ) {
       var item = data[ i ];
@@ -160,28 +160,28 @@ exports.load = function ( bundleId ) {
         focusOn = null
     }
   });
-  
+
   $( ".comments .add" ).data( "bundleId", bundleId );
 };
 
 var addComment = function ( item ) {
   var ele = $( "<li>" );
   ele.attr( "id", item.id );
-  
+
   var img = $( "<img class='person'/>" );
   img.attr( "src", "http://www.gravatar.com/avatar/" + item.email_hash + "?d=monsterid" );
   ele.append( img );
-  
+
   var type = $( "<span class='type-icon'></span>" );
   type.addClass( item.type );
   ele.append( type );
-  
+
   if ( item.type === "reply" ) {
     var bq = $( "<blockquote class='reply-content'>" );
     bq.html( item.reply_content );
     ele.append( bq );
   }
-  
+
   if ( item.type === "review" || item.type === undefined ) {
     var stars = $( "<span class='stars'>" +
     util.repeatS( "<i class='fa fa-star'></i>", item.rating ) +
@@ -190,13 +190,13 @@ var addComment = function ( item ) {
     $( "input[value=" + item.rating.toString() + "]", stars ).attr( "checked", "" );
     ele.append( stars );
   }
-  
+
   var text = $( "<p>" );
   text.html( item.text );
   ele.append( text );
 
   var trans = $( "body" ).data( "commentIconsTitles" );
-  
+
   var report = $( "<i class='fa fa-flag' style='margin-right: 5px;'></i>" );
   report.attr( "title", trans.flag );
   report.data( "id", item.id );
@@ -207,7 +207,7 @@ var addComment = function ( item ) {
     $( this ).parent().addClass( "reported" );
   });
   ele.append( report );
-  
+
   var link = $( "<a><i class='fa fa-link' style='margin-right: 5px;'></i></a>" );
   var bundleId = $( ".comments .add" ).data( "bundleId" );
   link.attr( "title", trans.link );
@@ -220,7 +220,7 @@ var addComment = function ( item ) {
     }, 500 );
   });
   ele.append( link )
-  
+
   var reply = $("<i class='fa fa-reply'></i>");
   reply.attr( "title", trans.reply );
   reply.data( "id", item.id );
@@ -238,12 +238,12 @@ var addComment = function ( item ) {
 
     $( ".comments .types i" ).removeClass( "checked" );
     $( ".comments .types i[value=reply]" ).addClass( "checked" ).show();
-    
+
     $( "html, body" ).animate( {
       scrollTop: $( ".comments > blockquote" ).offset().top - 10
     }, 500 );
   });
   ele.append( reply );
-  
+
   ele.prependTo( $( ".comments ul" ) );
 };

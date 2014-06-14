@@ -33,8 +33,9 @@ exports.add = function ( container, bundleId ) {
   $( container ).append( ele );
 
   var l = data.categories || [];
-  for ( i in l )
+  for ( i in l ) {
     ele.addClass( "category-" + data.categories[i] );
+  }
 
   ele.data( "json", data );
   ele.data( "bundleId", bundleId );
@@ -51,7 +52,7 @@ exports.setup = function () {
 
   for ( var key in activitiesData ) {
     if ( activitiesData.hasOwnProperty( key ) ) {
-      exports.add( ".activities", key )
+      exports.add( ".activities", key );
     }
   }
 };
@@ -108,10 +109,10 @@ navigator.id.watch({
   onlogin: function ( assertion ) {
     $.post( SERVER + "/login", { assertion: assertion } )
       .done( function ( data ) {
-		$( ".login" ).html( "Logged in" );
+		    $( ".login" ).html( "Logged in" );
         account = JSON.parse( data );
         account.code = assertion;
-		recommend.r( account );
+		    recommend.r( account );
       });
   },
   onlogout: function () {
@@ -138,7 +139,7 @@ exports.setup = function () {
       replyContent = $( ".comments > blockquote" ).html();
       replyId = $( ".comments > blockquote" ).data( "id" );
     }
-    
+
     if ( $( ".comments .add" ).data( "bundleId" ) === undefined )
       return
 
@@ -215,10 +216,10 @@ var setupSelectors = function () {
   $( ".star-sel i" ).click( function () {
     var n = parseInt( $( this ).attr( "id" ) )
     $( ".star-sel" ).data( "selected", n );
-  
+
     $( ".star-sel i" ).removeClass( "fa-star" );
     $( ".star-sel i" ).addClass( "fa-star-o" );
-  
+
     while ( n > 0 ) {
       $( ".star-sel i#" + n ).removeClass( "fa-star-o" );
       $( ".star-sel i#" + n ).addClass( "fa-star" );
@@ -235,7 +236,7 @@ exports.load = function ( bundleId ) {
     .done( function ( strData ) {
     var container = $( ".comments ul" );
     container.html( "" );
-    
+
     var data = JSON.parse( strData );
     for ( i in data ) {
       var item = data[ i ];
@@ -250,28 +251,28 @@ exports.load = function ( bundleId ) {
         focusOn = null
     }
   });
-  
+
   $( ".comments .add" ).data( "bundleId", bundleId );
 };
 
 var addComment = function ( item ) {
   var ele = $( "<li>" );
   ele.attr( "id", item.id );
-  
+
   var img = $( "<img class='person'/>" );
   img.attr( "src", "http://www.gravatar.com/avatar/" + item.email_hash + "?d=monsterid" );
   ele.append( img );
-  
+
   var type = $( "<span class='type-icon'></span>" );
   type.addClass( item.type );
   ele.append( type );
-  
+
   if ( item.type === "reply" ) {
     var bq = $( "<blockquote class='reply-content'>" );
     bq.html( item.reply_content );
     ele.append( bq );
   }
-  
+
   if ( item.type === "review" || item.type === undefined ) {
     var stars = $( "<span class='stars'>" +
     util.repeatS( "<i class='fa fa-star'></i>", item.rating ) +
@@ -280,13 +281,13 @@ var addComment = function ( item ) {
     $( "input[value=" + item.rating.toString() + "]", stars ).attr( "checked", "" );
     ele.append( stars );
   }
-  
+
   var text = $( "<p>" );
   text.html( item.text );
   ele.append( text );
 
   var trans = $( "body" ).data( "commentIconsTitles" );
-  
+
   var report = $( "<i class='fa fa-flag' style='margin-right: 5px;'></i>" );
   report.attr( "title", trans.flag );
   report.data( "id", item.id );
@@ -297,7 +298,7 @@ var addComment = function ( item ) {
     $( this ).parent().addClass( "reported" );
   });
   ele.append( report );
-  
+
   var link = $( "<a><i class='fa fa-link' style='margin-right: 5px;'></i></a>" );
   var bundleId = $( ".comments .add" ).data( "bundleId" );
   link.attr( "title", trans.link );
@@ -310,7 +311,7 @@ var addComment = function ( item ) {
     }, 500 );
   });
   ele.append( link )
-  
+
   var reply = $("<i class='fa fa-reply'></i>");
   reply.attr( "title", trans.reply );
   reply.data( "id", item.id );
@@ -328,13 +329,13 @@ var addComment = function ( item ) {
 
     $( ".comments .types i" ).removeClass( "checked" );
     $( ".comments .types i[value=reply]" ).addClass( "checked" ).show();
-    
+
     $( "html, body" ).animate( {
       scrollTop: $( ".comments > blockquote" ).offset().top - 10
     }, 500 );
   });
   ele.append( reply );
-  
+
   ele.prependTo( $( ".comments ul" ) );
 };
 
@@ -345,8 +346,9 @@ var search = require( "./search.js" );
 var comments = require( "./comments.js" );
 
 var goBasedOnUrl = function () {
-  if ( !window.location.hash )
+  if ( !window.location.hash ) {
     $( "detail" ).addClass( "hide" );
+  }
 
   if ( window.location.hash && !window.location.changedByProgram ) {
     var testString = window.location.hash;
@@ -360,7 +362,7 @@ var goBasedOnUrl = function () {
       return;
     }
 
-    var r = /!\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/
+    var r = /!\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/;
     match = r.exec(testString);
     if ( match ) {
       var bundleId = match[1]
@@ -402,11 +404,13 @@ if ( window.location.pathname === "/" ) {
 i18n.init({ fallbackLng: "en" }, function(t) {
   $( "body" ).i18n();
 
-  if ( t( "ui.search" ) !== "ui.search" )
+  if ( t( "ui.search" ) !== "ui.search" ) {
     $( ".search" ).attr( "placeholder", t( "ui.search" ) );
+  }
 
-  if ( t( "ui.newCommentText" ) !== "ui.newCommentText" )
+  if ( t( "ui.newCommentText" ) !== "ui.newCommentText" ) {
     $( "body" ).data( "newCommentText", t( "ui.newCommentText" ) );
+  }
 
   var obj;
   if ( t( "comment.flag" ) !== "comment.flag" ) {
@@ -429,17 +433,18 @@ var comments = require( "./comments.js" );
 
 exports.load = function ( data, bundleId, setUrl ) {
   window.location.changedByProgram = true;
-  if ( setUrl )
+  if ( setUrl ) {
     window.location.hash = "!/view/" + bundleId;
+  }
   window.scrollTo( 0, 0 );
-  
+
   var container = $( ".detail" );
   container.removeClass( "hide" );
-  
+
   $( ".close", container ).click( function () {
     container.addClass( "hide" );
   });
-  
+
   $( ".title", container ).html( util.trans( data.title ) );
   $( ".icon", container ).attr( "src", data.icon );
   $( ".description", container ).html( util.trans( data.description ) );
@@ -480,33 +485,31 @@ exports.load = function ( data, bundleId, setUrl ) {
   $( ".minversion", container ).html( versionData.minSugarVersion );
 
   $( ".screenshots", container ).html( "" );
-  ss = util.trans( versionData.screenshots );
-  for ( i in ss ) {
+  screenshots = util.trans( versionData.screenshots );
+  for ( i in screenshots ) {
     var ele = $( "<img>" );
-    var imageSrc = util.trans( versionData.screenshots )[ i ]
+    var imageSrc = screenshots[ i ]
     ele.addClass( "screenshot" );
     ele.attr( "src", imageSrc );
     $( ".screenshots", container ).append( ele );
   }
+
+  if ( screenshots === "" || screenshots.length === 1 ) {
+   $( ".icon", container ).hide();
+  } else {
+   $( ".icon", container ).show();
+  }
+
+  $( ".icon", container ).click( function () {
+    var s = $( ".screenshots", container );
+    s.toggleClass( "closed" );
+  });
 
   $( ".download-devel", container ).hide();
   if ( data.xo_url_latest ) {
     $( ".download-devel", container ).show();
     $( ".download-devel", container ).attr( "href", data.xo_url_latest );
   }
-
-  
-  if ( ss === "" || ss.length === 1 ) {
-   $( ".icon", container ).hide();
-  } else {
-   $( ".icon", container ).show();
-  }
-      
-  
-  $( ".icon", container ).click( function () {
-    var s = $( ".screenshots", container );
-    s.toggleClass( "closed" );
-  });
 
   $( ".by", container).html( "" );
   for ( i in data.by ) {
@@ -535,8 +538,9 @@ exports.r = function ( account ) {
 
       for ( i in data ) {
         item = data[ i ];
-        if ( i > MAX || item.confidence <= 0)
+        if ( i > MAX || item.confidence <= 0) {
           return;
+        }
         activityList.add( ".recommended-activities", item.bundleId );
       }
     });
@@ -553,8 +557,9 @@ var doSearch = function () {
   term = $( "input.search" ).val().toLowerCase();
 
   var catTerm = "";
-  if ( currentCategory !== "any" )
+  if ( currentCategory !== "any" ) {
     catTerm = "CATEGORY:" + currentCategory;
+  }
 
   if ( term === "" && catTerm === "" ) {
     $( ".activities li" ).each( function (index) {
@@ -573,8 +578,9 @@ var doSearch = function () {
     console.log( termList );
     ele.each( function ( index ) {
       var ss = $( this ).data( "searchString" ) || "";
-      if ( ss === "" )
+      if ( ss === "" ) {
         $( this ).hide();
+      }
 
       var found = true;
       var i = 0;
@@ -583,10 +589,11 @@ var doSearch = function () {
           i++;
       };
 
-      if ( found )
+      if ( found ) {
         $( this ).show()
-      else
+      } else {
         $( this ).hide();
+      }
     });
   };
   lastCategory = catTerm;
@@ -606,8 +613,9 @@ exports.setup = function () {
 
 exports.makeSearchString = function ( data ) {
   catString = "";
-  for ( i in ( data.categories || [] ) )
+  for ( i in ( data.categories || [] ) ) {
     catString += " CATEGORY:" + data.categories[ i ];
+  }
 
   return util.trans( data.title ).toLowerCase() +
          "  " +
@@ -625,40 +633,52 @@ exports.repeatS = function (s, t) {
 }
 
 exports.trans = function ( obj ) {
-  if ( obj === undefined )
+  if ( obj === undefined ) {
     return "";
+  }
 
   var ul = navigator.language || navigator.userLanguage;
-  if ( obj[ ul ] !== undefined )  // Same
+  if ( obj[ ul ] !== undefined ) {  // Same lang, same country
     return obj[ ul ];
-  
-  for ( key in obj )  // Same lang, different country
-    if ( obj.hasOwnProperty( key ) )
-      if ( key.substr( 0, 2 ) == ul.substr( 0, 2 ) )
+  }
+
+  for ( key in obj ) {  // Same lang, different country
+    if ( obj.hasOwnProperty( key ) ) {
+      if ( key.substr( 0, 2 ) == ul.substr( 0, 2 ) ) {
         return obj[ key ];
+      }
+    }
+  }
 
-  if ( "en-US" in obj )
-    return obj[ "en-US" ]; 
+  if ( "en-US" in obj ) {
+    return obj[ "en-US" ];
+  }
 
-  for ( key in obj )  // Anything
-    if ( obj.hasOwnProperty( key ) )
+  for ( key in obj ) {  // Anything
+    if ( obj.hasOwnProperty( key ) ) {
       return obj[ key ];
+    }
+  }
 };
 
+var DEFAULT_SUGAR = 86;
+
 exports.getSugarVersion = function () {
-  var r = /SugarLabs\/0\.([0-9]+)/
+  var r = /SugarLabs\/0\.([0-9]+)/;
   match = r.exec(navigator.userAgent);
-  if ( match )
+  if ( match ) {
     return parseInt( match[1] );
-  return 86;  // Default version
+  }
+  return DEFAULT_SUGAR;  // Default version
 }
 
 exports.sugarVersionToInt = function ( vString ) {
-  var r = /0\.([0-9]+)/
+  var r = /0\.([0-9]+)/;
   match = r.exec(vString);
-  if ( match )
+  if ( match ) {
     return parseInt( match[1] );
-  return 86;
+  }
+  return DEFAULT_SUGAR;
 }
 
 },{}]},{},[4])

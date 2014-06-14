@@ -1,3 +1,5 @@
+# require 'uglifier'
+
 LIBS = [
   "./js/lib/jquery.min.js",
   "./js/lib/prefixfree.min.js",
@@ -27,6 +29,7 @@ module Jekyll
       all += File.read "./js/outp.js"
 
       return all
+      # Uglifier.compile all
     end
   end
 end
