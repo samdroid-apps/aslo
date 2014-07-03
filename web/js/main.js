@@ -2,6 +2,7 @@ var activityList = require( "./activityList.js" );
 var mainActivity = require( "./mainActivity.js" );
 var search = require( "./search.js" );
 var comments = require( "./comments.js" );
+require( "./i18n.js" ).setup();
 
 var goBasedOnUrl = function () {
   if ( !window.location.hash ) {
@@ -58,6 +59,7 @@ $(document).ready( function () {
 
 });
 
+/*
 if ( window.location.pathname === "/" ) {
 i18n.init({ fallbackLng: "en" }, function(t) {
   $( "body" ).i18n();
@@ -83,4 +85,4 @@ i18n.init({ fallbackLng: "en" }, function(t) {
   $( "body" ).data( "commentIconsTitles", obj );
 
 });
-}
+}*/

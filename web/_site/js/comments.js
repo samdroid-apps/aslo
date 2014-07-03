@@ -13,6 +13,7 @@ var OPTIONS = {
 var animations = require( "./animations.js" );
 var util = require( "./util.js" );
 var recommend = require( "./recommend.js" );
+var i18n = require("./i18n.js");
 
 navigator.id.watch({
   onlogin: function ( assertion ) {
@@ -195,10 +196,8 @@ var addComment = function ( item ) {
   text.html( item.text );
   ele.append( text );
 
-  var trans = $( "body" ).data( "commentIconsTitles" );
-
   var report = $( "<i class='fa fa-flag' style='margin-right: 5px;'></i>" );
-  report.attr( "title", trans.flag );
+  report.attr( "title", i18n.get( "Flag this comment for review" ) );
   report.data( "id", item.id );
   report.click( function () {
     $.post( SERVER + "/comments/report", { id: report.data( "id" ) } );
@@ -210,7 +209,7 @@ var addComment = function ( item ) {
 
   var link = $( "<a><i class='fa fa-link' style='margin-right: 5px;'></i></a>" );
   var bundleId = $( ".comments .add" ).data( "bundleId" );
-  link.attr( "title", trans.link );
+  link.attr( "title", i18n.get( "Link to this comment" ) );
   link.attr( "href", "/#!/view/" + bundleId + "/comment=>" + item.id );
   link.data( "id", item.id );
   link.click( function () {
@@ -222,7 +221,7 @@ var addComment = function ( item ) {
   ele.append( link )
 
   var reply = $("<i class='fa fa-reply'></i>");
-  reply.attr( "title", trans.reply );
+  reply.attr( "title", i18n.get( "Reply to this comment" ) );
   reply.data( "id", item.id );
   reply.data( "text", ele.html() );
   reply.click( function () {

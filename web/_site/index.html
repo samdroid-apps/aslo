@@ -14,9 +14,9 @@
   <body>
     <nav>
       <div>
-        <a href="http://activities.sugarlabs.org" data-i18n="nav.activities">Activities</a>
-        <a href="http://wiki.sugarlabs.org" data-i18n="nav.wiki">Wiki</a>
-        <a class="login" data-i18n="nav.login">Login</a>
+        <a href="http://activities.sugarlabs.org" i18n-content>Activities</a>
+        <a href="http://wiki.sugarlabs.org" i18n-content>Wiki</a>
+        <a class="login" i18n-content>Login</a>
       </div>
     </nav>
 
@@ -24,7 +24,7 @@
       <div class="close"><i class="fa fa-arrow-circle-left fa-lg"></i></div>
       <div class="error noversion">
         <i class="fa fa-exclamation-triangle fa-lg"></i>
-        <span  data-i18n="detail.noVersion">
+        <span i18n-content>
           We can't find a version that will run with your system, be careful!
         </span>
       </div>
@@ -33,44 +33,44 @@
       <div class="screenshots closed"></div>
       <i class="fa fa-angle-double-down icon"></i>
       <p class="description"></p>
-      <p class="whatsnewlabel"><b data-i18n="detail.whatsnew">What's New:</b></p>
+      <p class="whatsnewlabel"><b i18n-content>What's New:</b></p>
       <p class="whatsnew"></p>
 
       <a class="download">
         <i class="fa fa-download fa-lg"></i>
-        <span data-i18n="detail.download">Download</span>
+        <span i18n-content>Download</span>
       </a><br/>
-      <p><span data-i18n="detail.minSugarVersion">Min. Sugar Version</span> <b class="minversion"></b></p>
-      <a class="download-devel" data-i18n="detail.downloadDevelVersion">Download Devel Version</a>
+      <p><span i18n-content>Min. Sugar Version</span> <b class="minversion"></b></p>
+      <a class="download-devel" i18n-content>Download Devel Version</a>
       <a class="github">
         <i class="fa fa-github-alt fa-lg"></i>
-        <span data-i18n="detail.github">Check it out on GitHub</span>
+        <span i18n-content>Check it out on GitHub</span>
       </a>
 
       <hr class="sep"/>
 
       <div class="comments">
         <blockquote style="display: none"></blockquote><br/>
-        <textarea class="add-content" data-i18n="detail.reviewTheActivity">
+        <textarea class="add-content" i18n-content>
                   Click then type your review...
         </textarea>
         <br/>
 
         <span class="types">
     		<i class="fa fa-star checked" value="review"
-               data-i18n="[title]reviewtype.rating"
+               i18n-title
                title="Rating"></i>
     		<i class="fa fa-question" value="question"
-               data-i18n="[title]reviewtype.question"
+               i18n-title
                title="Question"></i>
     		<i class="fa fa-lightbulb-o" value="idea"
-               data-i18n="[title]reviewtype.idea"
+               i18n-title
                title="Idea"></i>
     		<i class="fa fa-bug" value="problem"
-               data-i18n="[title]reviewtype.problem"
+               i18n-title
                title="Problem"></i>
     		<i class="fa fa-reply" value="reply"
-               data-i18n="[title]reviewtype.reply"
+               i18n-title
                title="Reply"></i>
 		</span>
         <br/>
@@ -118,7 +118,8 @@
                 background-size: 
                 margin-top: -13px">
       <a href="/2014/04/26/welcome-to-jekyll.html" class="no-style">
-        <p class="latest-aslo-info">Here is the latest from the ASLO blog:</p>
+        <p class="latest-aslo-info" i18n-content>
+           Here is the latest from the ASLO blog:</p>
 
         <div class="title please-center">
           <img class="person no-c" src="http://www.gravatar.com/avatar/673cabf7d0713b0c64b9d54f5ee5b2e2"/>
@@ -132,54 +133,55 @@
     </div>
 
     <div class="all-activities">
-      <input class="search" type="search" placeholder="Search..."/>
+      <input class="search" type="search" placeholder="Search..."
+             i18n-placeholder/>
       <div class="categories">
         <i class="fa fa-check-square-o fa-2x any checked"
-           data-i18n="[title]cat.all"
+           i18n-title
            title="All Activities"
            filter="any"></i>
         <i class="fa fa-gamepad fa-2x red"
-           data-i18n="[title]cat.games"
+           i18n-title
            title="Games"
            filter="game"></i>
         <i class="fa fa-code fa-2x yellow"
-           data-i18n="[title]cat.programming"
+           i18n-title
            title="Programming Activities"
            filter="programming"></i>
         <i class="fa fa-globe fa-2x blue"
-           data-i18n="[title]cat.internet"
+           i18n-title
            title="Internet Activities"
            filter="internet"></i>
         <i class="fa fa-flask fa-2x green"
-           data-i18n="[title]cat.science"
+           i18n-title
            title="Science Activities"
            filter="science"></i>
         <i class="fa fa-money fa-2x aq"
-           data-i18n="[title]cat.maths"
+           i18n-title
            title="Maths Activities"
            filter="maths"></i>
         <i class="fa fa-language fa-2x lime"
-           data-i18n="[title]cat.language"
+           i18n-title
            title="Language Activities"
            filter="language"></i>
         <i class="fa fa-map-marker fa-2x navy"
-           data-i18n="[title]cat.geography"
+           i18n-title
            title="Geography Activities"
            filter="geography"></i>
         <i class="fa fa-pencil-square-o fa-2x orange"
-           data-i18n="[title]cat.office"
+           i18n-title
            title="Office Activities"
            filter="office"></i>
         <i class="fa fa-picture-o fa-2x purple"
-           data-i18n="[title]cat.creative"
+           i18n-title
            title="Creative Activities"
            filter="creative"></i>
         <i class="fa fa-wrench fa-2x f"
-           data-i18n="[title]cat.tools"
+           i18n-title
            title="Tools"
            filter="tools"></i>
         <i class="fa fa-linux fa-2x black"
-           data-i18n="[title]cat.system"
+           i18n-title
            title="System Activities"
            filter="system"></i>
       </div>

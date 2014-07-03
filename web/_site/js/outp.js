@@ -44,7 +44,7 @@ exports.setup = function () {
   }
 };
 
-},{"./mainActivity.js":5,"./search.js":7,"./util.js":8}],2:[function(require,module,exports){
+},{"./mainActivity.js":6,"./search.js":8,"./util.js":9}],2:[function(require,module,exports){
 exports.done = function () {
   var ele = $( "<span class='done'></span>" );
   $( "body" ).append( ele );
@@ -91,6 +91,7 @@ var OPTIONS = {
 var animations = require( "./animations.js" );
 var util = require( "./util.js" );
 var recommend = require( "./recommend.js" );
+var i18n = require("./i18n.js");
 
 navigator.id.watch({
   onlogin: function ( assertion ) {
@@ -273,10 +274,8 @@ var addComment = function ( item ) {
   text.html( item.text );
   ele.append( text );
 
-  var trans = $( "body" ).data( "commentIconsTitles" );
-
   var report = $( "<i class='fa fa-flag' style='margin-right: 5px;'></i>" );
-  report.attr( "title", trans.flag );
+  report.attr( "title", i18n.get( "Flag this comment for review" ) );
   report.data( "id", item.id );
   report.click( function () {
     $.post( SERVER + "/comments/report", { id: report.data( "id" ) } );
@@ -288,7 +287,7 @@ var addComment = function ( item ) {
 
   var link = $( "<a><i class='fa fa-link' style='margin-right: 5px;'></i></a>" );
   var bundleId = $( ".comments .add" ).data( "bundleId" );
-  link.attr( "title", trans.link );
+  link.attr( "title", i18n.get( "Link to this comment" ) );
   link.attr( "href", "/#!/view/" + bundleId + "/comment=>" + item.id );
   link.data( "id", item.id );
   link.click( function () {
@@ -300,7 +299,7 @@ var addComment = function ( item ) {
   ele.append( link )
 
   var reply = $("<i class='fa fa-reply'></i>");
-  reply.attr( "title", trans.reply );
+  reply.attr( "title", i18n.get( "Reply to this comment" ) );
   reply.data( "id", item.id );
   reply.data( "text", ele.html() );
   reply.click( function () {
@@ -326,11 +325,89 @@ var addComment = function ( item ) {
   ele.prependTo( $( ".comments ul" ) );
 };
 
-},{"./animations.js":2,"./recommend.js":6,"./util.js":8}],4:[function(require,module,exports){
+},{"./animations.js":2,"./i18n.js":4,"./recommend.js":7,"./util.js":9}],4:[function(require,module,exports){
+/*
+|======================|
+| i18n VS util.getLang |
+|======================|
+| i18n translates the  |
+| ui.  GetLang is for  |
+| getting activity     |
+| data in the users    |
+| current language.    |
+|======================|
+*/
+
+// Add avaliable languages here
+var langsAvaliable = [];
+
+var getLangToUse = function () {
+  var ul = navigator.language || navigator.userLanguage;
+
+  if ( langsAvaliable.indexOf( ul ) !== -1 ) {
+    return ul;
+  };
+
+  for ( var i in langsAvaliable ) {
+    var l = langsAvaliable[i];
+    if ( l.substr( 0, 2 ) == ul.substr( 0, 2 ) ) {
+      return l;
+    };
+  }
+
+  return null;
+};
+
+exports.setup = function () {
+  l = getLangToUse();
+  if ( l === null ) {
+    return;
+  };
+
+  var url = "translations/" + l + ".json";
+  $.get( url ).done( function ( data ) {
+    $( "body" ).data( "translations", data );
+	translateBody( data );
+  });
+};
+
+var translateBody = function ( tdata ) {
+  $( "*[i18n-content]" ).each( function () {
+    var e = $( this );
+    if ( e.html().trim() in tdata) {
+      e.html( tdata[e.html().trim()] )
+    };
+  });
+
+  $( "*[i18n-title]" ).each( function () {
+    var e = $( this )
+    if ( e.attr( "title" ).trim() in tdata) {
+      e.attr( "title", tdata[e.attr( "title" ).trim()] )
+    };
+  });
+
+  $( "*[i18n-placeholder]" ).each( function () {
+    var e = $( this )
+    if ( e.attr( "placeholder" ).trim() in tdata) {
+      e.attr( "placeholder", tdata[e.attr( "placeholder" ).trim()] )
+    };
+  });
+};
+
+exports.get = function ( text ) {
+  var data = $( "body" ).data( "translations" );
+  if ( text.trim() in data ) {
+    return data[text.trim()];
+  }
+  return text.trim();
+}
+
+},{}],5:[function(require,module,exports){
 var activityList = require( "./activityList.js" );
 var mainActivity = require( "./mainActivity.js" );
 var search = require( "./search.js" );
 var comments = require( "./comments.js" );
+require( "./i18n.js" ).setup();
 
 var goBasedOnUrl = function () {
   if ( !window.location.hash ) {
@@ -387,6 +464,7 @@ $(document).ready( function () {
 
 });
 
+/*
 if ( window.location.pathname === "/" ) {
 i18n.init({ fallbackLng: "en" }, function(t) {
   $( "body" ).i18n();
@@ -412,9 +490,9 @@ i18n.init({ fallbackLng: "en" }, function(t) {
   $( "body" ).data( "commentIconsTitles", obj );
 
 });
-}
+}*/
 
-},{"./activityList.js":1,"./comments.js":3,"./mainActivity.js":5,"./search.js":7}],5:[function(require,module,exports){
+},{"./activityList.js":1,"./comments.js":3,"./i18n.js":4,"./mainActivity.js":6,"./search.js":8}],6:[function(require,module,exports){
 var util = require( "./util.js" );
 var comments = require( "./comments.js" );
 
@@ -510,7 +588,7 @@ exports.load = function ( data, bundleId, setUrl ) {
   comments.load( bundleId );
 };
 
-},{"./comments.js":3,"./util.js":8}],6:[function(require,module,exports){
+},{"./comments.js":3,"./util.js":9}],7:[function(require,module,exports){
 var SERVER = "http://" + window.location.hostname + ":5002/recommend";
 var MAX = 10;
 
@@ -533,7 +611,7 @@ exports.r = function ( account ) {
     });
 };
 
-},{"./activityList.js":1}],7:[function(require,module,exports){
+},{"./activityList.js":1}],8:[function(require,module,exports){
 var lastQuery = "";
 var lastCategory = "";
 var currentCategory = "any";
@@ -610,7 +688,7 @@ exports.makeSearchString = function ( data ) {
          catString;
 }
 
-},{"./util.js":8}],8:[function(require,module,exports){
+},{"./util.js":9}],9:[function(require,module,exports){
 exports.repeatS = function (s, t) {
   var r = "";
   for ( var i = 0; i < t; i++ ) {
@@ -668,4 +746,4 @@ exports.sugarVersionToInt = function ( vString ) {
   return DEFAULT_SUGAR;
 }
 
-},{}]},{},[4])
+},{}]},{},[5])

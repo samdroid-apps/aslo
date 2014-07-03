@@ -2,8 +2,7 @@
 
 LIBS = [
   "./js/lib/jquery.min.js",
-  "./js/lib/prefixfree.min.js",
-  "./js/lib/i18next-1.6.3.min.js"
+  "./js/lib/prefixfree.min.js"
 ]
 
 module Jekyll
