@@ -46,9 +46,8 @@ def upload_image(img_name, current_hash, svg=False):
 def get_imgs(cp, bundle_id):
     results = {}
     activity = get_activity_data(bundle_id)
-    if activity == {}:
-        if os.path.isdir('dl/screenshots'):
-            results.update(upload_screenshots(activity))
+    if os.path.isdir('dl/screenshots'):
+        results.update(upload_screenshots(activity))
 
     if not cp.has_option('Activity', 'icon'):
         return results
