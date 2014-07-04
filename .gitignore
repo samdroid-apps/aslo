@@ -12,3 +12,4 @@ debug
 /web/js/.fuse_hidden*
 node_modules
 web/css/.sass-cache
+web/.sass-cache
