@@ -26,10 +26,11 @@ exports.add = function ( container, bundleId ) {
   ele.data( "json", data );
   ele.data( "bundleId", bundleId );
   ele.data( "searchString", search.makeSearchString( data ) );
-  ele.click( function () {
+  ele.click( function ( e ) {
     mainActivity.load( $( this ).data( "json" ),
                        $( this ).data( "bundleId" ),
                        true );
+    e.preventDefault();
   });
 }
 

@@ -10,3 +10,5 @@ comments/email.password
 rethinkdb_data 
 debug
 /web/js/.fuse_hidden*
+node_modules
+web/css/.sass-cache

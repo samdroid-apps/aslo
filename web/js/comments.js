@@ -210,7 +210,7 @@ var addComment = function ( item ) {
   var link = $( "<a><i class='fa fa-link' style='margin-right: 5px;'></i></a>" );
   var bundleId = $( ".comments .add" ).data( "bundleId" );
   link.attr( "title", i18n.get( "Link to this comment" ) );
-  link.attr( "href", "/#!/view/" + bundleId + "/comment=>" + item.id );
+  link.attr( "href", "/view/" + bundleId + "/comment=>" + item.id );
   link.data( "id", item.id );
   link.click( function () {
     var id = $( this ).data( "id" );

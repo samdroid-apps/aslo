@@ -68,6 +68,9 @@ var translateBody = function ( tdata ) {
 
 exports.get = function ( text ) {
   var data = $( "body" ).data( "translations" );
+  if ( data === undefined ) {
+    return text.trim();
+  }
   if ( text.trim() in data ) {
     return data[text.trim()];
   }

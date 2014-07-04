@@ -2,17 +2,28 @@ var activityList = require( "./activityList.js" );
 var mainActivity = require( "./mainActivity.js" );
 var search = require( "./search.js" );
 var comments = require( "./comments.js" );
-require( "./i18n.js" ).setup();
+var i18n = require( "./i18n.js" );
+i18n.setup()
 
 var goBasedOnUrl = function () {
-  if ( !window.location.hash ) {
-    $( "detail" ).addClass( "hide" );
+  if ( $( "body" ).data( "oldPathname" ) === window.location.pathname ) {
+    return;
+  } else {
+    $( "body" ).data( "oldPathname", window.location.pathname );
   }
 
-  if ( window.location.hash && !window.location.changedByProgram ) {
-    var testString = window.location.hash;
+  console.log( window.location.pathname )
 
-    var r = /!\/view\/([^\/]*)$/;
+  if ( !window.location.pathname || window.location.pathname === "/" ) {
+    document.title = i18n.get( "Sugar Activities" );
+    var container = $( ".detail" );
+    container.addClass( "hide" );
+  }
+
+  if ( window.location.pathname && !window.location.changedByProgram ) {
+    var testString = window.location.pathname;
+
+    var r = /\/view\/([^\/]*)$/;
     match = r.exec(testString);
     if ( match ) {
       var bundleId = match[1]
@@ -21,7 +32,7 @@ var goBasedOnUrl = function () {
       return;
     }
 
-    var r = /!\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/;
+    var r = /\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/;
     match = r.exec(testString);
     if ( match ) {
       var bundleId = match[1]
@@ -35,8 +46,9 @@ var goBasedOnUrl = function () {
 }
 
 var dataUrl = "http://aslo-bot-master.sugarlabs.org/data.json";
-$(document).ready( function () {
-  if ( window.location.pathname === "/" ) {
+$( document ).ready( function () {
+  if ( window.location.pathname === "/"
+       || window.location.pathname.startsWith( "/view" ) ) {
     var list = $(".activities");
     var detail = $(".detail");
 
@@ -47,8 +59,8 @@ $(document).ready( function () {
       activityList.setup();
 
       goBasedOnUrl();
+      setInterval( goBasedOnUrl, 750 );
     });
-    window.onhashchange = goBasedOnUrl;
 
     search.setup();
     comments.setup();
@@ -58,31 +70,3 @@ $(document).ready( function () {
   StyleFix.styleAttribute( $( ".activity-bg" )[0] );
 
 });
-
-/*
-if ( window.location.pathname === "/" ) {
-i18n.init({ fallbackLng: "en" }, function(t) {
-  $( "body" ).i18n();
-
-  if ( t( "ui.search" ) !== "ui.search" ) {
-    $( ".search" ).attr( "placeholder", t( "ui.search" ) );
-  }
-
-  if ( t( "ui.newCommentText" ) !== "ui.newCommentText" ) {
-    $( "body" ).data( "newCommentText", t( "ui.newCommentText" ) );
-  }
-
-  var obj;
-  if ( t( "comment.flag" ) !== "comment.flag" ) {
-    obj = {"flag":  t( "comment.flag" ),
-           "link":  t( "comment.link" ),
-           "reply": t( "comment.reply" )};
-  } else {
-    obj = {"flag":  "Flag this comment for review",
-           "link":  "Link to this comment",
-           "reply": "Reply to this comment"};
-  };
-  $( "body" ).data( "commentIconsTitles", obj );
-
-});
-}*/

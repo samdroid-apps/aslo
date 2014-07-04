@@ -1,17 +1,22 @@
 var util = require( "./util.js" );
 var comments = require( "./comments.js" );
+var i18n = require("./i18n.js" );
 
 exports.load = function ( data, bundleId, setUrl ) {
-  window.location.changedByProgram = true;
   if ( setUrl ) {
-    window.location.hash = "!/view/" + bundleId;
+    history.pushState(null, null, "/view/" + bundleId);
+    window.location.changedByProgram = true;
   }
+  document.title = util.trans( data.title )
+                   + " - " + i18n.get( "Sugar Activities" );
   window.scrollTo( 0, 0 );
 
   var container = $( ".detail" );
   container.removeClass( "hide" );
 
   $( ".close", container ).click( function () {
+    history.pushState(null, null, "/");
+    document.title = i18n.get( "Sugar Activities" );
     container.addClass( "hide" );
   });
 
