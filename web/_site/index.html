@@ -5,9 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width">
 
-    <script src="https://login.persona.org/include.js"></script>
     <script async src="/js/outpWithDeps.js"></script>
-
     <link rel="stylesheet" href="/css/index.css"/>
   </head>
 
@@ -19,6 +17,41 @@
         <a class="login" i18n-content>Login</a>
       </div>
     </nav>
+
+    <div class="login-popover hide">
+      <span class="login-form">
+        <h1>
+          <i class="fa fa-arrow-circle-left fa-lg close-login-popover"></i>
+          <span i18n-content>Login</span>
+        </h1>
+        <div class="error" style="display: none;">
+          <i class="fa fa-exclamation-triangle fa-lg"></i>
+          <span class="content"></span>
+        </div>
+        <input class="username" placeholder="Username" i18n-placeholder/>
+        <input type="password" class="password" placeholder="Password" i18n-placeholder/>
+        <button class="login" i18n-content>Login</button>
+      </span>
+      <br/><br/>
+      <span class="signup-form">
+        <h1 i18n-content>Sign Up</h1>
+        <div class="error" style="display: none;">
+          <i class="fa fa-exclamation-triangle fa-lg"></i>
+          <span class="content"></span>
+        </div>
+
+        <label i18n-content>Pick a username - remember it must be unique.</label><br/>
+        <input class="username" placeholder="Username" i18n-placeholder/><br/><br/>
+
+        <label i18n-content>Choose a password you won't forget.</label><br/>
+        <input type="password" class="password" placeholder="Password" i18n-placeholder/><br/><br/>
+
+        <label i18n-content>Tell us 2 or more things about yourself (eg: your year 1 teacher's name, your favourite football team).  We will keep this secret and use it to recover your password</label><br/>
+        <textarea class="secret"></textarea><br/><br/>
+
+        <button class="signup">Sign Up</button>
+      </span>
+    </div>
 
     <div class="detail hide">
       <div class="close"><i class="fa fa-arrow-circle-left fa-lg"></i></div>

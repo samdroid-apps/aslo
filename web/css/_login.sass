@@ -1,0 +1,28 @@
+@import colors
+
+.login-popover
+  display: block
+  position: fixed
+  z-index: 99
+  top: 100px
+  left: -webkit-calc(50% - ((20px + 500px)/2))
+  left: calc(50% - ((20px + 500px)/2))
+
+  width: 500px
+  padding: 7px 20px
+
+  background-color: $purple
+  box-shadow: 0 0 10px $black
+  border-radius: 5px
+
+  color: white
+  font-size: 16px
+
+  transition: 1s ease all
+  &.hide
+    margin-top: -1000px
+
+  .secret
+    width: 500px
+    font-family: sans-serif
+    

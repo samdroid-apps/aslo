@@ -19,7 +19,7 @@ exports.loading = function () {
 var defaultNewCommentText = "New Comment - Scroll Up to See";
 exports.addComment = function () {
   var ele = $( "<span class='new-item'>" +
-               $( "body" ).data( "newCommentText" ) || defaultNewCommentText +
+               i18n.get( defaultNewCommentText ) +
                "</span>" );
   $( "body" ).append( ele );
 

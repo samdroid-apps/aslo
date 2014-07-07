@@ -1,5 +1,6 @@
 import json
 import time
+import uuid
 import hashlib
 
 from flask import Flask, jsonify, abort, request
@@ -14,43 +15,62 @@ from twisted.protocols.basic import LineReceiver
 from txws import WebSocketFactory
 
 from helpers import crossdomain
-from mailer import Mailer, ReplyMailer
+from mailer import Mailer
+from token_object import TokenObject
 
-SITE_URL = 'http://0.0.0.0:8000'
 DATA_JSON = 'http://aslo-bot-master.sugarlabs.org/data.json'
-auths = {}  # Email => Assertion
+auths = {}  # User => TokenObject
 MD_CONTEXT = 'sugarlabs/sugar'
 
 conn = r.connect('localhost', 28015)
 comments = r.db('comments').table('comments')
 emails = r.db('comments').table('emails')
+users = r.db('comments').table('users')
 
 mailer = Mailer()
-reply_mailer = ReplyMailer()
 
 app = Flask(__name__)
 
 
 ### Login Stuff ###
 
+@app.route('/signup', methods=['POST'])
+@crossdomain(origin='*')
+def signup():
+    if users.get(request.form['username']).run(conn):
+        return jsonify(error=True, msg="The username is already used")
+
+    if not request.form['username'] or \
+       not request.form['password'] or \
+       not request.form['secret']:
+       return jsonify(error=True, msg="Please fill out all the fields")
+
+    salt = str(uuid.uuid4())
+    hash_ = hashlib.sha1(request.form['password'] + salt).hexdigest()
+    users.insert({
+        'salt': salt, 'password_hash': hash_, 
+        'id': request.form['username'],
+        'secret': request.form['secret']}).run(conn)
+
+    t = TokenObject()
+    auths[request.form['username']] = t
+    return jsonify(error=False, token=str(t))
+
 
 @app.route('/login', methods=['POST'])
 @crossdomain(origin='*')
 def login():
-    if 'assertion' not in request.form:
-        abort(400)
+    user = users.get(request.form['username']).run(conn)
+    if user is None:
+        return jsonify(error=True, msg="Can't find your username")
 
-    payload = {'assertion': request.form['assertion'], 'audience': SITE_URL}
-    i = requests.post('https://verifier.login.persona.org/verify',
-                      data=payload, verify=True)
+    hash_ = hashlib.sha1(request.form['password'] + user['salt']).hexdigest()
+    if hash_ == user['password_hash']:
+        t = TokenObject()
+        auths[user['id']] = t
+        return jsonify(error=False, token=str(t))
 
-    if i.ok:
-        resp = i.json()
-        if resp['status'] == 'okay':
-            auths[resp['email']] = request.form['assertion']
-            return i.text
-
-    abort(500)
+    return jsonify(error=True, msg="Wrong password")
 
 
 
@@ -61,13 +81,11 @@ def login():
 @app.route('/comments/post', methods=['POST'])
 @crossdomain(origin='*')
 def post():
-    print 1
-    email = request.form['email']
-    assertion = request.form['code']
-    if auths.get(email) != assertion:
+    global auths
+    username = request.form['username']
+    token = request.form['token']
+    if not auths.get(username) or not auths.get(username).is_valid(token):
         abort(400)
-
-    email_hash = hashlib.md5(request.form['email']).hexdigest()
 
     text = request.form['content']
     dataS = json.dumps({'text': text, 'mode': 'gfm', 'context': MD_CONTEXT})
@@ -78,7 +96,7 @@ def post():
 
     # Only 1 review per email
     if request.form['type'] == 'review':
-        review = comments.filter({'email': request.form['email'],
+        review = comments.filter({'user': username,
             'bundle_id': request.form['bundle_id'],
             'type': 'review'})
         try:
@@ -92,8 +110,7 @@ def post():
 
     f = request.form
     added_obj = {
-                'email_hash': email_hash,
-                'email': f['email'],
+                'user': username,
                 'bundle_id': f['bundle_id'],
 
                 'type': f['type'],
@@ -166,9 +183,7 @@ def get(bundle_id):
 
     result = comments.filter({'bundle_id': bundle_id,
                               'flagged': False,
-                              'deleted': False}).order_by('time').pluck(
-                              'text', 'rating', 'email_hash', 'id', 'type',
-                              'is_reply', 'reply_id', 'reply_content').run(conn)
+                              'deleted': False}).order_by('time').run(conn)
     return json.dumps(list(result))
 
 
@@ -185,7 +200,7 @@ def report():
     c = comments.get(id_).run(conn)
     comments.get(id_).update({'flagged': True}).run(conn)
 
-    mailer.send(id_, c['text'], c['email'])
+    mailer.send(id_, c['text'], c['user'], c['bundle_id'])
 
     return 'Reported'
 

@@ -1,4 +1,25 @@
 @charset "UTF-8";
+.login-popover {
+  display: block;
+  position: fixed;
+  z-index: 99;
+  top: 100px;
+  left: -webkit-calc(50% - ((20px + 500px)/2));
+  left: calc(50% - ((20px + 500px)/2));
+  width: 500px;
+  padding: 7px 20px;
+  background-color: #a700ff;
+  box-shadow: 0 0 10px #111111;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  transition: 1s ease all; }
+  .login-popover.hide {
+    margin-top: -1000px; }
+  .login-popover .secret {
+    width: 500px;
+    font-family: sans-serif; }
+
 .stars, .star-sel {
   font-size: 2.5em; }
   .stars .fa-star:before, .star-sel .fa-star:before {
@@ -223,6 +244,7 @@ ul.activities {
     opacity: 0;
     transform: scale(3); } }
 .done:before {
+  z-index: 999;
   content: "";
   font: 300px FontAwesome;
   animation: 2s doneAni;
@@ -236,6 +258,7 @@ ul.activities {
   top: calc(50% - 150px); }
 
 .load:before {
+  z-index: 999;
   content: ""; }
 
 @keyframes newItemAni {
@@ -247,6 +270,7 @@ ul.activities {
     opacity: 1;
     transform: scale(1) translate(0, 0); } }
 .new-item {
+  z-index: 999;
   animation: 3s newItemAni;
   position: fixed;
   display: block;

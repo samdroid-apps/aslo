@@ -54,7 +54,7 @@ exports.setup = function () {
   }
 };
 
-},{"./mainActivity.js":6,"./search.js":8,"./util.js":9}],2:[function(require,module,exports){
+},{"./mainActivity.js":7,"./search.js":9,"./util.js":10}],2:[function(require,module,exports){
 exports.done = function () {
   var ele = $( "<span class='done'></span>" );
   $( "body" ).append( ele );
@@ -76,7 +76,7 @@ exports.loading = function () {
 var defaultNewCommentText = "New Comment - Scroll Up to See";
 exports.addComment = function () {
   var ele = $( "<span class='new-item'>" +
-               $( "body" ).data( "newCommentText" ) || defaultNewCommentText +
+               i18n.get( defaultNewCommentText ) +
                "</span>" );
   $( "body" ).append( ele );
 
@@ -87,43 +87,19 @@ exports.addComment = function () {
 
 },{}],3:[function(require,module,exports){
 var account = undefined;
-var SERVER = "http://" + window.location.hostname + ":5000";
+var SERVER = "http://comments.aslo.cf";
 var WS_SERVER = 'ws://' + window.location.hostname + ':9999';
-var OPTIONS = {
-  siteName:
-    "Sugar Labs Activities",
-  termsOfService:
-    "https://www.github.com/samdroid-apps/aslo/blob/master/TOS.md",
-  privacyPolicy:
-    "https://www.github.com/samdroid-apps/aslo/blob/master/PP.md"
-}
 
 var animations = require( "./animations.js" );
 var util = require( "./util.js" );
 var recommend = require( "./recommend.js" );
-var i18n = require("./i18n.js");
-
-navigator.id.watch({
-  onlogin: function ( assertion ) {
-    $.post( SERVER + "/login", { assertion: assertion } )
-      .done( function ( data ) {
-		    $( ".login" ).html( "Logged in" );
-        account = JSON.parse( data );
-        account.code = assertion;
-		    recommend.r( account );
-      });
-  },
-  onlogout: function () {
-    account = undefined;
-  }
-});
+var i18n = require( "./i18n.js" );
+var login = require( "./login.js" );
 
 exports.setup = function () {
-  $( ".login" ).click( function () { navigator.id.request(OPTIONS); } )
-
   $( ".comments .add" ).click( function () {
-    if ( account === undefined ) {
-      navigator.id.request(OPTIONS)
+    if ( !login.isLoggedIn() ) {
+      login.requestLogin();
       return;
     }
 
@@ -143,8 +119,8 @@ exports.setup = function () {
 
     animations.loading();
     $.post( SERVER + "/comments/post", {
-          email: account.email,
-          code: account.code,
+          username: login.getInfo().username,
+          token: login.getInfo().token,
           bundle_id: $( ".comments .add" ).data( "bundleId" ),
 
           content: text,
@@ -257,9 +233,13 @@ var addComment = function ( item ) {
   var ele = $( "<li>" );
   ele.attr( "id", item.id );
 
-  var img = $( "<img class='person'/>" );
-  img.attr( "src", "http://www.gravatar.com/avatar/" + item.email_hash + "?d=monsterid" );
-  ele.append( img );
+  // var img = $( "<img class='person'/>" );
+  // img.attr( "src", "http://www.gravatar.com/avatar/" + item.email_hash + "?d=monsterid" );
+  // ele.append( img );
+
+  var name = $( "<span class='name'>" );
+  name.html( item.user );
+  ele.append( name );
 
   var type = $( "<span class='type-icon'></span>" );
   type.addClass( item.type );
@@ -298,7 +278,7 @@ var addComment = function ( item ) {
   var link = $( "<a><i class='fa fa-link' style='margin-right: 5px;'></i></a>" );
   var bundleId = $( ".comments .add" ).data( "bundleId" );
   link.attr( "title", i18n.get( "Link to this comment" ) );
-  link.attr( "href", "/view/" + bundleId + "/comment=>" + item.id );
+  link.attr( "href", "/view/" + bundleId + "/comment=" + item.id );
   link.data( "id", item.id );
   link.click( function () {
     var id = $( this ).data( "id" );
@@ -335,7 +315,7 @@ var addComment = function ( item ) {
   ele.prependTo( $( ".comments ul" ) );
 };
 
-},{"./animations.js":2,"./i18n.js":4,"./recommend.js":7,"./util.js":9}],4:[function(require,module,exports){
+},{"./animations.js":2,"./i18n.js":4,"./login.js":5,"./recommend.js":8,"./util.js":10}],4:[function(require,module,exports){
 /*
 |======================|
 | i18n VS util.getLang |
@@ -416,10 +396,79 @@ exports.get = function ( text ) {
 }
 
 },{}],5:[function(require,module,exports){
+var SERVER = "http://comments.aslo.cf";
+var i18n = require( "./i18n.js" );
+var animations = require( "./animations.js" );
+
+exports.requestLogin = function () {
+  $( ".login-popover" ).removeClass( "hide" );
+}
+
+exports.isLoggedIn = function () {
+  return $( "body" ).data( "login" ) !== undefined;
+}
+
+exports.getInfo = function () {
+  return $( "body" ).data( "login" );
+}
+
+exports.setup = function () {
+  $( ".close-login-popover" ).click( function () {
+    $( ".login-popover" ).addClass( "hide" );
+  });
+
+  $( "nav .login" ).click( exports.requestLogin );
+
+  $( "button.login" ).click( function () {
+    animations.loading();
+    postData = {
+      username: $( ".login-form .username" ).val(),
+      password: $( ".login-form .password" ).val()
+    }
+    $.post( SERVER + "/login", postData )
+     .done( function ( data ) {
+       $( ".login-form .error" ).css( "display", data.error? "block":"none" );
+       if ( data.error ) {
+         $( ".login-form .error .content" ).html( i18n.get( data.msg ) );
+       } else {
+         $( "body" ).data( "login",
+                           { username: postData.username, token: data.token } );
+         $( "nav .login" ).html( i18n.get( "Signed In" ) );
+         $( ".login-popover" ).addClass( "hide" );
+         animations.done();
+       }
+     });
+  });
+
+  $( "button.signup" ).click( function () {
+    animations.loading();
+    postData = {
+      username: $( ".signup-form .username" ).val(),
+      password: $( ".signup-form .password" ).val(),
+      secret: $( ".signup-form .secret" ).val()
+    }
+    $.post( SERVER + "/signup", postData )
+     .done( function ( data ) {
+       $( ".signup-form .error" ).css( "display", data.error? "block":"none" );
+       if ( data.error ) {
+         $( ".signup-form .error .content" ).html( i18n.get( data.msg ) );
+       } else {
+         $( "body" ).data( "login",
+                           { username: postData.username, token: data.token } );
+         $( "nav .login" ).html( i18n.get( "Signed In" ) );
+         $( ".login-popover" ).addClass( "hide" );
+         animations.done();
+       }
+     });
+  });
+}
+
+},{"./animations.js":2,"./i18n.js":4}],6:[function(require,module,exports){
 var activityList = require( "./activityList.js" );
 var mainActivity = require( "./mainActivity.js" );
 var search = require( "./search.js" );
 var comments = require( "./comments.js" );
+var login = require( "./login.js" );
 var i18n = require( "./i18n.js" );
 i18n.setup()
 
@@ -429,8 +478,6 @@ var goBasedOnUrl = function () {
   } else {
     $( "body" ).data( "oldPathname", window.location.pathname );
   }
-
-  console.log( window.location.pathname )
 
   if ( !window.location.pathname || window.location.pathname === "/" ) {
     document.title = i18n.get( "Sugar Activities" );
@@ -450,7 +497,7 @@ var goBasedOnUrl = function () {
       return;
     }
 
-    var r = /\/view\/([^\/]*)\/comment=>([0-9a-zA-Z\-]*)$/;
+    var r = /\/view\/([^\/]*)\/comment=([0-9a-zA-Z\-]*)$/;
     match = r.exec(testString);
     if ( match ) {
       var bundleId = match[1]
@@ -481,6 +528,7 @@ $( document ).ready( function () {
     });
 
     search.setup();
+    login.setup();
     comments.setup();
   }
 
@@ -489,7 +537,7 @@ $( document ).ready( function () {
 
 });
 
-},{"./activityList.js":1,"./comments.js":3,"./i18n.js":4,"./mainActivity.js":6,"./search.js":8}],6:[function(require,module,exports){
+},{"./activityList.js":1,"./comments.js":3,"./i18n.js":4,"./login.js":5,"./mainActivity.js":7,"./search.js":9}],7:[function(require,module,exports){
 var util = require( "./util.js" );
 var comments = require( "./comments.js" );
 var i18n = require("./i18n.js" );
@@ -590,7 +638,7 @@ exports.load = function ( data, bundleId, setUrl ) {
   comments.load( bundleId );
 };
 
-},{"./comments.js":3,"./i18n.js":4,"./util.js":9}],7:[function(require,module,exports){
+},{"./comments.js":3,"./i18n.js":4,"./util.js":10}],8:[function(require,module,exports){
 var SERVER = "http://" + window.location.hostname + ":5002/recommend";
 var MAX = 10;
 
@@ -613,7 +661,7 @@ exports.r = function ( account ) {
     });
 };
 
-},{"./activityList.js":1}],8:[function(require,module,exports){
+},{"./activityList.js":1}],9:[function(require,module,exports){
 var lastQuery = "";
 var lastCategory = "";
 var currentCategory = "any";
@@ -690,7 +738,7 @@ exports.makeSearchString = function ( data ) {
          catString;
 }
 
-},{"./util.js":9}],9:[function(require,module,exports){
+},{"./util.js":10}],10:[function(require,module,exports){
 exports.repeatS = function (s, t) {
   var r = "";
   for ( var i = 0; i < t; i++ ) {
@@ -748,4 +796,4 @@ exports.sugarVersionToInt = function ( vString ) {
   return DEFAULT_SUGAR;
 }
 
-},{}]},{},[5])
+},{}]},{},[6])

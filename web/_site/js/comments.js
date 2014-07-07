@@ -1,41 +1,17 @@
 var account = undefined;
-var SERVER = "http://" + window.location.hostname + ":5000";
+var SERVER = "http://comments.aslo.cf";
 var WS_SERVER = 'ws://' + window.location.hostname + ':9999';
-var OPTIONS = {
-  siteName:
-    "Sugar Labs Activities",
-  termsOfService:
-    "https://www.github.com/samdroid-apps/aslo/blob/master/TOS.md",
-  privacyPolicy:
-    "https://www.github.com/samdroid-apps/aslo/blob/master/PP.md"
-}
 
 var animations = require( "./animations.js" );
 var util = require( "./util.js" );
 var recommend = require( "./recommend.js" );
-var i18n = require("./i18n.js");
-
-navigator.id.watch({
-  onlogin: function ( assertion ) {
-    $.post( SERVER + "/login", { assertion: assertion } )
-      .done( function ( data ) {
-		    $( ".login" ).html( "Logged in" );
-        account = JSON.parse( data );
-        account.code = assertion;
-		    recommend.r( account );
-      });
-  },
-  onlogout: function () {
-    account = undefined;
-  }
-});
+var i18n = require( "./i18n.js" );
+var login = require( "./login.js" );
 
 exports.setup = function () {
-  $( ".login" ).click( function () { navigator.id.request(OPTIONS); } )
-
   $( ".comments .add" ).click( function () {
-    if ( account === undefined ) {
-      navigator.id.request(OPTIONS)
+    if ( !login.isLoggedIn() ) {
+      login.requestLogin();
       return;
     }
 
@@ -55,8 +31,8 @@ exports.setup = function () {
 
     animations.loading();
     $.post( SERVER + "/comments/post", {
-          email: account.email,
-          code: account.code,
+          username: login.getInfo().username,
+          token: login.getInfo().token,
           bundle_id: $( ".comments .add" ).data( "bundleId" ),
 
           content: text,
@@ -169,9 +145,13 @@ var addComment = function ( item ) {
   var ele = $( "<li>" );
   ele.attr( "id", item.id );
 
-  var img = $( "<img class='person'/>" );
-  img.attr( "src", "http://www.gravatar.com/avatar/" + item.email_hash + "?d=monsterid" );
-  ele.append( img );
+  // var img = $( "<img class='person'/>" );
+  // img.attr( "src", "http://www.gravatar.com/avatar/" + item.email_hash + "?d=monsterid" );
+  // ele.append( img );
+
+  var name = $( "<span class='name'>" );
+  name.html( item.user );
+  ele.append( name );
 
   var type = $( "<span class='type-icon'></span>" );
   type.addClass( item.type );
@@ -210,7 +190,7 @@ var addComment = function ( item ) {
   var link = $( "<a><i class='fa fa-link' style='margin-right: 5px;'></i></a>" );
   var bundleId = $( ".comments .add" ).data( "bundleId" );
   link.attr( "title", i18n.get( "Link to this comment" ) );
-  link.attr( "href", "/view/" + bundleId + "/comment=>" + item.id );
+  link.attr( "href", "/view/" + bundleId + "/comment=" + item.id );
   link.data( "id", item.id );
   link.click( function () {
     var id = $( this ).data( "id" );
