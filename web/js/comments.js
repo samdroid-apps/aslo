@@ -7,6 +7,7 @@ var util = require( "./util.js" );
 var recommend = require( "./recommend.js" );
 var i18n = require( "./i18n.js" );
 var login = require( "./login.js" );
+var xo = require( "./xoPerson.js" );
 
 exports.setup = function () {
   $( ".comments .add" ).click( function () {
@@ -145,13 +146,10 @@ var addComment = function ( item ) {
   var ele = $( "<li>" );
   ele.attr( "id", item.id );
 
-  // var img = $( "<img class='person'/>" );
-  // img.attr( "src", "http://www.gravatar.com/avatar/" + item.email_hash + "?d=monsterid" );
-  // ele.append( img );
-
-  var name = $( "<span class='name'>" );
-  name.html( item.user );
-  ele.append( name );
+  var colors = item.colors.split( "," ) || [ "", "" ];
+  var person = xo.makeIcon( colors[0], colors[1], false )
+  person.attr( "title", item.user );
+  ele.append( person );
 
   var type = $( "<span class='type-icon'></span>" );
   type.addClass( item.type );

@@ -4,12 +4,15 @@
   display: block
   position: fixed
   z-index: 99
-  top: 100px
+  top: 50px
   left: -webkit-calc(50% - ((20px + 500px)/2))
   left: calc(50% - ((20px + 500px)/2))
 
   width: 500px
   padding: 7px 20px
+
+  max-height: 400px
+  overflow-y: scroll
 
   background-color: $purple
   box-shadow: 0 0 10px $black
@@ -25,4 +28,16 @@
   .secret
     width: 500px
     font-family: sans-serif
-    
+
+  .xo-person-bar
+    text-align: center
+
+    span svg
+      border-radius: 33%
+
+    span.selected svg 
+      background-color: grey !important
+
+    span:hover svg
+      background-color: rgba(170, 170, 170, 0.5)
+

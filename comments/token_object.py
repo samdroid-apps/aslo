@@ -13,9 +13,7 @@ class TokenObject():
         return self._string
 
     def is_valid(self, other):
-        print "times", time.time(), self._expire_time
         if time.time() > self._expire_time:
              return False
 
-        print other, self._string
         return other == self._string

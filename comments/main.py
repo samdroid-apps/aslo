@@ -37,20 +37,24 @@ app = Flask(__name__)
 @app.route('/signup', methods=['POST'])
 @crossdomain(origin='*')
 def signup():
+    global auths
     if users.get(request.form['username']).run(conn):
         return jsonify(error=True, msg="The username is already used")
 
     if not request.form['username'] or \
        not request.form['password'] or \
-       not request.form['secret']:
+       not request.form['secret'] or \
+       not request.form['colors']:
        return jsonify(error=True, msg="Please fill out all the fields")
 
     salt = str(uuid.uuid4())
     hash_ = hashlib.sha1(request.form['password'] + salt).hexdigest()
+
     users.insert({
         'salt': salt, 'password_hash': hash_, 
         'id': request.form['username'],
-        'secret': request.form['secret']}).run(conn)
+        'secret': request.form['secret'],
+        'colors': request.form['colors']}).run(conn)
 
     t = TokenObject()
     auths[request.form['username']] = t
@@ -60,6 +64,7 @@ def signup():
 @app.route('/login', methods=['POST'])
 @crossdomain(origin='*')
 def login():
+    global auths
     user = users.get(request.form['username']).run(conn)
     if user is None:
         return jsonify(error=True, msg="Can't find your username")
@@ -87,6 +92,8 @@ def post():
     if not auths.get(username) or not auths.get(username).is_valid(token):
         abort(400)
 
+    colors = users.get(username).run(conn)['colors']
+
     text = request.form['content']
     dataS = json.dumps({'text': text, 'mode': 'gfm', 'context': MD_CONTEXT})
     resp = requests.post("https://api.github.com/markdown", data=dataS)
@@ -111,6 +118,7 @@ def post():
     f = request.form
     added_obj = {
                 'user': username,
+                'colors': colors,
                 'bundle_id': f['bundle_id'],
 
                 'type': f['type'],

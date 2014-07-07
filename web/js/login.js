@@ -1,6 +1,7 @@
 var SERVER = "http://comments.aslo.cf";
 var i18n = require( "./i18n.js" );
 var animations = require( "./animations.js" );
+var xo = require( "./xoPerson.js" );
 
 exports.requestLogin = function () {
   $( ".login-popover" ).removeClass( "hide" );
@@ -20,6 +21,11 @@ exports.setup = function () {
   });
 
   $( "nav .login" ).click( exports.requestLogin );
+
+  xo.refreshBar();
+  $( ".shuffle-xo-bar" ).click( function () {
+    xo.refreshBar();
+  });
 
   $( "button.login" ).click( function () {
     animations.loading();
@@ -47,7 +53,8 @@ exports.setup = function () {
     postData = {
       username: $( ".signup-form .username" ).val(),
       password: $( ".signup-form .password" ).val(),
-      secret: $( ".signup-form .secret" ).val()
+      secret: $( ".signup-form .secret" ).val(),
+      colors: xo.getSelected()
     }
     $.post( SERVER + "/signup", postData )
      .done( function ( data ) {

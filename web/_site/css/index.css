@@ -3,11 +3,13 @@
   display: block;
   position: fixed;
   z-index: 99;
-  top: 100px;
+  top: 50px;
   left: -webkit-calc(50% - ((20px + 500px)/2));
   left: calc(50% - ((20px + 500px)/2));
   width: 500px;
   padding: 7px 20px;
+  max-height: 400px;
+  overflow-y: scroll;
   background-color: #a700ff;
   box-shadow: 0 0 10px #111111;
   border-radius: 5px;
@@ -19,9 +21,17 @@
   .login-popover .secret {
     width: 500px;
     font-family: sans-serif; }
+  .login-popover .xo-person-bar {
+    text-align: center; }
+    .login-popover .xo-person-bar span svg {
+      border-radius: 33%; }
+    .login-popover .xo-person-bar span.selected svg {
+      background-color: gray !important; }
+    .login-popover .xo-person-bar span:hover svg {
+      background-color: rgba(170, 170, 170, 0.5); }
 
 .stars, .star-sel {
-  font-size: 2.5em; }
+  font-size: 3em; }
   .stars .fa-star:before, .star-sel .fa-star:before {
     color: #fffa00; }
   .stars .fa-star-o:before, .star-sel .fa-star-o:before {
@@ -443,7 +453,7 @@ nav {
     display: none; }
 
 .type-icon:before {
-  font-size: 2.4em;
+  font-size: 3em;
   font-family: FontAwesome;
   padding: 2px;
   height: 1em;
