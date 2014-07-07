@@ -149,20 +149,20 @@
 
 
     <div class="activity-bg no-c"
-         style="background: {{ site.posts[-1].pattern }};
-                background-size: {{ site.posts[-1].bg_size or '' }}
+         style="background: {{ site.posts[0].pattern }};
+                background-size: {{ site.posts[0].bg_size or '' }}
                 margin-top: -13px">
-      <a href="{{ site.posts[-1].url }}" class="no-style">
+      <a href="{{ site.posts[0].url }}" class="no-style">
         <p class="latest-aslo-info" i18n-content>
            Here is the latest from the ASLO blog:</p>
 
         <div class="title please-center">
-          <img class="person no-c" src="{{ site.posts[-1].by_avatar }}"/>
-          <h1 class="no-c">{{ site.posts[-1].title }}</h1>
+          <img class="person no-c" src="{{ site.posts[0].by_avatar }}"/>
+          <h1 class="no-c">{{ site.posts[0].title }}</h1>
         </div>
 
         <p class="meta please-center">By {{ site.posts[-1].by }},
-          {{ site.posts[-1].date | date_to_string }}</p>
+          {{ site.posts[0].date | date_to_string }}</p>
         <br/>
       </a>
     </div>

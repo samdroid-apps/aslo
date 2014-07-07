@@ -46,8 +46,9 @@ div.title
 .blog .content .post
   font-size: 1.2em
 
-.blog .content .post *:not(hr, .no-c)
-  padding: 5px
+.blog .content .post
+  p, li, img
+    padding: 5px
 
 .activity-bg
   width: 100%
@@ -75,3 +76,29 @@ a.no-style
   padding-top: 8px
   font-size: 0.8em
   text-align: center
+
+.blog code
+  color: $white
+  background-color: $black
+
+  padding: 4px !important
+  border-radius: 7px
+
+  text-shadow: 0 0 1px $silver
+  box-shadow: 0 0 1px $black
+
+  &.big
+    margin-top: 6px
+    display: block
+    padding-left: 20px !important
+
+.blog span[contenteditable]
+  color: $black
+  background-color: $white
+
+  padding: 0 4px !important
+  border-radius: 7px
+
+  text-shadow: 0 0 1px $silver
+  box-shadow: 0 0 1px $white
+  

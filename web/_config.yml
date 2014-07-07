@@ -3,3 +3,5 @@ markdown: redcarpet
 pygments: true
 sass:
     sass_dir: css
+
+permalink: /blog/:title

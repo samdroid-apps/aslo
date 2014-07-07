@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Optimizing Your Activity</title>
+        <meta name="viewport" content="width=device-width">
+
+        <script src="/js/outpWithDeps.js"></script>
+        <link rel="stylesheet" href="/css/index.css"/>
+    </head>
+    <body class="blog">
+          <nav>
+            <div>
+              <a href="/blog.html">Blog Home</a>
+              <a href="/">Activities</a>
+              <a href="http://wiki.sugarlabs.org">Wiki</a>
+            </div>
+          </nav>
+
+          <div class="content">
+          <div class="activity-bg no-c" style="background: url(http://aslo.cf/assets/mountian_sunrise.png);
+                                     background-size: ">
+  <div class="title">
+    <img class="person no-c" src="http://www.gravatar.com/avatar/673cabf7d0713b0c64b9d54f5ee5b2e2"/>
+    <h1 class="no-c">Optimizing Your Activity</h1>
+  </div>
+
+  <p class="meta">By Sam, 07 Jul 2014</p>
+  <br/>
+</div>
+
+<div class="post no-c">
+<h2>Introduction</h2>
+
+<p>If you have already <a href="/blog/adding-your-activity/" title="Add your activity to the ASLO">added your activity to the ASLO</a> you may now 
+want to optimize it for the ASLO.  You can add screenshots, categories and
+more to your activity.  Most of this involves adding/changing configuration
+files within your activities git repository.</p>
+
+<h2>Basic Activity Information</h2>
+
+<p>Basic activity information (such as the title, version and icon) is taken from 
+your activities <code>activity.info</code> file (located at <code>/activity/activity.info</code> 
+in your git repository).  Make sure you fill it out fully.  Here is an example 
+<code>activity.info</code> file broken down and explained:</p>
+
+<hr>
+
+<p><code>[Activity]</code></p>
+
+<p>This signifies the start of the file.</p>
+
+<hr>
+
+<pre><code class="big">bundle_id = me.samdroid.sugar.2048
+exec = sugar-activity-web</code></pre>
+
+<p>These fields are used by Sugar, but not by the ASLO.
+(It is a good idea to remember them, as your activity will not work otherwise).</p>
+
+<hr>
+
+<p><code>name = My Awesome activity</code></p>
+
+<p>The name field serves as the title for your activity.</p>
+
+<hr>
+
+<p><code>activity_version = 56</code></p>
+
+<p>The version number should be in an integer format and the version numbers should
+be larger for newer releases.</p>
+
+<blockquote>
+<p><strong>NOTE</strong>: Sugar supports version numbers with decimal points (eg: <code>2.6.3</code>).
+Unfortunately the ASLO only supports integer version numbers 
+(those with no decimal places)</p>
+</blockquote>
+
+<hr>
+
+<p><code>icon = activity-icon</code></p>
+
+<p>Icon provides the name of a svg icon in the <code>/activity</code> directory.  For example
+<code>activity-icon</code> resolves to <code>/activity/activity-icon.svg</code>.</p>
+
+<hr>
+
+<p><code>summary = The coolest activity ever!</code></p>
+
+<p>This provides the description for your activity.</p>
+
+<hr>
+
+<p><code>categories = game maths</code></p>
+
+<p>These are the categories for your activity to display under in the ASLO. 
+This is explained later in this tutorial.</p>
+
+<hr>
+
+<blockquote>
+<h3>Pro Tip: Translating your title and summary</h3>
+
+<p>Translating activities in Sugar uses the gettext po-file system.
+The ASLO uses this system too.</p>
+
+<p>For the Turtle Block activity, the following excerpt from <code>/po/es.po</code> provides the
+translation for the activity&#39;s title</p>
+
+<pre><code class="big">
+msgid "TurtleBlocks"    (The English title - same as defined in activity.info)
+msgstr "TortuBlocks"    (The Spanish title)
+</code></pre>
+
+<p><strong>NOTE</strong>: It is always assumed that the <code>activity/activity.info</code> 
+file is in English (en-US).</p>
+</blockquote>
+
+<h2>Categories</h2>
+
+<p>Categories are specified in the <code>activity/activity.info</code> file.  The syntax is:</p>
+
+<p><code>categories = CATEGORY1 CATEGORY2 CATEGORY3...</code></p>
+
+<blockquote>
+<p><strong>Pro Tip</strong>: Categories are case sensitive</p>
+</blockquote>
+
+<p>The following categories are available (with their name to put in the 
+<code>activity.info</code>):</p>
+
+<ul>
+<li><code>game</code></li>
+<li><code>programming</code></li>
+<li><code>internet</code></li>
+<li><code>science</code></li>
+<li><code>maths</code></li>
+<li><code>geography</code></li>
+<li><code>office</code></li>
+<li><code>tools</code></li>
+<li><code>system</code></li>
+</ul>
+
+<p><strong>NOTE: This is subject to change as the ASLO is still in development</strong></p>
+
+<h2>Screenshots</h2>
+
+<p>Screenshots are in the PNG format.  If you have an XO, you can take these
+screenshots by pressing <code>ALT-1</code> and locating the screenshot in your journal.</p>
+
+<p>The screenshots are then placed in directories inside your git repository. 
+The format for naming these directories is <code>/screenshots/language-COUNTRY/</code>
+or <code>/screenshots/language</code>.  The latter is recomended and the former
+should only be used when there are cultural differences.  Some example directry
+names are <code>/screenshots/en/</code> and <code>/screenshots/es-UY</code>.  The screenshot must be
+placed inside the appropriate directory and end with <code>.png</code>.</p>
+
+<blockquote>
+<p><strong>Pro Tip</strong>: <a href="http://jsfiddle.net/2a6xd/1/embedded/result/">Find your browser&#39;s language code</a> - that is the same
+language code format used for naming the directories</p>
+</blockquote>
+
+<h3>Conclusion</h3>
+
+<p>There are a few ways that you can eaisly optimize your activity for the ASLO.
+You can add screenshots, translations, categories and basic data.
+After committing these changes, you can <code>git push</code> and your changes will be
+available on the ASLO one the buildbots are able to process your activity. </p>
+
+<p>Optimizing your activity will make it easier for users to discover your
+activity, and put more smiles on peoples faces.</p>
+
+</div>
+
+          </div>
+
+    </body>
+</html>
