@@ -531,7 +531,8 @@ div.title h1, div.title h2 {
 
 .activity-bg {
   width: 100%;
-  margin: 20px 0; }
+  margin: 20px 0;
+  background-size: cover; }
 
 .blog .activity,
 .blog .title {

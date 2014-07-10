@@ -18,6 +18,7 @@ want to optimize it for the ASLO.  You can add screenshots, categories and
 more to your activity.  Most of this involves adding/changing configuration
 files within your activities git repository.
 
+<br/><br/><br/>
 
 ## Basic Activity Information
 
@@ -94,6 +95,29 @@ This is explained later in this tutorial.
 > **NOTE**: It is always assumed that the `activity/activity.info` 
 > file is in English (en-US).
 
+<br/><br/><br/>
+
+## What's New
+
+Data for the What's New section is from the `NEWS` file in your repository.
+Translations are from `NEWS.language-code` files.
+The expected format for these files is:
+
+<pre><code class="big">Version Number (integer)
+
+A description of this version.
+It can be many lines long.
+
+Version Number (integer)
+
+A description of this version.
+It can be many lines long.
+
+...</code></pre>
+
+[A real life example can be seen here.](https://github.com/walterbender/turtleart/blob/a7fb72b5dc6c6e6da8b35cffc530f07d119fec90/NEWS)
+
+<br/><br/><br/>
 
 ## Categories
 
@@ -125,6 +149,7 @@ The following categories are available (with their name to put in the
  
 **NOTE: This is subject to change as the ASLO is still in development**
 
+<br/><br/><br/>
 
 ## Screenshots
 
@@ -144,6 +169,7 @@ placed inside the appropriate directory and end with `.png`.
 > **Pro Tip**: [Find your browser's language code][1] - that is the same
 > language code format used for naming the directories
 
+<br/><br/><br/>
 
 ### Conclusion
 

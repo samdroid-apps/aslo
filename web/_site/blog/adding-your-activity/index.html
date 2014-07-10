@@ -12,7 +12,7 @@
     <body class="blog">
           <nav>
             <div>
-              <a href="/blog.html">Blog Home</a>
+              <a href="/blog/">Blog Home</a>
               <a href="/">Activities</a>
               <a href="http://wiki.sugarlabs.org">Wiki</a>
             </div>
@@ -31,48 +31,40 @@
 </div>
 
 <div class="post no-c">
-<p>Adding your activity is super easy if your activity is hosted on GitHub.  If
-your activity is, just follow the steps below.  Otherwise, it would be wise to
-<a href="https://help.github.com/articles/importing-an-external-git-repository">migrate your activity to a GitHub repository</a>.</p>
+<h3>Introduction</h3>
 
-<p>First make a fork of <a href="https://github.com/SAMdroid-apps/sugar-activities">sugar-activities</a>.  On the GitHub web interface,
-click <code>data.json</code> then click <code>edit</code>.</p>
+<p>The new ASLO provides users with a new way to discover and download activities.  It also provides and enhanced experience for developers.  Adding your activity is a painless experience for activities which are hosted on GitHub.  If your activity is not on GitHub, you should <a href="https://help.github.com/articles/importing-an-external-git-repository">migrate it to GitHub</a> before adding it to the new ASLO.</p>
 
-<p>Directly below line 2 (<code>&quot;activities&quot;: {</code>) fill out and insert the following 
-template:</p>
+<h2>Submitting your activity</h2>
 
-<pre><code class="big">        "<span contenteditable>YOUR_BUNDLE_ID (edit us!)</span>": {
+<p>All new activities must be checked by a human before they can be published.  In order to submit your activity you first must fork <a href="https://github.com/samdroid-apps/sugar-activities">sugar-activities</a>.  Then select the <code>data.json</code> file and click <code>edit</code>.  Fill out the following (interactive) template and paste it below line 2 (<code>&quot;activities&quot;: {</code>) in the file.</p>
+
+<pre><code class="big">        "<span contenteditable>Your Activity's Bundle ID</span>": {
             "by": [
                 {
-                    "name": "<span contenteditable>YOUR_NAME</span>", 
-                    "page": "<span contenteditable>YOUR_SITE</span>",
-                    "email": "<span contenteditable>YOUR_EMAIL</span>",
+                    "name": "<span contenteditable>Your Name</span>", 
+                    "page": "<span contenteditable>Your Website or GitHub profile URL</span>",
+                    "email": "<span contenteditable>Your Email Address</span>"
                 }
             ]
         },
 </code></pre>
 
-<p>After you have filled out and inserted that template, scroll down and enter 
-a commit message, something like <code>Added MY_ACTIVITY</code>.  Click <code>Commit Changes</code> 
-and then submit a pull request (pull request icon -&gt; <code>New pull request</code> 
--&gt; <code>Create pull request</code>).</p>
+<p>Then scroll down, enter a commit message (eg: Added My Awesome Activity) and press <code>commit</code>.  After that you will need to submit a pull request.  Click the little green pull request button (back on the repository main page) then click <code>Create pull request</code>.  Please include your activity&#39;s link in the pull request description.</p>
 
-<p>Then you will need to add a webhook to you GitHub repository so the buildbots
-can automatically compile your activity.  Click <code>Settings</code> on the right hand
-side of your activity&#39;s repository&#39;s main page (not the <code>sugar-activity</code> repository).
-Click <code>Webhooks &amp; Services</code> (on the left) then <code>Add webhook</code> (top right).
-Fill out the following template and put that in the <code>Payload URL</code> field.</p>
+<p>Once you have submitted the pull request, your activity will be reviewed.  If your activity is approved, you can move on to building/uploading your activity.</p>
 
-<p><pre><code>http://aslo-bot-master.sugarlabs.org/hook/<span contenteditable>GITHUB_USER</span>/<span contenteditable>GITHUB_REPO</span>/<span contenteditable>BUNDLE_ID</span></code></pre><br/></p>
+<h2>Building/Uploading your activity</h2>
 
-<p>(eg: <code>http://aslo-bot-master.sugarlabs.org/hook/samdroid-apps/sugar-slides/me.samdroid.sugar.slides</code>)</p>
+<p>The new ASLO tightly integrates with GitHub, so building is as simple as adding a webhook.  To add the webhook, go to your activity&#39;s GitHub repository.  Then go into the settings (the icon on the right), into Webhooks &amp; Services (the menu item on the left) and click <code>Add webhook</code>.  Fill out the following (interactive) template and put it in the payload URL field.</p>
 
-<p>Then, wait for your pull request to be accepted.  Once it is, your activity will
-be live on the ASLO!</p>
+<p><pre><code>http://aslo-bot-master.sugarlabs.org/hook/<span contenteditable>GitHub User name</span>/<span contenteditable>GitHub Repository Name</span>/<span contenteditable>Activity Bundle ID</span></code></pre><br/></p>
 
-<blockquote>
-<p><strong>Pro Tip</strong>: <a href="/blog/optimizing-your-activity/">Optimize your activity for the ASLO</a></p>
-</blockquote>
+<p>After filling out the payload URL, click <code>Add webhook</code>.  Your activity will be automatically placed on the new ASLO next time you <code>git push</code>.</p>
+
+<h3>Conclusion</h3>
+
+<p>After you have gone through the process of adding your activity, you can <a href="http://aslo.cf">go and see it online</a>.  The activity is now avaiable for users around the world!  You may want to <a href="/blog/optimizing-your-activity">optimize your activity for the new ASLO</a>, so users can see screenshots, descriptions and more.</p>
 
 </div>
 
