@@ -10,7 +10,6 @@ Each folder has a README with more info. The folders are:
 * Comments - an ajax backed of the comments
 * Bot Master - Hooks onto gits and updates listings of their activities
 * Bot - Does the real work of bot master
-* Recommend - Provides people recommendations based of past reviews
 
 # Roadmap
 

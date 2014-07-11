@@ -1,10 +1,9 @@
 var account = undefined;
 var SERVER = "http://comments.aslo.cf";
-var WS_SERVER = 'ws://' + window.location.hostname + ':9999';
+var WS_SERVER = "ws://comments.aslo.cf/comments/stream";
 
 var animations = require( "./animations.js" );
 var util = require( "./util.js" );
-var recommend = require( "./recommend.js" );
 var i18n = require( "./i18n.js" );
 var login = require( "./login.js" );
 var xo = require( "./xoPerson.js" );
@@ -46,8 +45,7 @@ exports.setup = function () {
     } )
       .done( function ( _ ) {
         animations.done();
-        commentsSetup($( ".comments .add" ).data( "bundleId" ));
-        recommend.r( account );
+        exports.load($( ".comments .add" ).data( "bundleId" ));
       });
   });
 

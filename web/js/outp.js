@@ -45,7 +45,7 @@ exports.setup = function () {
   }
 };
 
-},{"./mainActivity.js":7,"./search.js":9,"./util.js":10}],2:[function(require,module,exports){
+},{"./mainActivity.js":7,"./search.js":8,"./util.js":9}],2:[function(require,module,exports){
 exports.done = function () {
   var ele = $( "<span class='done'></span>" );
   $( "body" ).append( ele );
@@ -79,11 +79,10 @@ exports.addComment = function () {
 },{}],3:[function(require,module,exports){
 var account = undefined;
 var SERVER = "http://comments.aslo.cf";
-var WS_SERVER = 'ws://' + window.location.hostname + ':9999';
+var WS_SERVER = "ws://comments.aslo.cf/comments/stream";
 
 var animations = require( "./animations.js" );
 var util = require( "./util.js" );
-var recommend = require( "./recommend.js" );
 var i18n = require( "./i18n.js" );
 var login = require( "./login.js" );
 var xo = require( "./xoPerson.js" );
@@ -125,8 +124,7 @@ exports.setup = function () {
     } )
       .done( function ( _ ) {
         animations.done();
-        commentsSetup($( ".comments .add" ).data( "bundleId" ));
-        recommend.r( account );
+        exports.load($( ".comments .add" ).data( "bundleId" ));
       });
   });
 
@@ -304,7 +302,7 @@ var addComment = function ( item ) {
   ele.prependTo( $( ".comments ul" ) );
 };
 
-},{"./animations.js":2,"./i18n.js":4,"./login.js":5,"./recommend.js":8,"./util.js":10,"./xoPerson.js":11}],4:[function(require,module,exports){
+},{"./animations.js":2,"./i18n.js":4,"./login.js":5,"./util.js":9,"./xoPerson.js":10}],4:[function(require,module,exports){
 /*
 |======================|
 | i18n VS util.getLang |
@@ -459,7 +457,7 @@ exports.setup = function () {
   });
 }
 
-},{"./animations.js":2,"./i18n.js":4,"./xoPerson.js":11}],6:[function(require,module,exports){
+},{"./animations.js":2,"./i18n.js":4,"./xoPerson.js":10}],6:[function(require,module,exports){
 var activityList = require( "./activityList.js" );
 var mainActivity = require( "./mainActivity.js" );
 var search = require( "./search.js" );
@@ -533,7 +531,7 @@ $( document ).ready( function () {
 
 });
 
-},{"./activityList.js":1,"./comments.js":3,"./i18n.js":4,"./login.js":5,"./mainActivity.js":7,"./search.js":9}],7:[function(require,module,exports){
+},{"./activityList.js":1,"./comments.js":3,"./i18n.js":4,"./login.js":5,"./mainActivity.js":7,"./search.js":8}],7:[function(require,module,exports){
 var util = require( "./util.js" );
 var comments = require( "./comments.js" );
 var i18n = require("./i18n.js" );
@@ -634,30 +632,7 @@ exports.load = function ( data, bundleId, setUrl ) {
   comments.load( bundleId );
 };
 
-},{"./comments.js":3,"./i18n.js":4,"./util.js":10}],8:[function(require,module,exports){
-var SERVER = "http://" + window.location.hostname + ":5002/recommend";
-var MAX = 10;
-
-var activityList = require( "./activityList.js" );
-
-exports.r = function ( account ) {
-  $.post( SERVER, { email: account.email } )
-    .done( function ( data ) {
-
-      $( ".recommended-activities-container" ).show();
-      $( ".recommended-activities" ).html( "" );
-
-      for ( i in data ) {
-        item = data[ i ];
-        if ( i > MAX || item.confidence <= 0) {
-          return;
-        }
-        activityList.add( ".recommended-activities", item.bundleId );
-      }
-    });
-};
-
-},{"./activityList.js":1}],9:[function(require,module,exports){
+},{"./comments.js":3,"./i18n.js":4,"./util.js":9}],8:[function(require,module,exports){
 var lastQuery = "";
 var lastCategory = "";
 var currentCategory = "any";
@@ -734,7 +709,7 @@ exports.makeSearchString = function ( data ) {
          catString;
 }
 
-},{"./util.js":10}],10:[function(require,module,exports){
+},{"./util.js":9}],9:[function(require,module,exports){
 exports.repeatS = function (s, t) {
   var r = "";
   for ( var i = 0; i < t; i++ ) {
@@ -792,7 +767,7 @@ exports.sugarVersionToInt = function ( vString ) {
   return DEFAULT_SUGAR;
 }
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var colors = [ "#00588c", "#5e008c", "#807500", "#008009", "#9a5200",
                "#b20008", "#005fe4", "#7f00bf", "#be9e00", "#00b20d",
                "#c97e00", "#e6000a", "#bccdff", "#d1a3ff", "#fffa00",
