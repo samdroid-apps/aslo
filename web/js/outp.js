@@ -19,10 +19,8 @@ exports.add = function ( container, bundleId ) {
 
   $( container ).append( ele );
 
-  var l = data.categories || [];
-  for ( i in l ) {
-    ele.addClass( "category-" + data.categories[i] );
-  }
+  var l = ( data.categories || [ "none" ] ).reverse();
+  ele.addClass( "category-" + l[ 1 ] );
 
   ele.data( "json", data );
   ele.data( "bundleId", bundleId );
