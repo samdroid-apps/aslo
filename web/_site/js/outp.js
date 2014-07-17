@@ -502,7 +502,7 @@ var goBasedOnUrl = function () {
   window.location.changedByProgram = false;
 }
 
-var dataUrl = "http://aslo-bot-master.sugarlabs.org/data.json";
+var dataUrl = "/data.json";
 $( document ).ready( function () {
   if ( window.location.pathname === "/"
        || window.location.pathname.startsWith( "/view" ) ) {
