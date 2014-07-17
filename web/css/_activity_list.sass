@@ -21,28 +21,31 @@
     border: none
     border-bottom: 3px solid $gray
 
-=colorClass($x, $y, $cat)
-  .categories .#{ $x }
+=colorClass($y, $cat)
+  .categories i[filter="#{ $cat }"]
     color: $y
 
-  .categories .#{ $x }.checked
+  .categories i[filter="#{ $cat }"].checked
     color: $white
     background-color: $y
 
   ul.activities > .activity.category-#{ $cat }
     background-color: $y
 
-+colorClass(red, $red, game)
-+colorClass(yellow, $yellow, programming)
-+colorClass(green, $green, science)
-+colorClass(blue, $blue, internet)
-+colorClass(aq, $aqua, maths)
-+colorClass(lime, $lime, language)
-+colorClass(navy, $navy, geography)
-+colorClass(orange, $orange, office)
-+colorClass(purple, $purple, creative)
-+colorClass(f, $fuchsia, tools)
-+colorClass(black, $black, system)
++colorClass($red,     game)
++colorClass($yellow,  programming)
++colorClass($black,   robotics)
++colorClass($green,   science)
++colorClass($blue,    internet)
++colorClass($aqua,    maths)
++colorClass($lime,    language)
++colorClass($olive,   geography)
++colorClass($navy,    documents)
++colorClass($orange,  music)
++colorClass($purple,  media)
++colorClass($fuchsia, art)
++colorClass($black,   tools)
++colorClass($black,   system)
 
 .categories
   margin-top: 10px

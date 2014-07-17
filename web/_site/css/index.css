@@ -58,110 +58,140 @@
     border: none;
     border-bottom: 3px solid #aaaaaa; }
 
-.categories .red {
+.categories i[filter="game"] {
   color: #e6000a; }
 
-.categories .red.checked {
+.categories i[filter="game"].checked {
   color: white;
   background-color: #e6000a; }
 
 ul.activities > .activity.category-game {
   background-color: #e6000a; }
 
-.categories .yellow {
+.categories i[filter="programming"] {
   color: #fffa00; }
 
-.categories .yellow.checked {
+.categories i[filter="programming"].checked {
   color: white;
   background-color: #fffa00; }
 
 ul.activities > .activity.category-programming {
   background-color: #fffa00; }
 
-.categories .green {
+.categories i[filter="robotics"] {
+  color: #111111; }
+
+.categories i[filter="robotics"].checked {
+  color: white;
+  background-color: #111111; }
+
+ul.activities > .activity.category-robotics {
+  background-color: #111111; }
+
+.categories i[filter="science"] {
   color: #008009; }
 
-.categories .green.checked {
+.categories i[filter="science"].checked {
   color: white;
   background-color: #008009; }
 
 ul.activities > .activity.category-science {
   background-color: #008009; }
 
-.categories .blue {
+.categories i[filter="internet"] {
   color: #005fe4; }
 
-.categories .blue.checked {
+.categories i[filter="internet"].checked {
   color: white;
   background-color: #005fe4; }
 
 ul.activities > .activity.category-internet {
   background-color: #005fe4; }
 
-.categories .aq {
+.categories i[filter="maths"] {
   color: #00a0ff; }
 
-.categories .aq.checked {
+.categories i[filter="maths"].checked {
   color: white;
   background-color: #00a0ff; }
 
 ul.activities > .activity.category-maths {
   background-color: #00a0ff; }
 
-.categories .lime {
+.categories i[filter="language"] {
   color: #00ea11; }
 
-.categories .lime.checked {
+.categories i[filter="language"].checked {
   color: white;
   background-color: #00ea11; }
 
 ul.activities > .activity.category-language {
   background-color: #00ea11; }
 
-.categories .navy {
-  color: #00588c; }
+.categories i[filter="geography"] {
+  color: #00b20d; }
 
-.categories .navy.checked {
+.categories i[filter="geography"].checked {
   color: white;
-  background-color: #00588c; }
+  background-color: #00b20d; }
 
 ul.activities > .activity.category-geography {
+  background-color: #00b20d; }
+
+.categories i[filter="documents"] {
+  color: #00588c; }
+
+.categories i[filter="documents"].checked {
+  color: white;
   background-color: #00588c; }
 
-.categories .orange {
+ul.activities > .activity.category-documents {
+  background-color: #00588c; }
+
+.categories i[filter="music"] {
   color: #ff8f00; }
 
-.categories .orange.checked {
+.categories i[filter="music"].checked {
   color: white;
   background-color: #ff8f00; }
 
-ul.activities > .activity.category-office {
+ul.activities > .activity.category-music {
   background-color: #ff8f00; }
 
-.categories .purple {
+.categories i[filter="media"] {
   color: #a700ff; }
 
-.categories .purple.checked {
+.categories i[filter="media"].checked {
   color: white;
   background-color: #a700ff; }
 
-ul.activities > .activity.category-creative {
+ul.activities > .activity.category-media {
   background-color: #a700ff; }
 
-.categories .f {
+.categories i[filter="art"] {
   color: #ff2b34; }
 
-.categories .f.checked {
+.categories i[filter="art"].checked {
   color: white;
   background-color: #ff2b34; }
 
-ul.activities > .activity.category-tools {
+ul.activities > .activity.category-art {
   background-color: #ff2b34; }
 
-.categories .black {
+.categories i[filter="tools"] {
   color: #111111; }
 
-.categories .black.checked {
+.categories i[filter="tools"].checked {
+  color: white;
+  background-color: #111111; }
+
+ul.activities > .activity.category-tools {
+  background-color: #111111; }
+
+.categories i[filter="system"] {
+  color: #111111; }
+
+.categories i[filter="system"].checked {
   color: white;
   background-color: #111111; }
 

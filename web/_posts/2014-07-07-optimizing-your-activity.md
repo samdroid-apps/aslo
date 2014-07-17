@@ -139,11 +139,15 @@ The following categories are available (with their name to put in the
 
 * `game`
 * `programming`
+* `robotics`
 * `internet`
 * `science`
 * `maths`
 * `geography`
-* `office`
+* `documents`
+* `music`
+* `media`
+* `art`
 * `tools`
 * `system`
  
