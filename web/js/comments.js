@@ -188,11 +188,13 @@ var addComment = function ( item ) {
   link.attr( "title", i18n.get( "Link to this comment" ) );
   link.attr( "href", "/view/" + bundleId + "/comment=" + item.id );
   link.data( "id", item.id );
-  link.click( function () {
+  link.click( function ( event ) {
     var id = $( this ).data( "id" );
     $( "html, body" ).animate( {
       scrollTop: $( ".comments ul li#" + id ).offset().top - 10
     }, 500 );
+    history.pushState( null, null, $( this ).attr( "href" ) );
+	event.preventDefault();
   });
   ele.append( link )
 

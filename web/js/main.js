@@ -25,7 +25,7 @@ var goBasedOnUrl = function () {
     var r = /\/view\/([^\/]*)$/;
     match = r.exec(testString);
     if ( match ) {
-      var bundleId = match[1]
+      var bundleId = match[1];
       var itemData = $( "body" ).data( "activitiesData" )[ bundleId ];
       mainActivity.load( itemData, bundleId, false );
       return;
@@ -34,11 +34,11 @@ var goBasedOnUrl = function () {
     var r = /\/view\/([^\/]*)\/comment=([0-9a-zA-Z\-]*)$/;
     match = r.exec(testString);
     if ( match ) {
-      var bundleId = match[1]
+      $( "body" ).data( "focusOnComment", match[2] );
+
+      var bundleId = match[1];
       var itemData = $( "body" ).data( "activitiesData" )[ bundleId ];
       mainActivity.load( itemData, bundleId, false );
-
-      $( "body" ).data( "focusOnComment", match[2] );
     }
   }
   window.location.changedByProgram = false;
