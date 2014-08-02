@@ -12,8 +12,8 @@ from build import compile_bundle
 # Fixes a weird bug... it might create some though :P
 os.environ['http_proxy'] = ''
 
-HOST = 'http://localhost:5001'
-#!!!!!!!!!!!!!!!!!!!!!!!!!!! !!!!!!!!!!!!!!! HOST = 'http://aslo-bot-master.sugarlabs.org'
+# HOST = 'http://localhost:5001'
+HOST = 'http://aslo-bot-master.sugarlabs.org'
 
 print 'Waiting for 1st task'
 
