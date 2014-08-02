@@ -108,10 +108,10 @@ def done():
             # If we havn't written version V
             with open(sp, 'wb') as f:
                 f.write(file_)
-           result['xo_url_timestamp'] = time.time()
+            result['xo_url_timestamp'] = time.time()
 
-           # Approx size in bytes
-           result['xo_size'] = (len(file_) / 3) * 4
+            # Approx size in bytes
+            result['xo_size'] = (len(file_) / 3) * 4
 
         lp = os.path.join(UPLOADS_FOLDER, bundle_id + '_latest.xo')
         with open(lp, 'wb') as f:
