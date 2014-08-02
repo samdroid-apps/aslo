@@ -12,8 +12,8 @@ from build import compile_bundle
 # Fixes a weird bug... it might create some though :P
 os.environ['http_proxy'] = ''
 
-# HOST = 'http://localhost:5001'
-HOST = 'http://aslo-bot-master.sugarlabs.org'
+HOST = 'http://localhost:5001'
+#!!!!!!!!!!!!!!!!!!!!!!!!!!! !!!!!!!!!!!!!!! HOST = 'http://aslo-bot-master.sugarlabs.org'
 
 print 'Waiting for 1st task'
 
@@ -30,7 +30,12 @@ while True:
     print 'Got new task'
     call(['git', 'clone', 'https://www.github.com/' + task['gh'],
           'dl'])
-    result = test_activity(task['bundle_id'], task['gh'])
+    try:
+        result = test_activity(task['bundle_id'], task['gh'])
+    except Exception as e:
+        print 'Failed processing bundle', task['bundle_id']
+        print e
+        continue
 
     data = {'result': result, 'file': compile_bundle(),
             'bundle_id': task['bundle_id'], 'task_id': task['task_id']}
