@@ -110,6 +110,9 @@ def done():
                 f.write(file_)
            result['xo_url_timestamp'] = time.time()
 
+           # Approx size in bytes
+           result['xo_size'] = (len(file_) / 3) * 4
+
         lp = os.path.join(UPLOADS_FOLDER, bundle_id + '_latest.xo')
         with open(lp, 'wb') as f:
             f.write(file_)
