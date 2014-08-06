@@ -255,7 +255,9 @@ ul.activities {
       margin-right: auto;
       background-color: rgba(255, 255, 255, 0.5);
       padding: 5px;
-      border-radius: 5px; }
+      border-radius: 5px;
+      width: 55px;
+      height: 55px; }
     ul.activities li.activity span {
       color: white;
       font-weight: bold;
@@ -358,6 +360,8 @@ ul.activities {
     margin-bottom: 10px; }
     .detail .by a {
       color: #aaaaaa; }
+    .detail .by a:nth-child(1n+2) {
+      padding-left: 5px; }
   .detail .screenshots.closed img:nth-child(1n+2) {
     height: 0px;
     transition: 0.75s ease all; }

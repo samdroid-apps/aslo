@@ -28,6 +28,13 @@ exports.add = function ( container, bundleId ) {
     mainActivity.load( $( this ).data( "json" ),
                        $( this ).data( "bundleId" ),
                        true );
+    $.ajax({
+      url: "/data/" + $( this ).data( "bundleId" ) + ".json"
+    }).done( function ( data ) {
+      mainActivity.load( data,
+                         $( this ).data( "bundleId" ),
+                         false );
+    });
     e.preventDefault();
   });
 }

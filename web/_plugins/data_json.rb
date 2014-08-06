@@ -15,12 +15,23 @@ module Jekyll
     end
 
     def convert(content)
-      f = open 'http://aslo-bot-master.sugarlabs.org/data.json'
+      puts "I hope you ran `git clone https://github.com/samdroid-apps/sugar-activities data`"
+      puts "  and you ran `git pull`!"
 
-      # The server pretty prints the json - but
-      # we want it compressed
-      j = JSON.parse f.read
-      return j.to_json
+      activities = {}      
+
+      Dir.glob "./data/*.json" do |path|
+        j = JSON.parse open(path).read
+        bundle_id = /\.\/data\/(.*).json/.match(path)[1]
+
+        activities[bundle_id] = {
+          "categories" => j["categories"],
+          "icon"       => j["icon"],
+          "title"      => j["title"]
+        }
+      end
+
+      return {"activities"=>activities}.to_json
     end
   end
 end

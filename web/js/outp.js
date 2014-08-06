@@ -29,6 +29,13 @@ exports.add = function ( container, bundleId ) {
     mainActivity.load( $( this ).data( "json" ),
                        $( this ).data( "bundleId" ),
                        true );
+    $.ajax({
+      url: "/data/" + $( this ).data( "bundleId" ) + ".json"
+    }).done( function ( data ) {
+      mainActivity.load( data,
+                         $( this ).data( "bundleId" ),
+                         false );
+    });
     e.preventDefault();
   });
 }
@@ -486,8 +493,11 @@ var goBasedOnUrl = function () {
     match = r.exec(testString);
     if ( match ) {
       var bundleId = match[1];
-      var itemData = $( "body" ).data( "activitiesData" )[ bundleId ];
-      mainActivity.load( itemData, bundleId, false );
+      $.ajax({
+        url: "/data/" + bundleId + ".json"
+      }).done( function ( data ) {
+        mainActivity.load( data, bundleId, false );
+      });
       return;
     }
 
@@ -497,8 +507,11 @@ var goBasedOnUrl = function () {
       $( "body" ).data( "focusOnComment", match[2] );
 
       var bundleId = match[1];
-      var itemData = $( "body" ).data( "activitiesData" )[ bundleId ];
-      mainActivity.load( itemData, bundleId, false );
+      $.ajax({
+        url: "/data/" + bundleId + ".json"
+      }).done( function ( data ) {
+        mainActivity.load( data, bundleId, false );
+      });
     }
   }
   window.location.changedByProgram = false;
@@ -511,13 +524,14 @@ $( document ).ready( function () {
     var list = $(".activities");
     var detail = $(".detail");
 
+    goBasedOnUrl();
+
     $.ajax({
       url: dataUrl
     }).done( function ( data ) {
       $( "body" ).data( "activitiesData", data.activities );
       activityList.setup();
 
-      goBasedOnUrl();
       setInterval( goBasedOnUrl, 750 );
     });
 
