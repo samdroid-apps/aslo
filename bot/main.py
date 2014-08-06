@@ -30,7 +30,12 @@ while True:
     print 'Got new task'
     call(['git', 'clone', 'https://www.github.com/' + task['gh'],
           'dl'])
-    result = test_activity(task['bundle_id'], task['gh'])
+    try:
+        result = test_activity(task['bundle_id'], task['gh'])
+    except Exception as e:
+        print 'Failed processing bundle', task['bundle_id']
+        print e
+        continue
 
     data = {'result': result, 'file': compile_bundle(),
             'bundle_id': task['bundle_id'], 'task_id': task['task_id']}

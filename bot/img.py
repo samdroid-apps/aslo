@@ -6,20 +6,17 @@ import hashlib
 import requests
 import cairosvg
 
-DATA_JSON = 'http://aslo-bot-master.sugarlabs.org/data.json'
+BASE_URL = 'http://raw.githubusercontent.com/SAMdroid-apps/sugar-activities/multi-file/'
 # Don't steal this (for other apps)...
 #         you can get as many as you like for FREE
 AUTH = {'Authorization': 'Client-ID 7daeb235d4d80fc'}
 
 def get_activity_data(bundle_id):
-    while True:
-        try:
-            r = requests.get(DATA_JSON)
-            break
-        except:
-            pass
-    d = r.json()
-    return d['activities'].get(bundle_id, {})
+    r = requests.get(BASE_URL + bundle_id + '.json')
+    if not r.ok:
+        return {}
+    else:
+        return r.json()
 
 def upload_image(img_name, current_hash, svg=False):
     content = ''

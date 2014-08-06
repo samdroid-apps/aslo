@@ -6,11 +6,7 @@ import threading
 from subprocess import call
 
 from flask import Flask, jsonify, abort, request, send_from_directory, Response
-import rethinkdb as r
 from helpers import crossdomain
-
-conn = r.connect('localhost', 28015)
-repos = r.db('bot_master').table('repos')
 
 tasks_todo = {}  # bundle_id -> extra data
 tasks_sent = {}  # bundle_id -> code
@@ -28,30 +24,28 @@ if not os.path.isdir(LOG_FOLDER):
 
 MY_ADDR = 'http://aslo-bot-master.sugarlabs.org'
 
-with open('data.json') as f:
-    data_json_cache = f.read()
+def verify_repo(gh, bundle_id):
+    with open(bundle_id + '.json') as f:
+        try:
+            j = json.load(f)
+        except ValueError:
+            return False
 
-def verify_repo(gh_user, gh_repo, bundle_id):
-    d = repos.get(bundle_id).run(conn)
-    if d == None:
-        repos.insert([{'ghUser': gh_user, 'ghRepo': gh_repo,
-                       'id': bundle_id}]).run(conn)
-        return True
-    return d['ghUser'].lower() == gh_user.lower() and \
-           d['ghRepo'].lower() == gh_repo.lower()
+        if not 'github_url' in j:
+            return True
+        return j['github_url'] == gh
 
 app = Flask(__name__)
 
 @app.route('/hook/<gh_user>/<gh_repo>/<bundle_id>', methods=['POST'])
 def hook(gh_user, gh_repo, bundle_id):
-    global data_json_cache
-    data = json.loads(data_json_cache)
-    if not bundle_id in data['activities']:
+    if not os.path.isfile(bundle_id + '.json'):
         return ("Please add your thing first to our github, "
                 "then the bots will come and help you fill it out\n")
 
-    if not verify_repo(gh_user, gh_repo, bundle_id):
-        return ("You are using a different repo to the first one you used.\n\n"
+    if not verify_repo('{}/{}'.format(gh_user, gh_repo), bundle_id):
+        return ("You are using a different repo to the first one you used"
+                " OR the json in your file is invalid!\n\n"
                 "If this is an error in our system or "
                 "you really have made a change "
                 "**please create a github issue about it!**\n")
@@ -69,11 +63,8 @@ def hook(gh_user, gh_repo, bundle_id):
 @app.route('/pull', methods=['GET', 'POST'])
 def pull():
     """Go here every time a new activity is added to refresh the data"""
-    global data_json_cache
     with git_lock:
         call(['git', 'pull'])
-    with open('data.json') as f:
-        data_json_cache = f.read()
     return "Cool Potatoes"
 
 @app.route('/task')
@@ -91,8 +82,6 @@ def get_task():
 
 @app.route('/done', methods=['POST'])
 def done():
-    global data_json_cache
-
     data = request.get_json()
     if not 'releases' in data['result']:
         data['result']['releases'] = []
@@ -106,49 +95,47 @@ def done():
     git_lock.acquire()
 
     call(['git', 'pull'])
-    with open('data.json') as f:
-        data_json_cache = f.read()
-        current = json.loads(data_json_cache)
-    
-    if not bundle_id in current['activities']:
-        current['activities'][bundle_id] = {}
+    with open(bundle_id + '.json') as f:
+        current = json.load(f)
+    result = data['result']
 
     file_ = data['file'].decode('base64')
     if file_:
-        v = data['result']['version']
+        v = result['version']
         sp = os.path.join(UPLOADS_FOLDER,
                           '{}_stable_{}.xo'.format(bundle_id, v))
         if not os.path.isfile(sp):
             # If we havn't written version V
             with open(sp, 'wb') as f:
                 f.write(file_)
-            data['result']['xo_url_timestamp'] = time.time()
+            result['xo_url_timestamp'] = time.time()
+
+            # Approx size in bytes
+            result['xo_size'] = (len(file_) / 3) * 4
 
         lp = os.path.join(UPLOADS_FOLDER, bundle_id + '_latest.xo')
         with open(lp, 'wb') as f:
             f.write(file_)
 
-        data['result']['xo_url'] = \
+        result['xo_url'] = \
             '{}/uploads/{}_stable_{}.xo'.format(MY_ADDR, bundle_id, v)
-        data['result']['xo_url_latest'] = \
+        result['xo_url_latest'] = \
             '{}/uploads/{}_latest.xo'.format(MY_ADDR, bundle_id)
-        data['result']['xo_url_latest_timestamp'] = time.time()
+        result['xo_url_latest_timestamp'] = time.time()
 
-        new_v_data = {'xo_url': data['result']['xo_url'],
+        new_v_data = {'xo_url': result['xo_url'],
                       'version': v,
-                      'minSugarVersion': data['result'].get('minSugarVersion'),
-                      'whats_new': data['result'].get('whats_new', {}),
-                      'screenshots': data['result'].get('screenshots', [])}
-        data['result']['releases'].insert(0, new_v_data)
+                      'minSugarVersion': result.get('minSugarVersion'),
+                      'whats_new': result.get('whats_new', {}),
+                      'screenshots': result.get('screenshots', [])}
+        result['releases'].insert(0, new_v_data)
 
-    current['activities'][bundle_id].update(data['result'])
+    current.update(result)
 
-    text = json.dumps(current, indent=4, sort_keys=True)
-    with open('data.json', 'w') as f:
-        f.write(text)
-    data_json_cache = text
+    with open(bundle_id + '.json', 'w') as f:
+        json.dump(current, f, indent=4, sort_keys=True)
 
-    call(['git', 'add', 'data.json'])
+    call(['git', 'add', bundle_id + '.json'])
     call(['git', 'commit', '-m',
           'Bot from %s updated %s' % (request.remote_addr, bundle_id)])
     call(['git', 'push'])
@@ -156,32 +143,14 @@ def done():
     git_lock.release()
     return "Cool Potatoes"
 
-def log_dl(filename, ip):
-    fn = '_'.join([str(i) for i in time.gmtime()[:3]]) + '_downloads.log'
-    fp = os.path.join(LOG_FOLDER, fn)
-    mode = 'a' if os.path.isfile(fp) else 'w'
-    with open(fp, mode) as f:
-        f.write("{}: {} {}\n".format(time.gmtime()[3:6], ip, filename))
-
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     p = os.path.join(UPLOADS_FOLDER, filename)
     if os.path.isfile(p):
-        log_dl(filename, request.remote_addr)
         with open(p, 'rb') as f:
             b = f.read()
         return Response(b, mimetype='application/vnd.olpc-sugar')
     abort(404)
-
-@app.route('/data.json', methods=['GET', 'POST'])
-@crossdomain(origin='*')
-def get_data():
-    global data_json_cache
-    return app.response_class(data_json_cache, mimetype='application/json')
-
-@app.route('/port')
-def get_port():
-    return "Please update to the latest bot"
 
 debug = os.path.isfile('../debug')
 app.run(port=5001, debug=debug)
