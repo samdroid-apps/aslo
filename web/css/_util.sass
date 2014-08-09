@@ -22,3 +22,10 @@ $maxw: "1100px"
     margin-top: 5px
     box-shadow: 0 5px 0 $orange, 0 6px 10px $orange
     margin-bottom: 15px
+
+=hover_shrink($scale)
+  // 0.3s for $scale = 0.9
+  transition: ($scale*10-8)*0.3s ease all
+
+  &:hover
+    transform: scale($scale)

@@ -74,19 +74,6 @@
     &:hover
       text-shadow: 1px 3px 3px $black
 
-
-@keyframes shake1
-  0%, 100%
-    transform: rotate(0deg)
-  50%
-    transform: rotate(2deg)
-
-@keyframes shake2
-  0%, 100%
-    transform: rotate(-3deg) scale(1)
-  50%
-    transform: rotate(-5deg) sclae(1.1)
-
 ul.activities
   max-width: #{ $maxw }
   +center()
@@ -125,10 +112,7 @@ ul.activities
 
       word-wrap: break-word
 
-    &:hover
-      animation: shake1 0.1s infinite
-      img.icon
-        animation: shake2 0.13s infinite
+    +hover_shrink(0.95)
 
 
 .recommended-activities-container

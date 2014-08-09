@@ -16,9 +16,9 @@
   <body>
     <nav>
       <div>
-        <a href="http://activities.sugarlabs.org" i18n-content>Activities</a>
-        <a href="/" i18n-content>Wiki</a>
-        <a class="login" i18n-content>Login</a>
+        <a class="red" href="/" i18n-content>Activities Home</a>
+        <a class="orange" href="/" i18n-content>Wiki</a>
+        <a class="purple last login" i18n-content>Login</a>
       </div>
     </nav>
 
@@ -159,8 +159,8 @@
 
     <div class="activity-bg no-c"
          style="background: {{ site.posts[0].pattern }};
-                background-size: {{ site.posts[0].bg_size or '' }}
-                margin-top: -13px">
+                background-size: {{ site.posts[0].bg_size or '' }};
+                margin-top: -13px;">
       <a href="{{ site.posts[0].url }}" class="no-style">
         <p class="latest-aslo-info" i18n-content>
            Here is the latest from the ASLO blog:</p>

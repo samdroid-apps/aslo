@@ -3,7 +3,8 @@ layout: post
 title:  "Optimizing Your Activity"
 date:   2014-07-07 13:33
 
-pattern: "url(http://aslo.cf/assets/mountian_sunrise.png)"
+pattern: "linear-gradient(-45deg, rgba(255, 255, 255, 0) 25%, #A700FF 25%, #A700FF 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 75%, #A700FF 75%, #A700FF), linear-gradient(45deg, rgba(255, 255, 255, 0) 25%, #00EA11 25%, #00EA11 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 75%, #00EA11 75%, #00EA11)"
+bg_size: "200px 200px, 200px 200px, auto"
 
 by:        Sam
 by_avatar: http://www.gravatar.com/avatar/673cabf7d0713b0c64b9d54f5ee5b2e2

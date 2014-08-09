@@ -36,19 +36,23 @@ nav
       padding-top: 0.5em
 
       color: $white
-      background-color: $red  // 1st child + backup
       font-weight: bold
       font-size: 1em
       text-decoration: none
 
-      transition: 0.75s ease transform
+      +hover_shrink(0.9)
 
-    a:hover
-      transform: scale(0.9)
+    a.red
+      background-color: $red
 
-    a:nth-child(2)
+    a.blue
+      background-color: $blue
+
+    a.orange
       background-color: $orange
 
-    a:nth-child(3)
+    a.purple
       background-color: $purple
+
+    a.last
       clear: right
