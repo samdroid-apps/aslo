@@ -137,7 +137,9 @@ def done():
 
     call(['git', 'add', bundle_id + '.json'])
     call(['git', 'commit', '-m',
-          'Bot from %s updated %s' % (request.remote_addr, bundle_id)])
+          'Bot from %s updated %s' % (
+              request.headers.get('X-Forwarded-For', '?'),
+              bundle_id)])
     call(['git', 'push'])
 
     git_lock.release()
