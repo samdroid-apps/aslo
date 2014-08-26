@@ -361,7 +361,7 @@ exports.setup = function () {
     return;
   };
 
-  var url = "translations/" + l + ".json";
+  var url = "/translations/" + l + ".json";
   $.get( url ).done( function ( data ) {
     $( "body" ).data( "translations", data );
 	translateBody( data );
