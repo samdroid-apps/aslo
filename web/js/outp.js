@@ -323,9 +323,13 @@ var addComment = function ( item ) {
 */
 
 // Add avaliable languages here
-var langsAvaliable = [];
+var langsAvaliable = ['id'];
 
 var getLangToUse = function () {
+  if ( localStorage['testlang'] !== undefined ) {
+    return localStorage['testlang']
+  }
+
   var ul = navigator.language || navigator.userLanguage;
 
   if ( langsAvaliable.indexOf( ul ) !== -1 ) {

@@ -157,7 +157,8 @@
           <h1 class="no-c">{{ site.posts[0].title }}</h1>
         </div>
 
-        <p class="meta please-center">By {{ site.posts[-1].by }},
+        <p class="meta please-center"><span i18n-content>By</span>
+          {{ site.posts[-1].by }},
           {{ site.posts[0].date | date_to_string }}</p>
         <br/>
       </a>
