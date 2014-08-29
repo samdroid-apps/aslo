@@ -1,0 +1,65 @@
+{
+    "by": [
+        {
+            "email": "sam.parkinson3@gmail.com", 
+            "name": "Sam", 
+            "page": "https://www.github.com/samdroid-apps"
+        }
+    ], 
+    "categories": [
+        "documents", 
+        "creative"
+    ], 
+    "description": {
+        "en_US": "Eaisly make beautiful presentations"
+    }, 
+    "github_current_tag": "v2", 
+    "github_url": "samdroid-apps/sugar-slides", 
+    "hasOldToolbars": false, 
+    "icon": "http://i.imgur.com/oa5zIR3.png", 
+    "iconHash": "e27c7f96e55ef5a437b17e0b0831acba", 
+    "isGTK3": true, 
+    "isWeb": true, 
+    "minSugarVersion": "0.100", 
+    "releases": [
+        {
+            "minSugarVersion": "0.100", 
+            "screenshots": {
+                "en": [
+                    "http://i.imgur.com/2FeIRyb.png", 
+                    "http://i.imgur.com/UMF6UGp.png", 
+                    "http://i.imgur.com/wFXrBHv.png", 
+                    "http://i.imgur.com/IhgmQ6n.png"
+                ]
+            }, 
+            "version": 2, 
+            "whats_new": {}, 
+            "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/me.samdroid.sugar.slides_stable_2.xo"
+        }
+    ], 
+    "screenshots": {
+        "en": [
+            "http://i.imgur.com/2FeIRyb.png", 
+            "http://i.imgur.com/UMF6UGp.png", 
+            "http://i.imgur.com/wFXrBHv.png", 
+            "http://i.imgur.com/IhgmQ6n.png"
+        ]
+    }, 
+    "screenshotsHashes": {
+        "en": {
+            "3f8099b29a07127adbb7d7b332de5521": "http://i.imgur.com/UMF6UGp.png", 
+            "449d644388ac95151e8d44968db24864": "http://i.imgur.com/wFXrBHv.png", 
+            "881986a943ea7fa22d91bda921d4279f": "http://i.imgur.com/2FeIRyb.png", 
+            "df2d421f9c66ce8be3c0b9472a0fa382": "http://i.imgur.com/IhgmQ6n.png"
+        }
+    }, 
+    "title": {
+        "en_US": "Slides"
+    }, 
+    "version": 2, 
+    "whats_new": {}, 
+    "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/me.samdroid.sugar.slides_stable_2.xo", 
+    "xo_url_latest": "http://aslo-bot-master.sugarlabs.org/uploads/me.samdroid.sugar.slides_latest.xo", 
+    "xo_url_latest_timestamp": 1407321128.184809, 
+    "xo_url_timestamp": 1398466211.952828
+}

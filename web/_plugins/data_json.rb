@@ -15,10 +15,15 @@ module Jekyll
     end
 
     def convert(content)
-      puts "I hope you ran `git clone https://github.com/samdroid-apps/sugar-activities data`"
-      puts "  and you ran `git pull`!"
+      if not Dir.exists? './data'
+        `git clone https://github.com/samdroid-apps/sugar-activities data`
+      else
+        Dir.chdir('data'){
+          `git pull`
+        }
+      end
 
-      activities = {}      
+      activities = {}   
 
       Dir.glob "./data/*.json" do |path|
         j = JSON.parse open(path).read

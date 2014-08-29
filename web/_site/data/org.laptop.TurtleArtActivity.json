@@ -1,0 +1,80 @@
+{
+    "by": [
+        {
+            "email": "walter@sugarlabs.org", 
+            "name": "Walter", 
+            "page": "https://www.github.com/walterbender"
+        }
+    ], 
+    "categories": [
+        "programming", 
+        "art"
+    ], 
+    "description": {
+        "ayc": "Maya tortuga wakichatawa uka kunaymana rixitanaka wakichiri chimpupana utji uka u\u00f1ja\u00f1anaka wakichata chika", 
+        "da": "En skildpasse inspireret af Logo, der tegner farverige billeder med visuelle, programm\u00e9rbare blokke som kan sammens\u00e6ttes.", 
+        "de": "Eine von Logo inspirierte Schildkr\u00f6te, die mittels visueller Programmierbausteine farbenfrohe Bilder zeichnet", 
+        "en": "A Logo-inspired turtle that draws colorful pictures with snap-together visual programming blocks", 
+        "en-GB": "A Logo-inspired turtle that draws colourful pictures with snap-together visual programming blocks", 
+        "en-US": "A Logo-inspired turtle that draws colorful pictures with snap-together visual programming blocks", 
+        "en_US": "A Logo-inspired turtle that draws colorful pictures with snap-together visual programming blocks", 
+        "es": "Una tortuga inspirada en Logo que hace dibujos coloridos junto con bloques complementarios de programaci\u00f3n visual", 
+        "fr": "Une tortue inspir\u00e9e par le langage Logo, qui dessine des dessins color\u00e9s \u00e0 l'aide de blocs de programmation visuelle embo\u00eetables.", 
+        "hy": "\u053c\u0578\u0563\u0578-\u0578\u0563\u0565\u0577\u0576\u0579\u057e\u0561\u056e \u056f\u0580\u056b\u0561, \u0578\u0580\u0568 \u0576\u056f\u0561\u0580\u0578\u0582\u0574 \u0567 \u0563\u0578\u0582\u0576\u0561\u0566\u0561\u0580\u0564 \u0576\u056f\u0561\u0580\u0576\u0565\u0580 \"snap-together\" \u057f\u0565\u057d\u0578\u0572\u0561\u056f\u0561\u0576 \u056e\u0580\u0561\u0563\u0580\u0561\u0575\u056b\u0576 \u0562\u056c\u0578\u056f\u0565\u0580\u0578\u057e", 
+        "id": "Kura-kura terinspirasi Logo yang melukis gambar berwarna-warni dengan blok-blok pemrograman visual yang tergabung bersama", 
+        "ne": "\u090f\u0909\u091f\u093e \u091a\u093f\u0928\u094d\u0939-\u092a\u094d\u0930\u092d\u093e\u0935\u093f\u0924 \u0915\u091b\u0941\u0935\u093e \u091c\u0938\u0932\u0947 \u0938\u0901\u0917\u0948-\u091c\u094b\u0921\u093f\u0928\u0947 \u0926\u0943\u0936\u094d\u092f \u092a\u094d\u0930\u094b\u0917\u094d\u0930\u093e\u092e\u093f\u0919\u094d\u0917 \u0916\u0923\u094d\u0921\u0939\u0930\u0941\u0915\u093e \u0938\u093e\u0925\u092e\u093e \u0930\u0919\u094d\u0917\u0940\u091a\u0919\u094d\u0917\u0940 \u091a\u093f\u0924\u094d\u0930\u0939\u0930\u0941 \u092c\u0928\u093e\u0909\u0901\u0926\u091b\u0964", 
+        "nl": "Een Logo-ge\u00efnspireerd schildpad die kleurrijke plaatjes tekent met samenklik visueel programmeerblokken", 
+        "pap": "Un turtug\u00e1 inspir\u00e1 pa e logo ku ta traha dibuho kolorido ku bl\u00f2ki di programashon visual ku ta klek den otro", 
+        "pl": "\u017b\u00f3\u0142w zainspirowany Logo, kt\u00f3ry rysuje kolorowe obrazki dzi\u0119ki \u0142\u0105czeniu blok\u00f3w programowania graficznego", 
+        "pt": "Uma tartaruga inspirada em Logo que desenha pinturas coloridas com blocos de programa\u00e7\u00e3o visual", 
+        "quz": "Charapachaqa Logo nisqata qhawaspam ruwakurqan hinam sumaq siq'ikunata ruwaspa llimp'in kaqllataq tawqakunatapas ruwarillanmi", 
+        "zh-CN": "\u4e00\u4e2a\u53d7Logo\u542f\u53d1\u8fde\u63a5\u53ef\u89c6\u5316\u7f16\u7a0b\u5757\u5e76\u753b\u6709\u5f69\u8272\u56fe\u7247\u7684\u6d77\u9f9f"
+    }, 
+    "github_current_tag": "v207", 
+    "github_url": "walterbender/turtleart", 
+    "hasOldToolbars": false, 
+    "icon": "http://i.imgur.com/hFxOr4p.png", 
+    "iconHash": "98d16005d748acbf72706e1a8e5d462a", 
+    "isGTK3": false, 
+    "isWeb": false, 
+    "minSugarVersion": "0.86", 
+    "releases": [
+        {
+            "minSugarVersion": "0.86", 
+            "screenshots": [], 
+            "version": 208, 
+            "whats_new": {
+                "en_US": "<br/>ENHANCEMENT:<br/>* expand dock for oversized arguments in fill_screen block (et al.)"
+            }, 
+            "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/org.laptop.TurtleArtActivity_stable_208.xo"
+        }
+    ], 
+    "title": {
+        "ayc": "TortuBlocks wakichata", 
+        "da": "Skildpadde-blokke", 
+        "de": "Schildkr\u00f6tenbl\u00f6cke", 
+        "en": "TurtleBlocks", 
+        "en-GB": "TurtleBlocks", 
+        "en-US": "TurtleBlocks", 
+        "en_US": "TurtleBlocks", 
+        "es": "TortuBlocks", 
+        "fr": "BlocsTortue", 
+        "hy": "\u053f\u0580\u056b\u0561\u0575\u056b\u0532\u056c\u0578\u056f", 
+        "it": "Tartablocchi", 
+        "ne": "\u091f\u0930\u094d\u091f\u0932 \u092c\u094d\u0932\u0915", 
+        "nl": "SchildpadBlokken", 
+        "pap": "TurtuBl\u00f2ki", 
+        "pt": "BlocosTartaruga", 
+        "quz": "CharapaBlocks", 
+        "zh-CN": "\u6d77\u9f9f\u79ef\u6728"
+    }, 
+    "version": 208, 
+    "whats_new": {
+        "en_US": "<br/>ENHANCEMENT:<br/>* expand dock for oversized arguments in fill_screen block (et al.)"
+    }, 
+    "xo_size": 6481956, 
+    "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/org.laptop.TurtleArtActivity_stable_208.xo", 
+    "xo_url_latest": "http://aslo-bot-master.sugarlabs.org/uploads/org.laptop.TurtleArtActivity_latest.xo", 
+    "xo_url_latest_timestamp": 1408645597.524469, 
+    "xo_url_timestamp": 1408645597.483049
+}

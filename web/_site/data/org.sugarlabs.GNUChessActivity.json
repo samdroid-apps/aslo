@@ -1,0 +1,66 @@
+{
+    "by": [
+        {
+            "email": "walter@sugarlabs.org", 
+            "name": "Walter", 
+            "page": "https://www.github.com/walterbender"
+        }
+    ], 
+    "description": {
+        "ayc": "gnuchess wakichatataki interfaz Sugar wakich\u00e4wi", 
+        "da": "en Sugar-gr\u00e6nseflade til programmet gnuchess", 
+        "en": "a Sugar interface to the gnuchess program", 
+        "en-GB": "a Sugar interface to the gnuchess program", 
+        "en-US": "a Sugar interface to the gnuchess program", 
+        "en_US": "a Sugar interface to the gnuchess program", 
+        "es": "una interfaz Sugar para el programa gnuchess", 
+        "fr": "une interface Sugar pour le programme gnuchess", 
+        "hy": "Sugar-\u056b \u0574\u056b\u057b\u0565\u0580\u0565\u057d Gnuchess \u056e\u0580\u0561\u0563\u0580\u056b \u0570\u0561\u0574\u0561\u0580", 
+        "nl": "een Sugar interface naar het gnuschaak programma", 
+        "pbs": "una interfaz Sugar para el programa gnuchess", 
+        "pt": "uma interface Sugar para o programa gnuchess", 
+        "zh-CN": "\u4e00\u4e2aGNU\u8c61\u68cb\u7a0b\u5e8f\u7684Sugar\u63a5\u53e3"
+    }, 
+    "github_current_tag": "v13", 
+    "github_url": "walterbender/sugarchess", 
+    "hasOldToolbars": false, 
+    "icon": "http://i.imgur.com/VwG3amu.png", 
+    "iconHash": "382f678612f934a4c0e5d114547e6367", 
+    "isGTK3": true, 
+    "isWeb": false, 
+    "minSugarVersion": "0.96", 
+    "releases": [
+        {
+            "minSugarVersion": "0.96", 
+            "screenshots": [], 
+            "version": 14, 
+            "whats_new": {
+                "en_US": "<br/>ENHANCEMENT:<br/>* New translations<br/>* Better handling of activity joining behavior<br/>* Replace combo box with palette"
+            }, 
+            "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/org.sugarlabs.GNUChessActivity_stable_14.xo"
+        }
+    ], 
+    "title": {
+        "ayc": "Ajedrez anata\u00f1a", 
+        "da": "SimpleGNUChess", 
+        "en": "SimpleGNUChess", 
+        "en-GB": "SimpleGNUChess", 
+        "en-US": "SimpleGNUChess", 
+        "en_US": "SimpleGNUChess", 
+        "es": "Ajedrez", 
+        "fr": "SimpleGNUChess", 
+        "hy": "\u054a\u0561\u0580\u0566GNU\u0547\u0561\u056d\u0574\u0561\u057f", 
+        "nl": "SimpleGNUChess", 
+        "pbs": "Ajedrez", 
+        "pt": "Xadrez GNU", 
+        "zh-CN": "GNU\u8c61\u68cb"
+    }, 
+    "version": 14, 
+    "whats_new": {
+        "en_US": "<br/>ENHANCEMENT:<br/>* New translations<br/>* Better handling of activity joining behavior<br/>* Replace combo box with palette"
+    }, 
+    "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/org.sugarlabs.GNUChessActivity_stable_14.xo", 
+    "xo_url_latest": "http://aslo-bot-master.sugarlabs.org/uploads/org.sugarlabs.GNUChessActivity_latest.xo", 
+    "xo_url_latest_timestamp": 1404113103.443271, 
+    "xo_url_timestamp": 1404113103.440867
+}

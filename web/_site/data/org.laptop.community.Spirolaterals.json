@@ -1,0 +1,41 @@
+{
+    "by": [
+        {
+            "email": "walter@sugarlabs.org", 
+            "name": "Walter", 
+            "page": "https://www.github.com/walterbender"
+        }
+    ], 
+    "description": {
+        "en_US": "turtle pattern programming challenge"
+    }, 
+    "github_url": "walterbender/spirolaterals", 
+    "hasOldToolbars": false, 
+    "icon": "http://i.imgur.com/ZBsKgwk.png", 
+    "iconHash": "5cc23e03924149cb3e8e64fb0f6b86ab", 
+    "isGTK3": false, 
+    "isWeb": false, 
+    "minSugarVersion": "0.86", 
+    "releases": [
+        {
+            "minSugarVersion": "0.86", 
+            "screenshots": [], 
+            "version": 24.3, 
+            "whats_new": {
+                "en_US": null
+            }, 
+            "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/org.laptop.community.Spirolaterals_stable_24.3.xo"
+        }
+    ], 
+    "title": {
+        "en_US": "Spirolaterals"
+    }, 
+    "version": 24.3, 
+    "whats_new": {
+        "en_US": null
+    }, 
+    "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/org.laptop.community.Spirolaterals_stable_24.3.xo", 
+    "xo_url_latest": "http://aslo-bot-master.sugarlabs.org/uploads/org.laptop.community.Spirolaterals_latest.xo", 
+    "xo_url_latest_timestamp": 1404115277.097917, 
+    "xo_url_timestamp": 1404115277.097035
+}

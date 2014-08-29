@@ -1,0 +1,61 @@
+{
+    "by": [
+        {
+            "email": "sam.parkinson3@gmail.com", 
+            "name": "Sam", 
+            "page": "https://www.github.com/samdroid-apps"
+        }
+    ], 
+    "categories": [
+        "game", 
+        "maths"
+    ], 
+    "description": {
+        "en_US": "A fun maths puzzle that took the world by storm!"
+    }, 
+    "github_url": "samdroid-apps/2048", 
+    "hasOldToolbars": false, 
+    "icon": "http://i.imgur.com/rcTmcCV.png", 
+    "iconHash": "8e954d80e6f231fbd1476fa0aeb11bf3", 
+    "isGTK3": true, 
+    "isWeb": true, 
+    "minSugarVersion": "0.100", 
+    "releases": [
+        {
+            "minSugarVersion": "0.100", 
+            "screenshots": {
+                "en": [
+                    "http://i.imgur.com/rXo8MdH.png", 
+                    "http://i.imgur.com/pV3V6q8.png", 
+                    "http://i.imgur.com/C1TO7wt.png"
+                ]
+            }, 
+            "version": 1, 
+            "whats_new": {}, 
+            "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/me.samdroid.sugar.2048_stable_1.xo"
+        }
+    ], 
+    "screenshots": {
+        "en": [
+            "http://i.imgur.com/rXo8MdH.png", 
+            "http://i.imgur.com/pV3V6q8.png", 
+            "http://i.imgur.com/C1TO7wt.png"
+        ]
+    }, 
+    "screenshotsHashes": {
+        "en": {
+            "0f291501670b276a695bc015b655bd43": "http://i.imgur.com/rXo8MdH.png", 
+            "6eb5f40aaa27a75e4f3a371f6aeb544c": "http://i.imgur.com/C1TO7wt.png", 
+            "7e6008fbfc5c33e3acf28c9d904ad831": "http://i.imgur.com/pV3V6q8.png"
+        }
+    }, 
+    "title": {
+        "en_US": "2048"
+    }, 
+    "version": 1, 
+    "whats_new": {}, 
+    "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/me.samdroid.sugar.2048_stable_1.xo", 
+    "xo_url_latest": "http://aslo-bot-master.sugarlabs.org/uploads/me.samdroid.sugar.2048_latest.xo", 
+    "xo_url_latest_timestamp": 1404515259.595187, 
+    "xo_url_timestamp": 1400987485.12625
+}

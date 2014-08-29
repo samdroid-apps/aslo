@@ -1,0 +1,34 @@
+{
+    "by": [
+        {
+            "name": "manuq", 
+            "page": "https://github.com/manuq"
+        }
+    ], 
+    "github_url": "manuq/maze-web", 
+    "hasOldToolbars": false, 
+    "icon": "http://i.imgur.com/g28BMqX.png", 
+    "iconHash": "9af4ba03376d36c9263fcb9c67b028da", 
+    "isGTK3": true, 
+    "isWeb": true, 
+    "minSugarVersion": "0.100", 
+    "releases": [
+        {
+            "minSugarVersion": "0.100", 
+            "screenshots": [], 
+            "version": 2, 
+            "whats_new": {}, 
+            "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/org.sugarlabs.MazeWebActivity_stable_2.xo"
+        }
+    ], 
+    "title": {
+        "en_US": "Maze Web"
+    }, 
+    "version": 2, 
+    "whats_new": {}, 
+    "xo_size": 228312, 
+    "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/org.sugarlabs.MazeWebActivity_stable_2.xo", 
+    "xo_url_latest": "http://aslo-bot-master.sugarlabs.org/uploads/org.sugarlabs.MazeWebActivity_latest.xo", 
+    "xo_url_latest_timestamp": 1407322694.313507, 
+    "xo_url_timestamp": 1407322694.313091
+}

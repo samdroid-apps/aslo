@@ -3,23 +3,32 @@
   display: block;
   position: fixed;
   z-index: 99;
-  top: 50px;
-  left: -webkit-calc(50% - ((20px + 500px)/2));
-  left: calc(50% - ((20px + 500px)/2));
-  width: 500px;
-  padding: 7px 20px;
-  max-height: 400px;
+  top: 3em;
+  padding: 0.5em 1.25em;
+  max-height: 25em;
+  overflow-x: hidden;
   overflow-y: scroll;
   background-color: #a700ff;
   box-shadow: 0 0 10px #111111;
   border-radius: 5px;
   color: white;
-  font-size: 16px;
+  font-size: 1em;
   transition: 1s ease all; }
+  @media screen and (max-width: 1100px) {
+    .login-popover {
+      left: 0;
+      width: 100%;
+      width: -webkit-calc(100% - 1.25em);
+      width: calc(100% - 1.25em); } }
+  @media screen and (min-width: 1100px) {
+    .login-popover {
+      left: -webkit-calc(50% - ((1.25em + 1100px)/2));
+      left: calc(50% - ((1.25em + 1100px)/2));
+      width: 1100px; } }
   .login-popover.hide {
-    margin-top: -1000px; }
+    margin-top: -300em; }
   .login-popover .secret {
-    width: 500px;
+    width: 90%;
     font-family: sans-serif; }
   .login-popover .xo-person-bar {
     text-align: center; }
@@ -331,12 +340,9 @@ ul.activities {
   height: auto;
   margin-left: auto;
   margin-right: auto;
-  text-align: center;
-  transition: 1s ease all; }
+  text-align: center; }
   .detail.hide {
-    margin-top: -200px;
-    height: 0;
-    padding: 0; }
+    display: none; }
   .detail .close {
     font-size: 36px;
     margin-left: 10px;
@@ -555,8 +561,9 @@ div.title h1, div.title h2 {
   padding: 5px; }
 
 .activity-bg {
+  padding-top: 2em;
   width: 100%;
-  margin: 20px 0;
+  margin: 0 0;
   background-size: cover; }
 
 .blog .activity,
