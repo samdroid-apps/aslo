@@ -25,7 +25,6 @@ First make sure you have:
 * Git
 * Requests (Py2): `yum install python-requests`
 * PoLib (Py2): `pip install polib`
-* CairoSVG: `pip install cairosvg`
 * Sugar - not running, but just so the setup.py files can work
 
 Then just run `python2 main.py` and off you mine!

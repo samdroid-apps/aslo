@@ -18,7 +18,7 @@ def get_activity_data(bundle_id):
     else:
         return r.json()
 
-def upload_image(img_name, current_hash, svg=False):
+def upload_image(img_name, current_hash):
     content = ''
     with open(img_name, 'rb') as f:
         h = hashlib.md5()
@@ -28,11 +28,6 @@ def upload_image(img_name, current_hash, svg=False):
 
     if hash_ in current_hash:
         return current_hash[hash_], hash_
-
-    # Nobody accepts svgs :(
-    # GitHub raw just serves them as text :(
-    if svg:
-        content = cairosvg.svg2png(bytestring=content)
 
     # Noooooo, we have to upload the image :(
     data = {'image': content.encode('base64'), 'type': 'base64'}
@@ -56,10 +51,10 @@ def get_imgs(cp, bundle_id):
     if not os.path.isfile(os.path.join('dl/activity/', icon_name)):
         return results
 
-    url, hash_ = upload_image(os.path.join('dl/activity/', icon_name),
-                              {activity.get('iconHash'): activity.get('icon')},
-                              svg=True)
-    results.update({'icon': url, 'iconHash': hash_})
+    with open(os.path.join('dl/activity/', icon_name)) as f:
+        icon = f.read()
+    url = 'data:image/svg+xml;base64,' + icon.encode('base64')
+    results.update({'icon': url})
     return results
 
 def upload_screenshots(activity):

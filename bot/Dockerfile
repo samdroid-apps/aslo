@@ -1,7 +1,7 @@
 FROM fedora
 
 # Install Deps
-RUN yum install -y git python-pip python-requests sugar-toolkit-gtk3 python-cairosvg
+RUN yum install -y git python-pip python-requests sugar-toolkit-gtk3
 RUN pip install polib
 
 # Install Bot
