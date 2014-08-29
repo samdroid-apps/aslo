@@ -1,6 +1,6 @@
 name: The ASLO Blog
 markdown: redcarpet
-pygments: true
+highlighter: true
 sass:
     sass_dir: css
 

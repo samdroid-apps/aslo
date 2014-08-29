@@ -29,7 +29,7 @@ var goBasedOnUrl = function () {
       $.ajax({
         url: "/data/" + bundleId + ".json"
       }).done( function ( data ) {
-        mainActivity.load( data, bundleId, false );
+        mainActivity.load( data, bundleId, false, true );
       });
       return;
     }
@@ -43,7 +43,7 @@ var goBasedOnUrl = function () {
       $.ajax({
         url: "/data/" + bundleId + ".json"
       }).done( function ( data ) {
-        mainActivity.load( data, bundleId, false );
+        mainActivity.load( data, bundleId, false, true );
       });
     }
   }
@@ -63,6 +63,7 @@ $( document ).ready( function () {
       url: dataUrl
     }).done( function ( data ) {
       $( "body" ).data( "activitiesData", data.activities );
+      $( "body" ).data( "featuredData", data.featured );
       activityList.setup();
 
       setInterval( goBasedOnUrl, 750 );
@@ -72,8 +73,4 @@ $( document ).ready( function () {
     login.setup();
     comments.setup();
   }
-
-  // Fix blog titles
-  StyleFix.styleAttribute( $( ".activity-bg" )[0] );
-
 });

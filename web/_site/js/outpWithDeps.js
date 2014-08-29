@@ -7,13 +7,14 @@
  * @author Lea Verou
  * MIT license
  */(function(){function t(e,t){return[].slice.call((t||document).querySelectorAll(e))}if(!window.addEventListener)return;var e=window.StyleFix={link:function(t){try{if(t.rel!=="stylesheet"||t.hasAttribute("data-noprefix"))return}catch(n){return}var r=t.href||t.getAttribute("data-href"),i=r.replace(/[^\/]+$/,""),s=t.parentNode,o=new XMLHttpRequest,u;o.onreadystatechange=function(){o.readyState===4&&u()};u=function(){var n=o.responseText;if(n&&t.parentNode&&(!o.status||o.status<400||o.status>600)){n=e.fix(n,!0,t);if(i){n=n.replace(/url\(\s*?((?:"|')?)(.+?)\1\s*?\)/gi,function(e,t,n){return/^([a-z]{3,10}:|\/|#)/i.test(n)?e:'url("'+i+n+'")'});var r=i.replace(/([\\\^\$*+[\]?{}.=!:(|)])/g,"\\$1");n=n.replace(RegExp("\\b(behavior:\\s*?url\\('?\"?)"+r,"gi"),"$1")}var u=document.createElement("style");u.textContent=n;u.media=t.media;u.disabled=t.disabled;u.setAttribute("data-href",t.getAttribute("href"));s.insertBefore(u,t);s.removeChild(t);u.media=t.media}};try{o.open("GET",r);o.send(null)}catch(n){if(typeof XDomainRequest!="undefined"){o=new XDomainRequest;o.onerror=o.onprogress=function(){};o.onload=u;o.open("GET",r);o.send(null)}}t.setAttribute("data-inprogress","")},styleElement:function(t){if(t.hasAttribute("data-noprefix"))return;var n=t.disabled;t.textContent=e.fix(t.textContent,!0,t);t.disabled=n},styleAttribute:function(t){var n=t.getAttribute("style");n=e.fix(n,!1,t);t.setAttribute("style",n)},process:function(){t('link[rel="stylesheet"]:not([data-inprogress])').forEach(StyleFix.link);t("style").forEach(StyleFix.styleElement);t("[style]").forEach(StyleFix.styleAttribute)},register:function(t,n){(e.fixers=e.fixers||[]).splice(n===undefined?e.fixers.length:n,0,t)},fix:function(t,n,r){for(var i=0;i<e.fixers.length;i++)t=e.fixers[i](t,n,r)||t;return t},camelCase:function(e){return e.replace(/-([a-z])/g,function(e,t){return t.toUpperCase()}).replace("-","")},deCamelCase:function(e){return e.replace(/[A-Z]/g,function(e){return"-"+e.toLowerCase()})}};(function(){setTimeout(function(){t('link[rel="stylesheet"]').forEach(StyleFix.link)},10);document.addEventListener("DOMContentLoaded",StyleFix.process,!1)})()})();(function(e){function t(e,t,r,i,s){e=n[e];if(e.length){var o=RegExp(t+"("+e.join("|")+")"+r,"gi");s=s.replace(o,i)}return s}if(!window.StyleFix||!window.getComputedStyle)return;var n=window.PrefixFree={prefixCSS:function(e,r,i){var s=n.prefix;n.functions.indexOf("linear-gradient")>-1&&(e=e.replace(/(\s|:|,)(repeating-)?linear-gradient\(\s*(-?\d*\.?\d*)deg/ig,function(e,t,n,r){return t+(n||"")+"linear-gradient("+(90-r)+"deg"}));e=t("functions","(\\s|:|,)","\\s*\\(","$1"+s+"$2(",e);e=t("keywords","(\\s|:)","(\\s|;|\\}|$)","$1"+s+"$2$3",e);e=t("properties","(^|\\{|\\s|;)","\\s*:","$1"+s+"$2:",e);if(n.properties.length){var o=RegExp("\\b("+n.properties.join("|")+")(?!:)","gi");e=t("valueProperties","\\b",":(.+?);",function(e){return e.replace(o,s+"$1")},e)}if(r){e=t("selectors","","\\b",n.prefixSelector,e);e=t("atrules","@","\\b","@"+s+"$1",e)}e=e.replace(RegExp("-"+s,"g"),"-");e=e.replace(/-\*-(?=[a-z]+)/gi,n.prefix);return e},property:function(e){return(n.properties.indexOf(e)?n.prefix:"")+e},value:function(e,r){e=t("functions","(^|\\s|,)","\\s*\\(","$1"+n.prefix+"$2(",e);e=t("keywords","(^|\\s)","(\\s|$)","$1"+n.prefix+"$2$3",e);return e},prefixSelector:function(e){return e.replace(/^:{1,2}/,function(e){return e+n.prefix})},prefixProperty:function(e,t){var r=n.prefix+e;return t?StyleFix.camelCase(r):r}};(function(){var e={},t=[],r={},i=getComputedStyle(document.documentElement,null),s=document.createElement("div").style,o=function(n){if(n.charAt(0)==="-"){t.push(n);var r=n.split("-"),i=r[1];e[i]=++e[i]||1;while(r.length>3){r.pop();var s=r.join("-");u(s)&&t.indexOf(s)===-1&&t.push(s)}}},u=function(e){return StyleFix.camelCase(e)in s};if(i.length>0)for(var a=0;a<i.length;a++)o(i[a]);else for(var f in i)o(StyleFix.deCamelCase(f));var l={uses:0};for(var c in e){var h=e[c];l.uses<h&&(l={prefix:c,uses:h})}n.prefix="-"+l.prefix+"-";n.Prefix=StyleFix.camelCase(n.prefix);n.properties=[];for(var a=0;a<t.length;a++){var f=t[a];if(f.indexOf(n.prefix)===0){var p=f.slice(n.prefix.length);u(p)||n.properties.push(p)}}n.Prefix=="Ms"&&!("transform"in s)&&!("MsTransform"in s)&&"msTransform"in s&&n.properties.push("transform","transform-origin");n.properties.sort()})();(function(){function i(e,t){r[t]="";r[t]=e;return!!r[t]}var e={"linear-gradient":{property:"backgroundImage",params:"red, teal"},calc:{property:"width",params:"1px + 5%"},element:{property:"backgroundImage",params:"#foo"},"cross-fade":{property:"backgroundImage",params:"url(a.png), url(b.png), 50%"}};e["repeating-linear-gradient"]=e["repeating-radial-gradient"]=e["radial-gradient"]=e["linear-gradient"];var t={initial:"color","zoom-in":"cursor","zoom-out":"cursor",box:"display",flexbox:"display","inline-flexbox":"display",flex:"display","inline-flex":"display"};n.functions=[];n.keywords=[];var r=document.createElement("div").style;for(var s in e){var o=e[s],u=o.property,a=s+"("+o.params+")";!i(a,u)&&i(n.prefix+a,u)&&n.functions.push(s)}for(var f in t){var u=t[f];!i(f,u)&&i(n.prefix+f,u)&&n.keywords.push(f)}})();(function(){function s(e){i.textContent=e+"{}";return!!i.sheet.cssRules.length}var t={":read-only":null,":read-write":null,":any-link":null,"::selection":null},r={keyframes:"name",viewport:null,document:'regexp(".")'};n.selectors=[];n.atrules=[];var i=e.appendChild(document.createElement("style"));for(var o in t){var u=o+(t[o]?"("+t[o]+")":"");!s(u)&&s(n.prefixSelector(u))&&n.selectors.push(o)}for(var a in r){var u=a+" "+(r[a]||"");!s("@"+u)&&s("@"+n.prefix+u)&&n.atrules.push(a)}e.removeChild(i)})();n.valueProperties=["transition","transition-property"];e.className+=" "+n.prefix;StyleFix.register(n.prefixCSS)})(document.documentElement);
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/var/www/aslo/web/js/activityList.js":[function(require,module,exports){
 var util = require( "./util.js" );
 var mainActivity = require( "./mainActivity.js" );
 var search = require( "./search.js" );
+var featured = require( "./featured.js" );
 
 exports.add = function ( container, bundleId ) {
-  var ele = $( "<li class='activity'>" );
+  var ele = $( "<a class='activity'>" );
 
   activitiesData = $( "body" ).data( "activitiesData" );
   var data = activitiesData[ bundleId ];
@@ -31,21 +32,15 @@ exports.add = function ( container, bundleId ) {
   var l = ( data.categories || [ "none" ] ).reverse();
   ele.addClass( "category-" + l[ 1 ] );
 
+  ele.attr( "href", "/view/" + bundleId );
+
   ele.data( "json", data );
   ele.data( "bundleId", bundleId );
   ele.data( "searchString", search.makeSearchString( data ) );
   ele.click( function ( e ) {
-    mainActivity.load( $( this ).data( "json" ),
-                       $( this ).data( "bundleId" ),
-                       true );
-    $.ajax({
-      url: "/data/" + $( this ).data( "bundleId" ) + ".json"
-    }).done( function ( data ) {
-      mainActivity.load( data,
-                         $( this ).data( "bundleId" ),
-                         false );
-    });
     e.preventDefault();
+    mainActivity.downloadAndLoad(
+      $( this ).data( "json" ), $( this ).data( "bundleId" ), true );
   });
 }
 
@@ -57,9 +52,11 @@ exports.setup = function () {
       exports.add( ".activities", key );
     }
   }
+
+  featured.load( $( "body" ).data( "featuredData" ), activitiesData )
 };
 
-},{"./mainActivity.js":7,"./search.js":8,"./util.js":9}],2:[function(require,module,exports){
+},{"./featured.js":"/var/www/aslo/web/js/featured.js","./mainActivity.js":"/var/www/aslo/web/js/mainActivity.js","./search.js":"/var/www/aslo/web/js/search.js","./util.js":"/var/www/aslo/web/js/util.js"}],"/var/www/aslo/web/js/animations.js":[function(require,module,exports){
 exports.done = function () {
   var ele = $( "<span class='done'></span>" );
   $( "body" ).append( ele );
@@ -90,7 +87,7 @@ exports.addComment = function () {
   }, 3000);
 }
 
-},{}],3:[function(require,module,exports){
+},{}],"/var/www/aslo/web/js/comments.js":[function(require,module,exports){
 var account = undefined;
 var SERVER = "http://comments.aslo.cf";
 var WS_SERVER = "ws://comments.aslo.cf/comments/stream";
@@ -318,7 +315,36 @@ var addComment = function ( item ) {
   ele.prependTo( $( ".comments ul" ) );
 };
 
-},{"./animations.js":2,"./i18n.js":4,"./login.js":5,"./util.js":9,"./xoPerson.js":10}],4:[function(require,module,exports){
+},{"./animations.js":"/var/www/aslo/web/js/animations.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./login.js":"/var/www/aslo/web/js/login.js","./util.js":"/var/www/aslo/web/js/util.js","./xoPerson.js":"/var/www/aslo/web/js/xoPerson.js"}],"/var/www/aslo/web/js/featured.js":[function(require,module,exports){
+var mainActivity = require( "./mainActivity.js" );
+var i18n = require( "./i18n.js" );
+
+exports.load = function ( all, activities ) {
+  var lang = i18n.getLangToUse( Object.keys( all ) );
+  if ( lang === null ) {
+    $( ".featured" ).hide();
+    return;
+  }
+  console.log( lang, all, Object.keys( all ) )
+
+  var data = all[lang]
+  console.log( data );
+  $( ".featured > a" ).attr( "href", "/view/" + data.id )
+  $( ".featured > a" ).click( function ( e ) {
+    e.preventDefault();
+    mainActivity.downloadAndLoad( activities[data.id], data.id, true );
+  });
+
+  $( ".featured" ).css( "background", data.bg );
+  $( ".featured" ).css( "background-size", data.bg_size );
+  StyleFix.styleAttribute( $( ".featured" )[0] );
+
+  $( ".featured h1" ).html( data.title );
+  $( ".featured .description" ).html( data.description );
+  $( ".featured img" ).attr( "src", activities[data.id].icon );
+}
+
+},{"./i18n.js":"/var/www/aslo/web/js/i18n.js","./mainActivity.js":"/var/www/aslo/web/js/mainActivity.js"}],"/var/www/aslo/web/js/i18n.js":[function(require,module,exports){
 /*
 |======================|
 | i18n VS util.getLang |
@@ -334,19 +360,24 @@ var addComment = function ( item ) {
 // Add avaliable languages here
 var langsAvaliable = ['id'];
 
-var getLangToUse = function () {
-  if ( localStorage['testlang'] !== undefined ) {
+exports.getLangToUse = function ( langList ) {
+  if ( langList === undefined ) {
+    var langList = langsAvaliable;
+  }
+
+  if ( localStorage['testlang'] !== "undefined"
+       && localStorage['testlang'] !== undefined ) {
     return localStorage['testlang']
   }
 
   var ul = navigator.language || navigator.userLanguage;
 
-  if ( langsAvaliable.indexOf( ul ) !== -1 ) {
+  if ( langList.indexOf( ul ) !== -1 ) {
     return ul;
   };
 
-  for ( var i in langsAvaliable ) {
-    var l = langsAvaliable[i];
+  for ( var i in langList ) {
+    var l = langList[i];
     if ( l.substr( 0, 2 ) == ul.substr( 0, 2 ) ) {
       return l;
     };
@@ -356,7 +387,7 @@ var getLangToUse = function () {
 };
 
 exports.setup = function () {
-  l = getLangToUse();
+  l = exports.getLangToUse();
   if ( l === null ) {
     return;
   };
@@ -402,7 +433,7 @@ exports.get = function ( text ) {
   return text.trim();
 }
 
-},{}],5:[function(require,module,exports){
+},{}],"/var/www/aslo/web/js/login.js":[function(require,module,exports){
 var SERVER = "http://comments.aslo.cf";
 var i18n = require( "./i18n.js" );
 var animations = require( "./animations.js" );
@@ -477,7 +508,7 @@ exports.setup = function () {
   });
 }
 
-},{"./animations.js":2,"./i18n.js":4,"./xoPerson.js":10}],6:[function(require,module,exports){
+},{"./animations.js":"/var/www/aslo/web/js/animations.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./xoPerson.js":"/var/www/aslo/web/js/xoPerson.js"}],"/var/www/aslo/web/js/main.js":[function(require,module,exports){
 var activityList = require( "./activityList.js" );
 var mainActivity = require( "./mainActivity.js" );
 var search = require( "./search.js" );
@@ -509,7 +540,7 @@ var goBasedOnUrl = function () {
       $.ajax({
         url: "/data/" + bundleId + ".json"
       }).done( function ( data ) {
-        mainActivity.load( data, bundleId, false );
+        mainActivity.load( data, bundleId, false, true );
       });
       return;
     }
@@ -523,7 +554,7 @@ var goBasedOnUrl = function () {
       $.ajax({
         url: "/data/" + bundleId + ".json"
       }).done( function ( data ) {
-        mainActivity.load( data, bundleId, false );
+        mainActivity.load( data, bundleId, false, true );
       });
     }
   }
@@ -543,6 +574,7 @@ $( document ).ready( function () {
       url: dataUrl
     }).done( function ( data ) {
       $( "body" ).data( "activitiesData", data.activities );
+      $( "body" ).data( "featuredData", data.featured );
       activityList.setup();
 
       setInterval( goBasedOnUrl, 750 );
@@ -552,18 +584,24 @@ $( document ).ready( function () {
     login.setup();
     comments.setup();
   }
-
-  // Fix blog titles
-  StyleFix.styleAttribute( $( ".activity-bg" )[0] );
-
 });
 
-},{"./activityList.js":1,"./comments.js":3,"./i18n.js":4,"./login.js":5,"./mainActivity.js":7,"./search.js":8}],7:[function(require,module,exports){
+},{"./activityList.js":"/var/www/aslo/web/js/activityList.js","./comments.js":"/var/www/aslo/web/js/comments.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./login.js":"/var/www/aslo/web/js/login.js","./mainActivity.js":"/var/www/aslo/web/js/mainActivity.js","./search.js":"/var/www/aslo/web/js/search.js"}],"/var/www/aslo/web/js/mainActivity.js":[function(require,module,exports){
 var util = require( "./util.js" );
 var comments = require( "./comments.js" );
 var i18n = require("./i18n.js" );
 
-exports.load = function ( data, bundleId, setUrl ) {
+exports.downloadAndLoad = function ( dataSoFar, bundleId, setUrl ) {
+  exports.load( dataSoFar, bundleId, setUrl, true );
+
+  $.ajax({
+    url: "/data/" + bundleId + ".json"
+  }).done( function ( data ) {
+    exports.load( data, bundleId, false, false );
+  })
+}
+
+exports.load = function ( data, bundleId, setUrl, loadComments ) {
   if ( setUrl ) {
     history.pushState(null, null, "/view/" + bundleId);
     window.location.changedByProgram = true;
@@ -656,10 +694,12 @@ exports.load = function ( data, bundleId, setUrl ) {
     $( ".by", container ).append( ele );
   }
 
-  comments.load( bundleId );
+  if ( loadComments ) {
+    comments.load( bundleId );
+  }
 };
 
-},{"./comments.js":3,"./i18n.js":4,"./util.js":9}],8:[function(require,module,exports){
+},{"./comments.js":"/var/www/aslo/web/js/comments.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./util.js":"/var/www/aslo/web/js/util.js"}],"/var/www/aslo/web/js/search.js":[function(require,module,exports){
 var lastQuery = "";
 var lastCategory = "";
 var currentCategory = "any";
@@ -736,7 +776,7 @@ exports.makeSearchString = function ( data ) {
          catString;
 }
 
-},{"./util.js":9}],9:[function(require,module,exports){
+},{"./util.js":"/var/www/aslo/web/js/util.js"}],"/var/www/aslo/web/js/util.js":[function(require,module,exports){
 exports.repeatS = function (s, t) {
   var r = "";
   for ( var i = 0; i < t; i++ ) {
@@ -746,7 +786,7 @@ exports.repeatS = function (s, t) {
 }
 
 exports.trans = function ( obj ) {
-  if ( obj === undefined ) {
+  if ( obj === undefined || obj === null ) {
     return "";
   }
 
@@ -794,7 +834,7 @@ exports.sugarVersionToInt = function ( vString ) {
   return DEFAULT_SUGAR;
 }
 
-},{}],10:[function(require,module,exports){
+},{}],"/var/www/aslo/web/js/xoPerson.js":[function(require,module,exports){
 var colors = [ "#00588c", "#5e008c", "#807500", "#008009", "#9a5200",
                "#b20008", "#005fe4", "#7f00bf", "#be9e00", "#00b20d",
                "#c97e00", "#e6000a", "#bccdff", "#d1a3ff", "#fffa00",
@@ -836,4 +876,4 @@ exports.getSelected = function () {
   return b.data( "xoBarSelected" );
 }
 
-},{}]},{},[6])
+},{}]},{},["/var/www/aslo/web/js/main.js"]);

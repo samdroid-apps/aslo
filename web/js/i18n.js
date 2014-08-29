@@ -13,19 +13,24 @@
 // Add avaliable languages here
 var langsAvaliable = ['id'];
 
-var getLangToUse = function () {
-  if ( localStorage['testlang'] !== undefined ) {
+exports.getLangToUse = function ( langList ) {
+  if ( langList === undefined ) {
+    var langList = langsAvaliable;
+  }
+
+  if ( localStorage['testlang'] !== "undefined"
+       && localStorage['testlang'] !== undefined ) {
     return localStorage['testlang']
   }
 
   var ul = navigator.language || navigator.userLanguage;
 
-  if ( langsAvaliable.indexOf( ul ) !== -1 ) {
+  if ( langList.indexOf( ul ) !== -1 ) {
     return ul;
   };
 
-  for ( var i in langsAvaliable ) {
-    var l = langsAvaliable[i];
+  for ( var i in langList ) {
+    var l = langList[i];
     if ( l.substr( 0, 2 ) == ul.substr( 0, 2 ) ) {
       return l;
     };
@@ -35,7 +40,7 @@ var getLangToUse = function () {
 };
 
 exports.setup = function () {
-  l = getLangToUse();
+  l = exports.getLangToUse();
   if ( l === null ) {
     return;
   };

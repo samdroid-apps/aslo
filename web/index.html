@@ -36,8 +36,10 @@
       </span>
       <br/><br/>
       <span class="signup-form">
-        <i class="fa fa-arrow-circle-left fa-lg close-login-popover"></i>
-        <h1 i18n-content>Sign Up</h1>
+        <h1>
+          <i class="fa fa-arrow-circle-left fa-lg close-login-popover"></i>
+          <span i18n-content>Sign Up</span>
+        </h1>
         <div class="error" style="display: none;">
           <i class="fa fa-exclamation-triangle fa-lg"></i>
           <span class="content"></span>
@@ -144,21 +146,18 @@
       <div class="close"><i class="fa fa-arrow-circle-left fa-lg"></i></div>
     </div>
 
-    <div class="activity-bg no-c"
-         style="background: {{ site.posts[0].pattern }};
-                background-size: {{ site.posts[0].bg_size or '' }};">
-      <a href="{{ site.posts[0].url }}" class="no-style">
-        <p class="latest-aslo-info" i18n-content>
-           Here is the latest from the ASLO blog:</p>
+    <div class="featured">
+      <a href="">
+        <p class="info" i18n-content>Featured Activity</p>
 
-        <div class="title please-center">
-          <img class="person no-c" src="{{ site.posts[0].by_avatar }}"/>
-          <h1 class="no-c">{{ site.posts[0].title }}</h1>
+        <div class="content">
+          <img class="icon"/>
+          <div class="right">
+            <h1></h1>
+            <p class="description"></p>
+          </div>
         </div>
 
-        <p class="meta please-center"><span i18n-content>By</span>
-          {{ site.posts[-1].by }},
-          {{ site.posts[0].date | date_to_string }}</p>
         <br/>
       </a>
     </div>

@@ -15,10 +15,10 @@ module Jekyll
     end
 
     def convert(content)
-      if not Dir.exists? './data'
+      if not Dir.exists? "./data"
         `git clone https://github.com/samdroid-apps/sugar-activities data`
       else
-        Dir.chdir('data'){
+        Dir.chdir("data"){
           `git pull`
         }
       end
@@ -36,7 +36,9 @@ module Jekyll
         }
       end
 
-      return {"activities"=>activities}.to_json
+      featured = JSON.parse open("data/featured.json").read
+
+      return {"activities"=>activities,"featured"=>featured}.to_json
     end
   end
 end

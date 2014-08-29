@@ -1,10 +1,11 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/var/www/aslo/web/js/activityList.js":[function(require,module,exports){
 var util = require( "./util.js" );
 var mainActivity = require( "./mainActivity.js" );
 var search = require( "./search.js" );
+var featured = require( "./featured.js" );
 
 exports.add = function ( container, bundleId ) {
-  var ele = $( "<li class='activity'>" );
+  var ele = $( "<a class='activity'>" );
 
   activitiesData = $( "body" ).data( "activitiesData" );
   var data = activitiesData[ bundleId ];
@@ -22,21 +23,15 @@ exports.add = function ( container, bundleId ) {
   var l = ( data.categories || [ "none" ] ).reverse();
   ele.addClass( "category-" + l[ 1 ] );
 
+  ele.attr( "href", "/view/" + bundleId );
+
   ele.data( "json", data );
   ele.data( "bundleId", bundleId );
   ele.data( "searchString", search.makeSearchString( data ) );
   ele.click( function ( e ) {
-    mainActivity.load( $( this ).data( "json" ),
-                       $( this ).data( "bundleId" ),
-                       true );
-    $.ajax({
-      url: "/data/" + $( this ).data( "bundleId" ) + ".json"
-    }).done( function ( data ) {
-      mainActivity.load( data,
-                         $( this ).data( "bundleId" ),
-                         false );
-    });
     e.preventDefault();
+    mainActivity.downloadAndLoad(
+      $( this ).data( "json" ), $( this ).data( "bundleId" ), true );
   });
 }
 
@@ -48,9 +43,11 @@ exports.setup = function () {
       exports.add( ".activities", key );
     }
   }
+
+  featured.load( $( "body" ).data( "featuredData" ), activitiesData )
 };
 
-},{"./mainActivity.js":7,"./search.js":8,"./util.js":9}],2:[function(require,module,exports){
+},{"./featured.js":"/var/www/aslo/web/js/featured.js","./mainActivity.js":"/var/www/aslo/web/js/mainActivity.js","./search.js":"/var/www/aslo/web/js/search.js","./util.js":"/var/www/aslo/web/js/util.js"}],"/var/www/aslo/web/js/animations.js":[function(require,module,exports){
 exports.done = function () {
   var ele = $( "<span class='done'></span>" );
   $( "body" ).append( ele );
@@ -81,7 +78,7 @@ exports.addComment = function () {
   }, 3000);
 }
 
-},{}],3:[function(require,module,exports){
+},{}],"/var/www/aslo/web/js/comments.js":[function(require,module,exports){
 var account = undefined;
 var SERVER = "http://comments.aslo.cf";
 var WS_SERVER = "ws://comments.aslo.cf/comments/stream";
@@ -309,7 +306,36 @@ var addComment = function ( item ) {
   ele.prependTo( $( ".comments ul" ) );
 };
 
-},{"./animations.js":2,"./i18n.js":4,"./login.js":5,"./util.js":9,"./xoPerson.js":10}],4:[function(require,module,exports){
+},{"./animations.js":"/var/www/aslo/web/js/animations.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./login.js":"/var/www/aslo/web/js/login.js","./util.js":"/var/www/aslo/web/js/util.js","./xoPerson.js":"/var/www/aslo/web/js/xoPerson.js"}],"/var/www/aslo/web/js/featured.js":[function(require,module,exports){
+var mainActivity = require( "./mainActivity.js" );
+var i18n = require( "./i18n.js" );
+
+exports.load = function ( all, activities ) {
+  var lang = i18n.getLangToUse( Object.keys( all ) );
+  if ( lang === null ) {
+    $( ".featured" ).hide();
+    return;
+  }
+  console.log( lang, all, Object.keys( all ) )
+
+  var data = all[lang]
+  console.log( data );
+  $( ".featured > a" ).attr( "href", "/view/" + data.id )
+  $( ".featured > a" ).click( function ( e ) {
+    e.preventDefault();
+    mainActivity.downloadAndLoad( activities[data.id], data.id, true );
+  });
+
+  $( ".featured" ).css( "background", data.bg );
+  $( ".featured" ).css( "background-size", data.bg_size );
+  StyleFix.styleAttribute( $( ".featured" )[0] );
+
+  $( ".featured h1" ).html( data.title );
+  $( ".featured .description" ).html( data.description );
+  $( ".featured img" ).attr( "src", activities[data.id].icon );
+}
+
+},{"./i18n.js":"/var/www/aslo/web/js/i18n.js","./mainActivity.js":"/var/www/aslo/web/js/mainActivity.js"}],"/var/www/aslo/web/js/i18n.js":[function(require,module,exports){
 /*
 |======================|
 | i18n VS util.getLang |
@@ -325,19 +351,24 @@ var addComment = function ( item ) {
 // Add avaliable languages here
 var langsAvaliable = ['id'];
 
-var getLangToUse = function () {
-  if ( localStorage['testlang'] !== undefined ) {
+exports.getLangToUse = function ( langList ) {
+  if ( langList === undefined ) {
+    var langList = langsAvaliable;
+  }
+
+  if ( localStorage['testlang'] !== "undefined"
+       && localStorage['testlang'] !== undefined ) {
     return localStorage['testlang']
   }
 
   var ul = navigator.language || navigator.userLanguage;
 
-  if ( langsAvaliable.indexOf( ul ) !== -1 ) {
+  if ( langList.indexOf( ul ) !== -1 ) {
     return ul;
   };
 
-  for ( var i in langsAvaliable ) {
-    var l = langsAvaliable[i];
+  for ( var i in langList ) {
+    var l = langList[i];
     if ( l.substr( 0, 2 ) == ul.substr( 0, 2 ) ) {
       return l;
     };
@@ -347,7 +378,7 @@ var getLangToUse = function () {
 };
 
 exports.setup = function () {
-  l = getLangToUse();
+  l = exports.getLangToUse();
   if ( l === null ) {
     return;
   };
@@ -393,7 +424,7 @@ exports.get = function ( text ) {
   return text.trim();
 }
 
-},{}],5:[function(require,module,exports){
+},{}],"/var/www/aslo/web/js/login.js":[function(require,module,exports){
 var SERVER = "http://comments.aslo.cf";
 var i18n = require( "./i18n.js" );
 var animations = require( "./animations.js" );
@@ -468,7 +499,7 @@ exports.setup = function () {
   });
 }
 
-},{"./animations.js":2,"./i18n.js":4,"./xoPerson.js":10}],6:[function(require,module,exports){
+},{"./animations.js":"/var/www/aslo/web/js/animations.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./xoPerson.js":"/var/www/aslo/web/js/xoPerson.js"}],"/var/www/aslo/web/js/main.js":[function(require,module,exports){
 var activityList = require( "./activityList.js" );
 var mainActivity = require( "./mainActivity.js" );
 var search = require( "./search.js" );
@@ -500,7 +531,7 @@ var goBasedOnUrl = function () {
       $.ajax({
         url: "/data/" + bundleId + ".json"
       }).done( function ( data ) {
-        mainActivity.load( data, bundleId, false );
+        mainActivity.load( data, bundleId, false, true );
       });
       return;
     }
@@ -514,7 +545,7 @@ var goBasedOnUrl = function () {
       $.ajax({
         url: "/data/" + bundleId + ".json"
       }).done( function ( data ) {
-        mainActivity.load( data, bundleId, false );
+        mainActivity.load( data, bundleId, false, true );
       });
     }
   }
@@ -534,6 +565,7 @@ $( document ).ready( function () {
       url: dataUrl
     }).done( function ( data ) {
       $( "body" ).data( "activitiesData", data.activities );
+      $( "body" ).data( "featuredData", data.featured );
       activityList.setup();
 
       setInterval( goBasedOnUrl, 750 );
@@ -543,18 +575,24 @@ $( document ).ready( function () {
     login.setup();
     comments.setup();
   }
-
-  // Fix blog titles
-  StyleFix.styleAttribute( $( ".activity-bg" )[0] );
-
 });
 
-},{"./activityList.js":1,"./comments.js":3,"./i18n.js":4,"./login.js":5,"./mainActivity.js":7,"./search.js":8}],7:[function(require,module,exports){
+},{"./activityList.js":"/var/www/aslo/web/js/activityList.js","./comments.js":"/var/www/aslo/web/js/comments.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./login.js":"/var/www/aslo/web/js/login.js","./mainActivity.js":"/var/www/aslo/web/js/mainActivity.js","./search.js":"/var/www/aslo/web/js/search.js"}],"/var/www/aslo/web/js/mainActivity.js":[function(require,module,exports){
 var util = require( "./util.js" );
 var comments = require( "./comments.js" );
 var i18n = require("./i18n.js" );
 
-exports.load = function ( data, bundleId, setUrl ) {
+exports.downloadAndLoad = function ( dataSoFar, bundleId, setUrl ) {
+  exports.load( dataSoFar, bundleId, setUrl, true );
+
+  $.ajax({
+    url: "/data/" + bundleId + ".json"
+  }).done( function ( data ) {
+    exports.load( data, bundleId, false, false );
+  })
+}
+
+exports.load = function ( data, bundleId, setUrl, loadComments ) {
   if ( setUrl ) {
     history.pushState(null, null, "/view/" + bundleId);
     window.location.changedByProgram = true;
@@ -647,10 +685,12 @@ exports.load = function ( data, bundleId, setUrl ) {
     $( ".by", container ).append( ele );
   }
 
-  comments.load( bundleId );
+  if ( loadComments ) {
+    comments.load( bundleId );
+  }
 };
 
-},{"./comments.js":3,"./i18n.js":4,"./util.js":9}],8:[function(require,module,exports){
+},{"./comments.js":"/var/www/aslo/web/js/comments.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./util.js":"/var/www/aslo/web/js/util.js"}],"/var/www/aslo/web/js/search.js":[function(require,module,exports){
 var lastQuery = "";
 var lastCategory = "";
 var currentCategory = "any";
@@ -727,7 +767,7 @@ exports.makeSearchString = function ( data ) {
          catString;
 }
 
-},{"./util.js":9}],9:[function(require,module,exports){
+},{"./util.js":"/var/www/aslo/web/js/util.js"}],"/var/www/aslo/web/js/util.js":[function(require,module,exports){
 exports.repeatS = function (s, t) {
   var r = "";
   for ( var i = 0; i < t; i++ ) {
@@ -737,7 +777,7 @@ exports.repeatS = function (s, t) {
 }
 
 exports.trans = function ( obj ) {
-  if ( obj === undefined ) {
+  if ( obj === undefined || obj === null ) {
     return "";
   }
 
@@ -785,7 +825,7 @@ exports.sugarVersionToInt = function ( vString ) {
   return DEFAULT_SUGAR;
 }
 
-},{}],10:[function(require,module,exports){
+},{}],"/var/www/aslo/web/js/xoPerson.js":[function(require,module,exports){
 var colors = [ "#00588c", "#5e008c", "#807500", "#008009", "#9a5200",
                "#b20008", "#005fe4", "#7f00bf", "#be9e00", "#00b20d",
                "#c97e00", "#e6000a", "#bccdff", "#d1a3ff", "#fffa00",
@@ -827,4 +867,4 @@ exports.getSelected = function () {
   return b.data( "xoBarSelected" );
 }
 
-},{}]},{},[6])
+},{}]},{},["/var/www/aslo/web/js/main.js"]);

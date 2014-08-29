@@ -2,7 +2,17 @@ var util = require( "./util.js" );
 var comments = require( "./comments.js" );
 var i18n = require("./i18n.js" );
 
-exports.load = function ( data, bundleId, setUrl ) {
+exports.downloadAndLoad = function ( dataSoFar, bundleId, setUrl ) {
+  exports.load( dataSoFar, bundleId, setUrl, true );
+
+  $.ajax({
+    url: "/data/" + bundleId + ".json"
+  }).done( function ( data ) {
+    exports.load( data, bundleId, false, false );
+  })
+}
+
+exports.load = function ( data, bundleId, setUrl, loadComments ) {
   if ( setUrl ) {
     history.pushState(null, null, "/view/" + bundleId);
     window.location.changedByProgram = true;
@@ -95,5 +105,7 @@ exports.load = function ( data, bundleId, setUrl ) {
     $( ".by", container ).append( ele );
   }
 
-  comments.load( bundleId );
+  if ( loadComments ) {
+    comments.load( bundleId );
+  }
 };

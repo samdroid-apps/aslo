@@ -7,7 +7,7 @@ exports.repeatS = function (s, t) {
 }
 
 exports.trans = function ( obj ) {
-  if ( obj === undefined ) {
+  if ( obj === undefined || obj === null ) {
     return "";
   }
 

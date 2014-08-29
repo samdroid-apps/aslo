@@ -1,0 +1,35 @@
+@import util
+@import colors
+
+.featured
+  padding-top: 2em
+  width: 100%
+  margin: 0 0
+  overflow: none
+
+  .info
+    padding-top: 8px
+    margin-bottom: 0
+    font-size: 0.8em
+    text-align: center
+
+  .content
+    max-width: #{ $maxw }
+    +center()
+
+  .icon
+    display: block
+    float: left
+    width: 20%
+    margin-top: -40px
+
+  .right
+    float: right
+    width: 80%
+
+  .description
+    font-size: 1.25em
+
+.featured > a
+  text-decoration: none
+  color: $black

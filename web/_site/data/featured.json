@@ -1,0 +1,9 @@
+{
+  "en-AU": {
+    "title": "Browse - A Whole New World!",
+    "description": "See the internet in a whole new light with great new browse features.  <a href=\"http://aslo-bot-master.sugarlabs.org/uploads/org.laptop.WebActivity_latest.xo\">Download the beta version to try the new features</a>",
+    "id": "org.laptop.WebActivity",
+    "bg": "linear-gradient(-45deg, rgba(255, 255, 255, 0) 25%, #A700FF 25%, #A700FF 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 75%, #A700FF 75%, #A700FF), linear-gradient(45deg, rgba(255, 255, 255, 0) 25%, #00EA11 25%, #00EA11 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 75%, #00EA11 75%, #00EA11)",
+    "bg_size": "200px 200px, 200px 200px, auto"
+  }
+}

@@ -23,7 +23,7 @@
     }, 
     "github_url": "SAMdroid-apps/browse", 
     "hasOldToolbars": false, 
-    "icon": "http://i.imgur.com/yXqFOS1.png", 
+    "icon": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQg\nU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3Zn\nMTEuZHRkJyBbCgk8IUVOVElUWSBzdHJva2VfY29sb3IgIiMwMTAxMDEiPgoJPCFFTlRJVFkgZmls\nbF9jb2xvciAiI0ZGRkZGRiI+Cl0+PHN2ZyBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1NSA1\nNSIgaGVpZ2h0PSI1NXB4IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1NSA1NSIgd2lkdGg9\nIjU1cHgiIHg9IjBweCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMu\nb3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIg\neT0iMHB4Ij48ZyBkaXNwbGF5PSJibG9jayIgaWQ9ImFjdGl2aXR5LWJyb3dzZSI+Cgk8Y2lyY2xl\nIGN4PSIyNy4zNzUiIGN5PSIyNy41IiBkaXNwbGF5PSJpbmxpbmUiIGZpbGw9IiZmaWxsX2NvbG9y\nOyIgcj0iMTkuOTAzIiBzdHJva2U9IiZzdHJva2VfY29sb3I7IiBzdHJva2Utd2lkdGg9IjMuNSIv\nPgoJPGcgZGlzcGxheT0iaW5saW5lIj4KCQk8cGF0aCBkPSJNMjcuMzc2LDcuNTk4YzAsMC0xMS4y\nMDUsOC4zOTQtMTEuMjA1LDE5Ljk3NiAgICBjMCwxMS41ODMsMTEuMjA1LDE5LjgyOSwxMS4yMDUs\nMTkuODI5IiBmaWxsPSImZmlsbF9jb2xvcjsiIHN0cm9rZT0iJnN0cm9rZV9jb2xvcjsiIHN0cm9r\nZS13aWR0aD0iMy41Ii8+CgkJPHBhdGggZD0iTTI3LjM3Niw3LjU5OGMwLDAsMTEuMDY2LDkuMTQx\nLDExLjA2NiwxOS45NzYgICAgYzAsMTAuODM5LTExLjA2NiwxOS44MjktMTEuMDY2LDE5LjgyOSIg\nZmlsbD0iJmZpbGxfY29sb3I7IiBzdHJva2U9IiZzdHJva2VfY29sb3I7IiBzdHJva2Utd2lkdGg9\nIjMuNSIvPgoJCTxsaW5lIGZpbGw9IiZmaWxsX2NvbG9yOyIgc3Ryb2tlPSImc3Ryb2tlX2NvbG9y\nOyIgc3Ryb2tlLXdpZHRoPSIzLjUiIHgxPSIyNy4zNzYiIHgyPSIyNy4zNzYiIHkxPSI3LjU5OCIg\neTI9IjQ3LjQwMiIvPgoJCTxsaW5lIGZpbGw9IiZmaWxsX2NvbG9yOyIgc3Ryb2tlPSImc3Ryb2tl\nX2NvbG9yOyIgc3Ryb2tlLXdpZHRoPSIzLjUiIHgxPSIyNy4zNzYiIHgyPSIyNy4zNzYiIHkxPSI3\nLjU5OCIgeTI9IjQ3LjQwMiIvPgoJCTxsaW5lIGZpbGw9IiZmaWxsX2NvbG9yOyIgc3Ryb2tlPSIm\nc3Ryb2tlX2NvbG9yOyIgc3Ryb2tlLXdpZHRoPSIzLjUiIHgxPSIyNy4zNzYiIHgyPSIyNy4zNzYi\nIHkxPSI3LjU5OCIgeTI9IjQ3LjQwMiIvPgoJCTxsaW5lIGZpbGw9IiZmaWxsX2NvbG9yOyIgc3Ry\nb2tlPSImc3Ryb2tlX2NvbG9yOyIgc3Ryb2tlLXdpZHRoPSIzLjUiIHgxPSI3LjQ3MiIgeDI9IjQ3\nLjI3OCIgeTE9IjI3LjUiIHkyPSIyNy41Ii8+Cgk8L2c+CjwvZz48L3N2Zz4KCg==\n", 
     "iconHash": "5a38cbf458d34e474cad08b688b5385f", 
     "isGTK3": true, 
     "isWeb": false, 
@@ -109,6 +109,6 @@
     "whats_new": {}, 
     "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/org.laptop.WebActivity_stable_156.xo", 
     "xo_url_latest": "http://aslo-bot-master.sugarlabs.org/uploads/org.laptop.WebActivity_latest.xo", 
-    "xo_url_latest_timestamp": 1404772882.606388, 
+    "xo_url_latest_timestamp": 1409350771.114143, 
     "xo_url_timestamp": 1404772882.605354
 }
