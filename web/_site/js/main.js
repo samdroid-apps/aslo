@@ -41,7 +41,7 @@ var goBasedOnUrl = function () {
 };
 var dataUrl = '/data.json';
 $(document).ready(function () {
-  if (window.location.pathname === '/' || window.location.pathname.startsWith('/view')) {
+  if (window.location.pathname === '/' || window.location.pathname.substr(0, 5) === '/view') {
     var list = $('.activities');
     var detail = $('.detail');
     goBasedOnUrl();

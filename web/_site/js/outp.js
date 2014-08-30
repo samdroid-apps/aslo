@@ -445,7 +445,7 @@ var goBasedOnUrl = function () {
 };
 var dataUrl = '/data.json';
 $(document).ready(function () {
-  if (window.location.pathname === '/' || window.location.pathname.startsWith('/view')) {
+  if (window.location.pathname === '/' || window.location.pathname.substr(0, 5) === '/view') {
     var list = $('.activities');
     var detail = $('.detail');
     goBasedOnUrl();
@@ -460,6 +460,7 @@ $(document).ready(function () {
     comments.setup();
   }
 });
+
 },{"./activityList.js":"/var/www/aslo/web/js/activityList.js","./comments.js":"/var/www/aslo/web/js/comments.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./login.js":"/var/www/aslo/web/js/login.js","./mainActivity.js":"/var/www/aslo/web/js/mainActivity.js","./search.js":"/var/www/aslo/web/js/search.js"}],"/var/www/aslo/web/js/mainActivity.js":[function(require,module,exports){
 var util = require('./util.js');
 var comments = require('./comments.js');
