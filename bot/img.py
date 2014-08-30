@@ -4,7 +4,6 @@ import uuid
 import hashlib
 
 import requests
-import cairosvg
 
 BASE_URL = 'http://raw.githubusercontent.com/SAMdroid-apps/sugar-activities/multi-file/'
 # Don't steal this (for other apps)...
