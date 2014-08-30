@@ -29,11 +29,13 @@ module Jekyll
         j = JSON.parse open(path).read
         bundle_id = /\.\/data\/(.*).json/.match(path)[1]
 
-        activities[bundle_id] = {
-          "categories" => j["categories"],
-          "icon"       => j["icon"],
-          "title"      => j["title"]
-        }
+        if bundle_id != "featured"
+          activities[bundle_id] = {
+            "categories" => j["categories"],
+            "icon"       => j["icon"],
+            "title"      => j["title"]
+          }
+        end
       end
 
       featured = JSON.parse open("data/featured.json").read

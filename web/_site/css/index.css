@@ -521,7 +521,7 @@ nav {
   padding-top: 2em;
   width: 100%;
   margin: 0 0;
-  overflow: none; }
+  overflow: auto; }
   .featured .info {
     padding-top: 8px;
     margin-bottom: 0;
