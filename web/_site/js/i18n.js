@@ -35,6 +35,7 @@ exports.getLangToUse = function (langList) {
       return l;
     }
   }
+
   return null;
 };
 
@@ -78,7 +79,7 @@ exports.get = function (text) {
   var data = $('body').data('translations');
 
   if (data === undefined) {
-    return '';
+    return text.trim();
   }
 
   if (text.trim() in data) {
