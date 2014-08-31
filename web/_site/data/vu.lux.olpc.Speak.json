@@ -4,7 +4,7 @@
             "email": "walter@sugarlabs.org", 
             "name": "Walter", 
             "page": "https://www.github.com/walterbender"
-        },
+        }, 
         {
             "name": "Sugar Labs Activity Team", 
             "page": "http://wiki.sugarlabs.org/go/Activity_Team"
@@ -36,7 +36,7 @@
     "github_current_tag": "v48", 
     "github_url": "walterbender/speak", 
     "hasOldToolbars": false, 
-    "icon": "http://i.imgur.com/k7VM9ut.png", 
+    "icon": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJM\nSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIgogImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNz\nL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCIgWwogIDwhRU5USVRZIGZpbGxfY29sb3IgIiNGRkZGRkYi\nPgogIDwhRU5USVRZIHN0cm9rZV9jb2xvciAiIzAwMDAwMCI+Cl0+CjxzdmcgeG1sbnM9Imh0dHA6\nLy93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiPgogIDxlbGxpcHNl\nIGZpbGw9IiZmaWxsX2NvbG9yOyIgc3Ryb2tlPSImc3Ryb2tlX2NvbG9yOyIgc3Ryb2tlLXdpZHRo\nPSIzLjUiIGN4PSIxMyIgY3k9IjE3IiByeD0iMTAiIHJ5PSIxMCIvPgogIDxlbGxpcHNlIGZpbGw9\nIiZmaWxsX2NvbG9yOyIgc3Ryb2tlPSImc3Ryb2tlX2NvbG9yOyIgc3Ryb2tlLXdpZHRoPSIzLjUi\nIGN4PSIzNyIgY3k9IjE3IiByeD0iMTAiIHJ5PSIxMCIvPgogIDxjaXJjbGUgZmlsbD0iJmZpbGxf\nY29sb3I7IiBzdHJva2U9IiZzdHJva2VfY29sb3I7IiBzdHJva2Utd2lkdGg9IjMuNSIgY3g9IjE3\nIiBjeT0iMTUiIHI9IjIiLz4KICA8Y2lyY2xlIGZpbGw9IiZmaWxsX2NvbG9yOyIgc3Ryb2tlPSIm\nc3Ryb2tlX2NvbG9yOyIgc3Ryb2tlLXdpZHRoPSIzLjUiIGN4PSI0MSIgY3k9IjE1IiByPSIyIi8+\nCiAgPGVsbGlwc2UgZmlsbD0iJmZpbGxfY29sb3I7IiBzdHJva2U9IiZzdHJva2VfY29sb3I7IiBz\ndHJva2Utd2lkdGg9IjMuNSIgY3g9IjI2IiBjeT0iMzkiIHJ4PSIyMCIgcnk9IjQiLz4KPC9zdmc+\nCgo=\n", 
     "iconHash": "24ffd1c6bb79db95595e1bd8d10fb580", 
     "isGTK3": false, 
     "isWeb": false, 
@@ -99,6 +99,6 @@
     "xo_size": 4265440, 
     "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/vu.lux.olpc.Speak_stable_48.xo", 
     "xo_url_latest": "http://aslo-bot-master.sugarlabs.org/uploads/vu.lux.olpc.Speak_latest.xo", 
-    "xo_url_latest_timestamp": 1407021317.95442, 
+    "xo_url_latest_timestamp": 1409448098.866829, 
     "xo_url_timestamp": 1407021317.949853
 }

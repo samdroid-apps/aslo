@@ -5,15 +5,18 @@ exports.repeatS = function (s, t) {
   }
   return r;
 };
+
 exports.trans = function (obj) {
   if (obj === undefined || obj === null) {
     return '';
   }
+
   var ul = navigator.language || navigator.userLanguage;
   if (obj[ul] !== undefined) {
     // Same lang, same country
     return obj[ul];
   }
+
   for (key in obj) {
     // Same lang, different country
     if (obj.hasOwnProperty(key)) {
@@ -22,9 +25,11 @@ exports.trans = function (obj) {
       }
     }
   }
+
   if ('en-US' in obj) {
     return obj['en-US'];
   }
+
   for (key in obj) {
     // Anything
     if (obj.hasOwnProperty(key)) {
@@ -32,6 +37,7 @@ exports.trans = function (obj) {
     }
   }
 };
+
 var DEFAULT_SUGAR = 86;
 exports.getSugarVersion = function () {
   var r = /SugarLabs\/0\.([0-9]+)/;
@@ -41,6 +47,7 @@ exports.getSugarVersion = function () {
   }
   return DEFAULT_SUGAR;  // Default version
 };
+
 exports.sugarVersionToInt = function (vString) {
   var r = /0\.([0-9]+)/;
   match = r.exec(vString);
