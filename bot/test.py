@@ -1,5 +1,7 @@
 import re
 import os
+import sys
+from pprint import pprint
 from ConfigParser import ConfigParser
 
 import requests
@@ -144,4 +146,7 @@ def test_activity(bundle_id, gh):
     return results
 
 if __name__ == '__main__':
-    print test_activity(raw_input('Bundle ID: '), raw_input('GitHub: '))
+    if len(sys.argv) != 3:
+        print "Usage:\n\tpython test.py <bundle id> <github user/repo>"
+    else:
+        pprint(test_activity(sys.argv[1], sys.argv[2]))
