@@ -16,7 +16,7 @@
     "github_current_tag": "v21", 
     "github_url": "walterbender/fractionbounce", 
     "hasOldToolbars": false, 
-    "icon": "http://i.imgur.com/Pqgv47l.png", 
+    "icon": "http://i.imgur.com/btQGriF.png", 
     "iconHash": "509d3101eab6c59370a3204f30591832", 
     "isGTK3": true, 
     "isWeb": false, 
@@ -26,9 +26,9 @@
             "minSugarVersion": "0.96", 
             "screenshots": {
                 "en": [
-                    "http://i.imgur.com/OoA4Aub.png", 
-                    "http://i.imgur.com/mKJaibD.png", 
-                    "http://i.imgur.com/GL70vS0.png"
+                    "http://i.imgur.com/pYaGDmo.png", 
+                    "http://i.imgur.com/zBMbwjm.png", 
+                    "http://i.imgur.com/9wdAEwD.png"
                 ]
             }, 
             "version": 22, 
@@ -40,16 +40,16 @@
     ], 
     "screenshots": {
         "en": [
-            "http://i.imgur.com/OoA4Aub.png", 
-            "http://i.imgur.com/mKJaibD.png", 
-            "http://i.imgur.com/GL70vS0.png"
+            "http://i.imgur.com/pYaGDmo.png", 
+            "http://i.imgur.com/zBMbwjm.png", 
+            "http://i.imgur.com/9wdAEwD.png"
         ]
     }, 
     "screenshotsHashes": {
         "en": {
-            "cad85eea8788992cf4eb4ea0e0f3df8b": "http://i.imgur.com/OoA4Aub.png", 
-            "ef72504a23f74fb2ad1007e6a176ddab": "http://i.imgur.com/GL70vS0.png", 
-            "f98605fef156f40bb9038bd51e3f7f39": "http://i.imgur.com/mKJaibD.png"
+            "cad85eea8788992cf4eb4ea0e0f3df8b": "http://i.imgur.com/pYaGDmo.png", 
+            "ef72504a23f74fb2ad1007e6a176ddab": "http://i.imgur.com/9wdAEwD.png", 
+            "f98605fef156f40bb9038bd51e3f7f39": "http://i.imgur.com/zBMbwjm.png"
         }
     }, 
     "title": {
@@ -74,6 +74,6 @@
     }, 
     "xo_url": "http://aslo-bot-master.sugarlabs.org/uploads/org.sugarlabs.FractionBounceActivity_stable_22.xo", 
     "xo_url_latest": "http://aslo-bot-master.sugarlabs.org/uploads/org.sugarlabs.FractionBounceActivity_latest.xo", 
-    "xo_url_latest_timestamp": 1407373222.98653, 
+    "xo_url_latest_timestamp": 1409441296.371225, 
     "xo_url_timestamp": 1404113150.695623
 }

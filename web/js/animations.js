@@ -5,6 +5,7 @@ exports.done = function () {
     ele.remove();
   }, 2000);
 };
+
 exports.loading = function () {
   var ele = $('<span class=\'done load\'></span>');
   $('body').append(ele);
@@ -12,6 +13,7 @@ exports.loading = function () {
     ele.remove();
   }, 2000);
 };
+
 var defaultNewCommentText = 'New Comment - Scroll Up to See';
 exports.addComment = function () {
   var ele = $('<span class=\'new-item\'>' + i18n.get(defaultNewCommentText) + '</span>');

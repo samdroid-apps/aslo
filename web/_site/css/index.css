@@ -518,12 +518,11 @@ nav {
   display: none; }
 
 .featured {
-  padding-top: 2em;
   width: 100%;
   margin: 0 0;
-  overflow: auto; }
+  overflow: visible;
+  display: inline-block; }
   .featured .info {
-    padding-top: 8px;
     margin-bottom: 0;
     font-size: 0.8em;
     text-align: center; }
