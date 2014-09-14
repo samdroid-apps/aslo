@@ -33,7 +33,8 @@ exports.setup = function () {
 
     postData = {
       username: $('.login-form .username').val(),
-      password: $('.login-form .password').val()
+      password: $('.login-form .password').val(),
+      lang: navigator.language
     };
 
     $.post(SERVER + '/login', postData).done(function (data) {
@@ -61,7 +62,8 @@ exports.setup = function () {
       username: $('.signup-form .username').val(),
       password: $('.signup-form .password').val(),
       secret: $('.signup-form .secret').val(),
-      colors: xo.getSelected()
+      colors: xo.getSelected(),
+      lang: navigator.language
     };
 
     $.post(SERVER + '/signup', postData).done(function (data) {

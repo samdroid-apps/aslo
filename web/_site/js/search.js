@@ -6,6 +6,7 @@ var util = require('./util.js');
 
 var doSearch = function () {
   term = $('input.search').val().toLowerCase();
+
   var catTerm = '';
 
   if (currentCategory !== 'any') {
@@ -13,21 +14,21 @@ var doSearch = function () {
   }
 
   if (term === '' && catTerm === '') {
-    $('.activities li').each(function (index) {
+    $('.activities a').each(function (index) {
       $(this).show();
     });
   } else {
     if (term.indexOf(lastQuery) === 0 && catTerm === lastCategory) {
       // If they just appended to the query the results
       // will be a subset of what is seen now
-      var ele = $('.activities li:visible');
+      var ele = $('.activities a:visible');
     } else {
-      var ele = $('.activities li');
+      var ele = $('.activities a');
     }
- 
+
     var termList = (catTerm + ' ' + term).split(' ');
     ele.each(function (index) {
-      var ss = $(this).data('searchString') || '';
+     var ss = $(this).data('searchString') || '';
       if (ss === '') {
         $(this).hide();
       }

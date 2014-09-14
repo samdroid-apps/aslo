@@ -445,7 +445,8 @@ exports.setup = function () {
 
     postData = {
       username: $('.login-form .username').val(),
-      password: $('.login-form .password').val()
+      password: $('.login-form .password').val(),
+      lang: navigator.language
     };
 
     $.post(SERVER + '/login', postData).done(function (data) {
@@ -473,7 +474,8 @@ exports.setup = function () {
       username: $('.signup-form .username').val(),
       password: $('.signup-form .password').val(),
       secret: $('.signup-form .secret').val(),
-      colors: xo.getSelected()
+      colors: xo.getSelected(),
+      lang: navigator.language
     };
 
     $.post(SERVER + '/signup', postData).done(function (data) {
@@ -594,7 +596,7 @@ exports.load = function (data, bundleId, setUrl, loadComments) {
   });
 
   $('.title', container).html(util.trans(data.title));
-  $('img.icon', container).attr('src', data.icon);
+  // $('img.icon', container).attr('src', data.icon);
   $('.description', container).html(util.trans(data.description));
 
   $('.github', container).hide();
@@ -683,6 +685,7 @@ var util = require('./util.js');
 
 var doSearch = function () {
   term = $('input.search').val().toLowerCase();
+
   var catTerm = '';
 
   if (currentCategory !== 'any') {
@@ -690,21 +693,21 @@ var doSearch = function () {
   }
 
   if (term === '' && catTerm === '') {
-    $('.activities li').each(function (index) {
+    $('.activities a').each(function (index) {
       $(this).show();
     });
   } else {
     if (term.indexOf(lastQuery) === 0 && catTerm === lastCategory) {
       // If they just appended to the query the results
       // will be a subset of what is seen now
-      var ele = $('.activities li:visible');
+      var ele = $('.activities a:visible');
     } else {
-      var ele = $('.activities li');
+      var ele = $('.activities a');
     }
- 
+
     var termList = (catTerm + ' ' + term).split(' ');
     ele.each(function (index) {
-      var ss = $(this).data('searchString') || '';
+     var ss = $(this).data('searchString') || '';
       if (ss === '') {
         $(this).hide();
       }

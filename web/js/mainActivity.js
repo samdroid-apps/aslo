@@ -29,7 +29,7 @@ exports.load = function (data, bundleId, setUrl, loadComments) {
   });
 
   $('.title', container).html(util.trans(data.title));
-  $('img.icon', container).attr('src', data.icon);
+  // $('img.icon', container).attr('src', data.icon);
   $('.description', container).html(util.trans(data.description));
 
   $('.github', container).hide();
