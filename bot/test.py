@@ -98,7 +98,7 @@ def get_news_file(path):
 def get_news():
     r = {}
     if os.path.isfile('dl/NEWS'):
-        r['en_US'] = get_news_file('dl/NEWS')
+        r['en-US'] = get_news_file('dl/NEWS')
 
     for lang in [i.split('.')[1] for i in os.listdir('dl') \
                        if i.startswith('NEWS.')]:

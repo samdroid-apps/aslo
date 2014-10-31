@@ -2,8 +2,8 @@ import os
 
 from polib import pofile
 
-# FIXME: base_tag='en_US'
-def get_translations(base, base_tag='en_US'):
+# FIXME: base_tag='en-US' assumes the activity is written in English 1st
+def get_translations(base, base_tag='en-US'):
     results = {base_tag: base}
     if not os.path.isdir('dl/po'):
         return results
