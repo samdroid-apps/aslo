@@ -86,9 +86,9 @@ def scan_activity(data_file):
     json.dump(activity, open(data_file, 'w'))
 
 def main():
-    config = json.load(open('config.json'))
-    API_KEY = config['api_key']
-    DATA_DIR = config['data_dir']
+    # config = json.load(open('config.json'))
+    API_KEY = os.environ['API_KEY']
+    DATA_DIR = os.environ['DATA_DIR']
 
     for i in (os.path.join(DATA_DIR, f) for f in os.listdir(DATA_DIR)
               if os.path.isfile(os.path.join(DATA_DIR, f))):

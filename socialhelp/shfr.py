@@ -6,8 +6,8 @@ from flask import Flask, redirect
 
 import fc
 
-config = json.load(open('config.json'))
-DATA_DIR = config['data_dir']
+# config = json.load(open('config.json'))
+DATA_DIR = os.environ['DATA_DIR']
 SOCIALHELP = 'http://socialhelp.sugarlabs.org'
 mappings = {}
 
