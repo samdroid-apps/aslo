@@ -8,7 +8,7 @@ import fc
 
 # config = json.load(open('config.json'))
 DATA_DIR = os.environ['DATA_DIR']
-SOCIALHELP = 'http://socialhelp.sugarlabs.org'
+SOCIALHELP = 'https://socialhelp.sugarlabs.org'
 mappings = {}
 
 app = Flask(__name__)

@@ -7,7 +7,7 @@ import os
 import os.path
 from subprocess import call
 
-API = 'http://socialhelp.sugarlabs.org'
+API = 'https://socialhelp.sugarlabs.org'
 API_USER = 'system'
 API_KEY = ''
 DATA_DIR = '.'
