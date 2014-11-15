@@ -1,12 +1,12 @@
 import os
 import os.path
 import json
+import requests
 from subprocess import call
-from flask import Flask, redirect
+from flask import Flask, redirect, jsonify
 
 import fc
 
-# config = json.load(open('config.json'))
 DATA_DIR = os.environ['DATA_DIR']
 SOCIALHELP = 'https://socialhelp.sugarlabs.org'
 mappings = {}
@@ -23,6 +23,15 @@ def goto(id):
         return redirect('{}/c/{}'.format(SOCIALHELP, mappings[id]))
     else:
         return redirect('{}/t/category-not-found/'.format(SOCIALHELP))
+
+@app.route('/goto/<id>.json')
+def goto_json(id):
+    if id in mappings:
+        url = '{}/c/{}.json'.format(SOCIALHELP, mappings[id])
+        r = requests.get(url, verify=False)
+        if r.ok:
+            return jsonify(success=True, data=r.json())
+    return jsonify(success=False)
 
 @app.route('/pull')
 def pull():
