@@ -5,6 +5,7 @@ import requests
 from subprocess import call
 from flask import Flask, redirect, jsonify
 
+from helpers import crossdomain
 import fc
 
 DATA_DIR = os.environ['DATA_DIR']
@@ -25,6 +26,7 @@ def goto(id):
         return redirect('{}/t/category-not-found/'.format(SOCIALHELP))
 
 @app.route('/goto/<id>.json')
+@crossdomain('*')
 def goto_json(id):
     if id in mappings:
         url = '{}/c/{}.json'.format(SOCIALHELP, mappings[id])
