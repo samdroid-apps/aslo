@@ -35,7 +35,7 @@ def goto_json(id):
             return jsonify(success=True, data=r.json())
     return jsonify(success=False)
 
-@app.route('/pull')
+@app.route('/pull', methods=['POST'])
 def pull():
     oldwd = os.getcwd()
     os.chdir(DATA_DIR)
