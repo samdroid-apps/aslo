@@ -8,7 +8,8 @@ from flask import Flask, redirect, jsonify
 from helpers import crossdomain
 import fc
 
-DATA_DIR = os.environ['DATA_DIR']
+DATA_DIR = '/tmp/sa'
+#DATA_DIR = os.environ['DATA_DIR']
 SOCIALHELP = 'https://socialhelp.sugarlabs.org'
 mappings = {}
 
@@ -32,6 +33,7 @@ def goto_json(id):
         url = '{}/c/{}.json'.format(SOCIALHELP, mappings[id])
         r = requests.get(url, verify=False)
         if r.ok:
+            print r
             return jsonify(success=True, data=r.json())
     return jsonify(success=False)
 
