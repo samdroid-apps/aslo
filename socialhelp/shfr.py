@@ -8,8 +8,7 @@ from flask import Flask, redirect, jsonify
 from helpers import crossdomain
 import fc
 
-DATA_DIR = '/tmp/sa'
-#DATA_DIR = os.environ['DATA_DIR']
+DATA_DIR = os.environ['DATA_DIR']
 SOCIALHELP = 'https://socialhelp.sugarlabs.org'
 mappings = {}
 
