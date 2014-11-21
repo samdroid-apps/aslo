@@ -61,4 +61,4 @@ def make_cache():
             mappings[id] = activity.get('socialhelp_category')
 
 make_cache()
-app.run(port=8000, debug=False, host='0.0.0.0')
+app.run(port=8000, debug=True, host='0.0.0.0')
