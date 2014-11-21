@@ -25,6 +25,36 @@ def goto(id):
     else:
         return redirect('{}/t/category-not-found/'.format(SOCIALHELP))
 
+# Max amount of topics to show for comments
+MAX_TOPICS = 50
+
+def compress_forum_json(big_data):
+    users_list = big_data['users']
+    users = {i['id']:i for i in users_list}
+
+    if len(big_data['topic_list']) > MAX_TOPICS:
+        big_topics = big_data['topic_list'][:MAX_TOPICS]['topics']
+    else:
+        big_topics = big_data['topic_list']['topics']
+
+    topics = []
+    for t in big_topics:
+        print t
+        if t['pinned'] or not t['visible']:
+            continue
+
+        user = None
+        for u in t['posters']:
+            if 'Original Poster' in u['description']:
+                user = u['user_id']
+
+        topics.append({
+            't': t['title'],
+            's': t['slug'],
+            'e': t['excerpt'] if 'excerpt' in t else '',
+            'u': users[user]['avatar_template'] if user else None})
+    return topics
+
 @app.route('/goto/<id>.json')
 @crossdomain('*')
 def goto_json(id):
@@ -32,7 +62,7 @@ def goto_json(id):
         url = '{}/c/{}.json'.format(SOCIALHELP, mappings[id])
         r = requests.get(url, verify=False)
         if r.ok:
-            return jsonify(success=True, data=r.json())
+            return jsonify(success=True, data=compress_forum_json(r.json()))
     return jsonify(success=False)
 
 @app.route('/pull', methods=['POST'])
