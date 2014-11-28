@@ -43,16 +43,11 @@ def compress_forum_json(big_data):
         if t['pinned'] or not t['visible']:
             continue
 
-        user = None
-        for u in t['posters']:
-            if 'Original Poster' in u['description']:
-                user = u['user_id']
-
         topics.append({
             't': t['title'],
             's': t['slug'],
-            'e': t['excerpt'] if 'excerpt' in t else '',
-            'u': users[user]['avatar_template'] if user else None})
+            'p': t['posts_count'],
+            'l': t['like_count']})
     return topics
 
 @app.route('/goto/<id>.json')
