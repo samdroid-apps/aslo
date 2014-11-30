@@ -1,8 +1,6 @@
 var activityList = require('./activityList.js');
 var mainActivity = require('./mainActivity.js');
 var search = require('./search.js');
-var comments = require('./comments.js');
-var login = require('./login.js');
 
 var i18n = require('./i18n.js');
 i18n.setup();
@@ -29,17 +27,6 @@ var goBasedOnUrl = function () {
       $.ajax({ url: '/data/' + bundleId + '.json' }).done(function (data) {
         mainActivity.load(data, bundleId, false, true);
       });
-      return;
-    }
-
-    var r = /\/view\/([^\/]*)\/comment=([0-9a-zA-Z\-]*)$/;
-    match = r.exec(testString);
-    if (match) {
-      $('body').data('focusOnComment', match[2]);
-      var bundleId = match[1];
-      $.ajax({ url: '/data/' + bundleId + '.json' }).done(function (data) {
-        mainActivity.load(data, bundleId, false, true);
-      });
     }
   }
   window.location.changedByProgram = false;
@@ -60,7 +47,5 @@ $(document).ready(function () {
     });
 
     search.setup();
-    login.setup();
-    comments.setup();
   }
 });
