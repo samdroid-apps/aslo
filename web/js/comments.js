@@ -25,7 +25,10 @@ exports.load = function (bundleId) {
       $('.comments').show();
 
       $('.comments-header a').attr('href', SHFR + '/goto/' + bundleId)
+      $('.comments-header .count span').text(request.count)
     }
+
+    $('.comments-list').html('')
 
     for (var i = 0; i < data.length; i++) {
       var li = makeCommentItem(data[i]);

@@ -15,3 +15,44 @@
   a
     font-size: 1em
     color: $gray
+
+.comments-header
+  $dark-gray: #777
+
+  background-color: $silver
+
+  border-top: 2px solid $gray
+  border-bottom: 2px solid $gray
+
+  margin-top: 1em
+  padding: 0.25em
+
+  p
+    margin: 0px 0px 0.25em
+    
+    color: $dark-gray
+    font-size: 1.5em
+    font-weight: bold
+
+  a
+    color: $dark-gray
+
+.comments-list
+  list-style: none
+
+  a
+    text-decoration: none
+
+  .comment-title
+    text-decoration: underline
+
+  .heart-count
+    margin-left: 0.25em
+    color: $red
+
+  a:visited .heart-count
+    color: $fuchsia
+
+  .post-count
+    margin-left: 0.25em
+    // color: $black
