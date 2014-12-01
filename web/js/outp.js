@@ -46,6 +46,9 @@ var SHFR = 'https://use-socialhelp.sugarlabs.org';
 var SOCIALHELP = 'https://socialhelp.sugarlabs.org';
 
 exports.load = function (bundleId) {
+  $('.comments').hide();
+  $('.no-comments').hide();
+
   var url = SHFR + '/goto/' + bundleId + '.json';
   $.get(url).done(function (request) {
     if (!request.success) {
