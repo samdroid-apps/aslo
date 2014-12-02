@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/var/www/aslo/web/js/activityList.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var util = require('./util.js');
 var mainActivity = require('./mainActivity.js');
 var search = require('./search.js');
@@ -41,245 +41,75 @@ exports.setup = function () {
   featured.load($('body').data('featuredData'), activitiesData);
 };
 
-},{"./featured.js":"/var/www/aslo/web/js/featured.js","./mainActivity.js":"/var/www/aslo/web/js/mainActivity.js","./search.js":"/var/www/aslo/web/js/search.js","./util.js":"/var/www/aslo/web/js/util.js"}],"/var/www/aslo/web/js/animations.js":[function(require,module,exports){
-exports.done = function () {
-  var ele = $('<span class=\'done\'></span>');
-  $('body').append(ele);
-  setTimeout(function () {
-    ele.remove();
-  }, 2000);
-};
+},{"./featured.js":3,"./mainActivity.js":6,"./search.js":7,"./util.js":8}],2:[function(require,module,exports){
+var SHFR = 'https://use-socialhelp.sugarlabs.org';
+var SOCIALHELP = 'https://socialhelp.sugarlabs.org';
 
-exports.loading = function () {
-  var ele = $('<span class=\'done load\'></span>');
-  $('body').append(ele);
-  setTimeout(function () {
-    ele.remove();
-  }, 2000);
-};
-
-var defaultNewCommentText = 'New Comment - Scroll Up to See';
-exports.addComment = function () {
-  var ele = $('<span class=\'new-item\'>' + i18n.get(defaultNewCommentText) + '</span>');
-  $('body').append(ele);
-  setTimeout(function () {
-    ele.remove();
-  }, 3000);
-};
-
-},{}],"/var/www/aslo/web/js/comments.js":[function(require,module,exports){
-var SERVER = 'http://comments.aslo.cf';
-var WS_SERVER = 'ws://comments.aslo.cf/comments/stream';
-
-var animations = require('./animations.js');
-var util = require('./util.js');
-var i18n = require('./i18n.js');
-var login = require('./login.js');
-var xo = require('./xoPerson.js');
-
-exports.setup = function () {
-  $('.comments .add').click(function () {
-    if (!login.isLoggedIn()) {
-      login.requestLogin();
-      return;
-    }
-
-    var text = $('.comments .add-content').val();
-    var rating = $('.star-sel').data('selected');
-    var type = $('.comments .types i.checked').attr('value');
-    var replyContent, replyId;
-
-    if (type === 'reply') {
-      replyContent = $('.comments > blockquote').html();
-      replyId = $('.comments > blockquote').data('id');
-    }
-
-    if ($('.comments .add').data('bundleId') === undefined) {
-      return;
-    }
-
-    animations.loading();
-    $.post(SERVER + '/comments/post', {
-      username: login.getInfo().username,
-      token: login.getInfo().token,
-      bundle_id: $('.comments .add').data('bundleId'),
-      content: text,
-      type: type,
-      rating: rating,
-      lang: navigator.language || navigator.userLanguage,
-      reply_content: replyContent,
-      reply_id: replyId
-    }).done(function (_) {
-      animations.done();
-      exports.load($('.comments .add').data('bundleId'));
-    });
-  });
-
-  connectCommentWS();
-  setupSelectors();
-};
-
-var connectCommentWS = function () {
-  var socket = new WebSocket(WS_SERVER);
-
-  socket.onmessage = function (info) {
-    var data = JSON.parse(info.data);
-
-    if (data.event == 'add_comment') {
-      if ($('.comments ul #' + data.data.id).length == 0) {
-        addComment(data.data);
-        animations.addComment();
-      }
-    } else if (data.event == 'remove_comment') {
-      console.log('rm', data);
-      $('.comments ul #' + data.data).remove();
-    } else {
-      console.log('Unknown WS message: ', data);
-    }
-  };
-};
-
-var setupSelectors = function () {
-  $('.comments .types i').click(function () {
-    $('.comments .types i').removeClass('checked');
-    $(this).addClass('checked');
-
-    var type = $(this).attr('value');
-    if (type !== 'reply') {
-      $('.comments > blockquote').hide();
-      $('.comments .types i[value=reply]').removeClass('checked').hide();
-    }
-
-    if (type !== 'review') {
-      $('.comments > .star-sel').hide();
-    } else {
-      $('.comments > .star-sel').show();
-    }
-
-    if (type !== 'problem') {
-      $('.comments > .bug-tip').hide();
-    } else {
-      $('.comments > .bug-tip').show();
-    }
-  });
-
-  $('.star-sel').data('selected', 1);
-  $('.star-sel i').click(function () {
-    var n = parseInt($(this).attr('id'));
-    $('.star-sel').data('selected', n);
-
-    $('.star-sel i').removeClass('fa-star');
-    $('.star-sel i').addClass('fa-star-o');
-
-    while (n > 0) {
-      $('.star-sel i#' + n).removeClass('fa-star-o');
-      $('.star-sel i#' + n).addClass('fa-star');
-      n--;
-    }
-  });
-};
 exports.load = function (bundleId) {
-  $('.comments > blockquote').hide();
-  $('.comments .types i[value=reply]').removeClass('checked').hide();
+  $('.comments').hide();
+  $('.no-comments').hide();
 
-  $.post(SERVER + '/comments/get/' + bundleId).done(function (strData) {
-    var container = $('.comments ul');
-    container.html('');
-
-    var data = JSON.parse(strData);
-    for (i in data) {
-      var item = data[i];
-      addComment(item);
+  var url = SHFR + '/goto/' + bundleId + '.json';
+  $.get(url).done(function (request) {
+    if (!request.success) {
+      //  TODO
+      return;
     }
 
-    var focusOn = $('body').data('focusOnComment');
-    if (focusOn !== undefined) {
-      $('html, body').animate({ scrollTop: $('.comments ul li#' + focusOn).offset().top - 10 }, 500);
-      focusOn = null;
+    var data = request.data;
+    if (data.length === 0) {
+      $('.comments').hide();
+      $('.no-comments').show();
+
+      $('.no-comments a.start-conversation').attr('href',
+                                                  SHFR + '/goto/' + bundleId)
+      return;
+    } else {
+      $('.no-comments').hide();
+      $('.comments').show();
+
+      $('.comments-header a').attr('href', SHFR + '/goto/' + bundleId)
+      $('.comments-header .count span').text(request.count)
     }
-  });
 
-  $('.comments .add').data('bundleId', bundleId);
+    $('.comments-list').html('')
+
+    for (var i = 0; i < data.length; i++) {
+      var li = makeCommentItem(data[i]);
+      $('.comments-list').append(li);
+    }
+  }).fail(downloadCommentsError);
 };
 
-var addComment = function (item) {
-  var ele = $('<li>');
-  ele.attr('id', item.id);
+var makeCommentItem = function (data) {
+  var li = $('<li>');
 
-  var colors = item.colors.split(',') || [
-      '',
-      ''
-    ];
-  var person = xo.makeIcon(colors[0], colors[1], false);
-  person.attr('title', item.user);
-  ele.append(person);
+  var link = $('<a>');
+  link.attr('href', SOCIALHELP + '/t/' + data.s);
+  li.append(link);
 
-  var type = $('<span class=\'type-icon\'></span>');
-  type.addClass(item.type);
-  ele.append(type);
+  var title = $('<span class="comment-title">');
+  title.text(data.t);
+  link.append(title);
 
-  if (item.type === 'reply') {
-    var bq = $('<blockquote class=\'reply-content\'>');
-    bq.html(item.reply_content);
-    ele.append(bq);
-  }
+  var heartCount = $('<span class="heart-count">');
+  heartCount.text(data.l.toString());
+  heartCount.prepend($('<i class="fa fa-heart">'));
+  link.append(heartCount);
 
-  if (item.type === 'review' || item.type === undefined) {
-    var stars = $('<span class=\'stars\'>' + util.repeatS('<i class=\'fa fa-star\'></i>', item.rating) + util.repeatS('<i class=\'fa fa-star-o\'></i>', 5 - item.rating) + '</span>');
-    $('input[value=' + item.rating.toString() + ']', stars).attr('checked', '');
-    ele.append(stars);
-  }
+  var postCount = $('<span class="post-count">');
+  postCount.text(data.l.toString());
+  postCount.prepend($('<i class="fa fa-comment">'));
+  link.append(postCount);
 
-  var text = $('<p>');
-  text.html(item.text);
-  ele.append(text);
+  return li;
+}
 
-  var report = $('<i class=\'fa fa-flag\' style=\'margin-right: 5px;\'></i>');
-  report.attr('title', i18n.get('Flag this comment for review'));
-  report.data('id', item.id);
-  report.click(function () {
-    $.post(SERVER + '/comments/report', { id: report.data('id') });
-    animations.done();
-    $(this).attr('disabled', 'true');
-    $(this).parent().addClass('reported');
-  });
-  ele.append(report);
+var downloadCommentsError = function () {
+    // TODO
+}
 
-  var link = $('<a><i class=\'fa fa-link\' style=\'margin-right: 5px;\'></i></a>');
-  var bundleId = $('.comments .add').data('bundleId');
-  link.attr('title', i18n.get('Link to this comment'));
-  link.attr('href', '/view/' + bundleId + '/comment=' + item.id);
-  link.data('id', item.id);
-  link.click(function (event) {
-    var id = $(this).data('id');
-    $('html, body').animate({ scrollTop: $('.comments ul li#' + id).offset().top - 10 }, 500);
-    history.pushState(null, null, $(this).attr('href'));
-    event.preventDefault();
-  });
-  ele.append(link);
-
-  var reply = $('<i class=\'fa fa-reply\'></i>');
-  reply.attr('title', i18n.get('Reply to this comment'));
-  reply.data('id', item.id);
-  reply.data('text', ele.html());
-  reply.click(function () {
-    $('.comments > .star-sel').hide();
-    $('.comments > .bug-tip').hide();
-
-    $('.comments > blockquote').show();
-    $('.comments > blockquote').data('id', $(this).data('id'));
-    $('.comments > blockquote').html($(this).data('text').replace(/<blockquote class=\"reply-content\">.*<\/blockquote>/, ''));
-
-    $('.comments .types i').removeClass('checked');
-    $('.comments .types i[value=reply]').addClass('checked').show();
-    $('html, body').animate({ scrollTop: $('.comments > blockquote').offset().top - 10 }, 500);
-  });
-
-  ele.append(reply);
-  ele.prependTo($('.comments ul'));
-};
-
-},{"./animations.js":"/var/www/aslo/web/js/animations.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./login.js":"/var/www/aslo/web/js/login.js","./util.js":"/var/www/aslo/web/js/util.js","./xoPerson.js":"/var/www/aslo/web/js/xoPerson.js"}],"/var/www/aslo/web/js/featured.js":[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 var mainActivity = require('./mainActivity.js');
 var i18n = require('./i18n.js');
 
@@ -308,7 +138,7 @@ exports.load = function (all, activities) {
   $('.featured img').attr('src', activities[data.id].icon);
 };
 
-},{"./i18n.js":"/var/www/aslo/web/js/i18n.js","./mainActivity.js":"/var/www/aslo/web/js/mainActivity.js"}],"/var/www/aslo/web/js/i18n.js":[function(require,module,exports){
+},{"./i18n.js":4,"./mainActivity.js":6}],4:[function(require,module,exports){
 /*
 |======================|
 | i18n VS util.getLang |
@@ -400,99 +230,10 @@ exports.get = function (text) {
   return text.trim();
 };
 
-},{}],"/var/www/aslo/web/js/login.js":[function(require,module,exports){
-var SERVER = 'http://comments.aslo.cf';
-
-var i18n = require('./i18n.js');
-var animations = require('./animations.js');
-var xo = require('./xoPerson.js');
-
-exports.requestLogin = function () {
-  $('.login-popover').removeClass('hide');
-};
-
-exports.isLoggedIn = function () {
-  return $('body').data('login') !== undefined;
-};
-
-exports.getInfo = function () {
-  return $('body').data('login');
-};
-
-exports.setup = function () {
-  $('.close-login-popover').click(function () {
-    $('.login-popover').addClass('hide');
-  });
-
-  $('nav .login').click(exports.requestLogin);
-
-  xo.refreshBar();
-  $('.shuffle-xo-bar').click(function () {
-    xo.refreshBar();
-  });
-
-  $('button.login').click(function () {
-    animations.loading();
-
-    postData = {
-      username: $('.login-form .username').val(),
-      password: $('.login-form .password').val(),
-      lang: navigator.language
-    };
-
-    $.post(SERVER + '/login', postData).done(function (data) {
-      $('.login-form .error').css('display', data.error ? 'block' : 'none');
-
-      if (data.error) {
-        $('.login-form .error .content').html(i18n.get(data.msg));
-      } else {
-        $('body').data('login', {
-          username: postData.username,
-          token: data.token
-        });
-
-        $('nav .login').html(i18n.get('Signed In'));
-        $('.login-popover').addClass('hide');
-        animations.done();
-      }
-    });
-  });
-
-  $('button.signup').click(function () {
-    animations.loading();
-
-    postData = {
-      username: $('.signup-form .username').val(),
-      password: $('.signup-form .password').val(),
-      secret: $('.signup-form .secret').val(),
-      colors: xo.getSelected(),
-      lang: navigator.language
-    };
-
-    $.post(SERVER + '/signup', postData).done(function (data) {
-      $('.signup-form .error').css('display', data.error ? 'block' : 'none');
-      if (data.error) {
-        $('.signup-form .error .content').html(i18n.get(data.msg));
-      } else {
-        $('body').data('login', {
-          username: postData.username,
-          token: data.token
-        });
-
-        $('nav .login').html(i18n.get('Signed In'));
-        $('.login-popover').addClass('hide');
-        animations.done();
-      }
-    });
-  });
-};
-
-},{"./animations.js":"/var/www/aslo/web/js/animations.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./xoPerson.js":"/var/www/aslo/web/js/xoPerson.js"}],"/var/www/aslo/web/js/main.js":[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var activityList = require('./activityList.js');
 var mainActivity = require('./mainActivity.js');
 var search = require('./search.js');
-var comments = require('./comments.js');
-var login = require('./login.js');
 
 var i18n = require('./i18n.js');
 i18n.setup();
@@ -519,17 +260,6 @@ var goBasedOnUrl = function () {
       $.ajax({ url: '/data/' + bundleId + '.json' }).done(function (data) {
         mainActivity.load(data, bundleId, false, true);
       });
-      return;
-    }
-
-    var r = /\/view\/([^\/]*)\/comment=([0-9a-zA-Z\-]*)$/;
-    match = r.exec(testString);
-    if (match) {
-      $('body').data('focusOnComment', match[2]);
-      var bundleId = match[1];
-      $.ajax({ url: '/data/' + bundleId + '.json' }).done(function (data) {
-        mainActivity.load(data, bundleId, false, true);
-      });
     }
   }
   window.location.changedByProgram = false;
@@ -550,12 +280,10 @@ $(document).ready(function () {
     });
 
     search.setup();
-    login.setup();
-    comments.setup();
   }
 });
 
-},{"./activityList.js":"/var/www/aslo/web/js/activityList.js","./comments.js":"/var/www/aslo/web/js/comments.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./login.js":"/var/www/aslo/web/js/login.js","./mainActivity.js":"/var/www/aslo/web/js/mainActivity.js","./search.js":"/var/www/aslo/web/js/search.js"}],"/var/www/aslo/web/js/mainActivity.js":[function(require,module,exports){
+},{"./activityList.js":1,"./i18n.js":4,"./mainActivity.js":6,"./search.js":7}],6:[function(require,module,exports){
 var util = require('./util.js');
 var comments = require('./comments.js');
 var i18n = require('./i18n.js');
@@ -667,7 +395,7 @@ exports.load = function (data, bundleId, setUrl, loadComments) {
   }
 };
 
-},{"./comments.js":"/var/www/aslo/web/js/comments.js","./i18n.js":"/var/www/aslo/web/js/i18n.js","./util.js":"/var/www/aslo/web/js/util.js"}],"/var/www/aslo/web/js/search.js":[function(require,module,exports){
+},{"./comments.js":2,"./i18n.js":4,"./util.js":8}],7:[function(require,module,exports){
 var lastQuery = '';
 var lastCategory = '';
 var currentCategory = 'any';
@@ -743,7 +471,7 @@ exports.makeSearchString = function (data) {
   return util.trans(data.title).toLowerCase() + '  ' + util.trans(data.description).toLowerCase() + catString;
 };
 
-},{"./util.js":"/var/www/aslo/web/js/util.js"}],"/var/www/aslo/web/js/util.js":[function(require,module,exports){
+},{"./util.js":8}],8:[function(require,module,exports){
 exports.repeatS = function (s, t) {
   var r = '';
   for (var i = 0; i < t; i++) {
@@ -803,66 +531,4 @@ exports.sugarVersionToInt = function (vString) {
   return DEFAULT_SUGAR;
 };
 
-},{}],"/var/www/aslo/web/js/xoPerson.js":[function(require,module,exports){
-var colors = [
-    '#00588c',
-    '#5e008c',
-    '#807500',
-    '#008009',
-    '#9a5200',
-    '#b20008',
-    '#005fe4',
-    '#7f00bf',
-    '#be9e00',
-    '#00b20d',
-    '#c97e00',
-    '#e6000a',
-    '#bccdff',
-    '#d1a3ff',
-    '#fffa00',
-    '#8bff7a',
-    '#ffc169',
-    '#ffadce'
-  ];
-
-var svgTemplate = '<svg enable-background="new 0 0 55 55" height="55px" version="1.1" viewBox="0 0 55 55" width="55px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"><g display="block" id="stock-xo_1_"><path style="fill: FILL; stroke: STROKE" d="M33.233,35.1l10.102,10.1c0.752,0.75,1.217,1.783,1.217,2.932 c0,2.287-1.855,4.143-4.146,4.143c-1.145,0-2.178-0.463-2.932-1.211L27.372,40.961l-10.1,10.1c-0.75,0.75-1.787,1.211-2.934,1.211 c-2.284,0-4.143-1.854-4.143-4.141c0-1.146,0.465-2.184,1.212-2.934l10.104-10.102L11.409,24.995 c-0.747-0.748-1.212-1.785-1.212-2.93c0-2.289,1.854-4.146,4.146-4.146c1.143,0,2.18,0.465,2.93,1.214l10.099,10.102l10.102-10.103 c0.754-0.749,1.787-1.214,2.934-1.214c2.289,0,4.146,1.856,4.146,4.145c0,1.146-0.467,2.18-1.217,2.932L33.233,35.1z"  stroke-width="3.5"/><circle style="fill: FILL; stroke: STROKE" cx="27.371" cy="10.849" r="8.122" stroke-width="3.5"/></g></svg>';
-
-var makeIcon = function (stroke, fill, selectable) {
-  var svgText = svgTemplate.replace(/STROKE/g, stroke).replace(/FILL/g, fill);
-  var ele = $('<span>' + svgText + '</span>');
-  ele.data('color', stroke + ',' + fill);
-
-  if (selectable) {
-    ele.click(function () {
-      $('.xo-person-bar svg').removeClass('selected');
-      $('body').data('xoBarSelected', $(this).data('color'));
-      $(this).addClass('selected');
-    });
-  }
-  return ele;
-};
-
-exports.makeIcon = makeIcon;
-
-exports.refreshBar = function (stroke, fill) {
-  var random = function () {
-    return Math.floor(Math.random() * (colors.length + 1));
-  };
-
-  var bar = $('.xo-person-bar');
-  bar.html('');
-  if (window.sugarUser !== undefined) {
-    bar.append(makeIcon(window.sugarUser.stroke, window.sugarUser.fill, true));
-  }
-
-  for (var i = 0; i < 5; i++) {
-    bar.append(makeIcon(colors[random()], colors[random()], true));
-  }
-};
-
-exports.getSelected = function () {
-  var b = $('body');
-  return b.data('xoBarSelected');
-};
-
-},{}]},{},["/var/www/aslo/web/js/main.js"]);
+},{}]},{},[5])

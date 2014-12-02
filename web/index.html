@@ -16,54 +16,9 @@
       <div>
         <a class="red" href="/" i18n-content>Activities Home</a>
         <a class="orange" href="http://wiki.sugarlabs.org/" i18n-content>Wiki</a>
-        <a class="purple last login" i18n-content>Login</a>
+        <a class="purple last" href="https://socialhelp.sugarlabs.org" i18n-content>Social Help</a>
       </div>
     </nav>
-
-    <div class="login-popover hide">
-      <span class="login-form">
-        <h1>
-          <i class="fa fa-arrow-circle-left fa-lg close-login-popover"></i>
-          <span i18n-content>Login</span>
-        </h1>
-        <div class="error" style="display: none;">
-          <i class="fa fa-exclamation-triangle fa-lg"></i>
-          <span class="content"></span>
-        </div>
-        <input class="username" placeholder="Username" i18n-placeholder/>
-        <input type="password" class="password" placeholder="Password" i18n-placeholder/>
-        <button class="login" i18n-content>Login</button>
-      </span>
-      <br/><br/>
-      <span class="signup-form">
-        <h1>
-          <i class="fa fa-arrow-circle-left fa-lg close-login-popover"></i>
-          <span i18n-content>Sign Up</span>
-        </h1>
-        <div class="error" style="display: none;">
-          <i class="fa fa-exclamation-triangle fa-lg"></i>
-          <span class="content"></span>
-        </div>
-
-        <label i18n-content>Pick a username - remember it must be unique.</label><br/>
-        <input class="username" placeholder="Username" i18n-placeholder/><br/><br/>
-
-        <label i18n-content>Choose a password you won't forget.</label><br/>
-        <input type="password" class="password" placeholder="Password" i18n-placeholder/><br/><br/>
-
-        <label i18n-content>Tell us 2 or more things about yourself (eg: your year 1 teacher's name, your favourite football team).  We will keep this secret and use it to recover your password</label><br/>
-        <textarea class="secret"></textarea><br/><br/>
-
-        <label>
-          <span i18n-content>Choose your avatar<span><br/>
-          <button class="shuffle-xo-bar"><i class="fa fa-random"></i>
-          <span i18n-content>Shuffle</span></button>
-        </label><br/>
-        <div class="xo-person-bar"></div>
-
-        <button class="signup">Sign Up</button>
-      </span>
-    </div>
 
     <div class="detail hide">
       <div class="close"><i class="fa fa-arrow-circle-left fa-lg"></i></div>
@@ -92,56 +47,22 @@
         <span i18n-content>Check it out on GitHub</span>
       </a>
 
-      <hr class="sep"/>
-
-      <div class="comments">
-        <blockquote style="display: none"></blockquote><br/>
-        <textarea class="add-content" i18n-content>
-                  Click then type your review...
-        </textarea>
-        <br/>
-
-        <span class="types">
-    		<i class="fa fa-star checked" value="review"
-               i18n-title
-               title="Rating"></i>
-    		<i class="fa fa-question" value="question"
-               i18n-title
-               title="Question"></i>
-    		<i class="fa fa-lightbulb-o" value="idea"
-               i18n-title
-               title="Idea"></i>
-    		<i class="fa fa-bug" value="problem"
-               i18n-title
-               title="Problem"></i>
-    		<i class="fa fa-reply" value="reply"
-               i18n-title
-               title="Reply"></i>
-		</span>
-        <br/>
-
-		<p class="bug-tip" style="display: none"><a data-i18n="detail.bugTip" href="https://gist.github.com">
-			Tip:
-			Put your bug logs in a GitHub Gist and
-			put the link in your comment!
-		</a></p>
-
-        <div class="star-sel">
-          <i class="fa fa-star-o" id="5"></i>
-          <i class="fa fa-star-o" id="4"></i>
-          <i class="fa fa-star-o" id="3"></i>
-          <i class="fa fa-star-o" id="2"></i>
-          <i class="fa fa-star" id="1"></i>
+      <div class="comments" style="display:none;">
+        <div class="comments-header">
+          <p class="count" i18n-content><span>NUMBER</span> Comments</p>
+          <a href="https://use-socialhelp.sugarlabs.org" i18n-content>Join the conversation on Social Help</a>
         </div>
-        <br/>
 
-        <button class="add">
-          <i class="fa fa-paper-plane-o fa-lg"></i>
-          <span data-i18n="detail.post">Post</span>
-        </button>
-        <hr/>
-        <ul></ul>
+        <ul class="comments-list">
+        </ul>
       </div>
+
+      <div class="no-comments" style="display:none;">
+        <i class="fa fa-comments-o"></i>
+        <p class="p-1" i18n-content>No Comments</p>
+        <p><a class="start-conversation" href="https://use-socialhelp.sugarlabs.org" i18n-content>Start the conversation on Social Help</a></p>
+      </div>
+        
 
       <div class="close"><i class="fa fa-arrow-circle-left fa-lg"></i></div>
     </div>

@@ -48,7 +48,7 @@ def compress_forum_json(big_data):
             's': t['slug'],
             'p': t['posts_count'],
             'l': t['like_count']})
-    return topics
+    return topics, len(big_data['topic_list'])-1
 
 @app.route('/goto/<id>.json')
 @crossdomain('*')
@@ -57,7 +57,8 @@ def goto_json(id):
         url = '{}/c/{}.json'.format(SOCIALHELP, mappings[id])
         r = requests.get(url, verify=False)
         if r.ok:
-            return jsonify(success=True, data=compress_forum_json(r.json()))
+            data, count = compress_forum_json(r.json())
+            return jsonify(success=True, data=data, count=count)
     return jsonify(success=False)
 
 @app.route('/pull', methods=['POST'])

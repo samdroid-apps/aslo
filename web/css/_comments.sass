@@ -1,83 +1,58 @@
-@import util
+@import colors
 
-.comments
-  textarea
-    width: 100%
-    padding-top: 5px
-    
-    background-color: rgba(0,0,0,0)
-    border: none
-    border-bottom: 2px solid $gray
-        
-    font-family: sans-serif
-    font-size: 1.2em
-  .star-rating
-    margin-bottom: 10px
-  .add
-    +cool_button()
-      
-  ul
-    list-style: none
-    font-size: 1.1em
-    li
-      margin-bottom: 10px
-
-.types
-  padding-bottom: 5px
-
-  i:before
-    font-size: 1.75em
-    font-family: FontAwesome
-    font-style: normal
-
-    padding: 2px
-    height: 1em   // Because 1em = 1 x the font size!?
-    width: 1em
-
-    text-align: center
-    border-radius: 50%
-    display: inline-block
-
-  i.checked:before
-    background-color: $gray
-    color: $white
-
-  i[value=reply]:not(.checked):before
-    display: none
-
-.type-icon:before
-  font-size: 3em
-  font-family: FontAwesome
-
-  padding: 2px
-  height: 1em  // Because 1em = 1 x the font size!?
-  width: 1em
-
+.no-comments
+  color: $gray
   text-align: center
-  border-radius: 50%
-  display: inline-block
-  vertical-align: top
 
-  background-color: $gray
-  color: $white
+  .fa
+    font-size: 17em
+    padding-top: 0.25em
 
-.type-icon.question:before
-  content: ""
+  .p-1
+    font-size: 2em
+    font-weight: bold
 
-.type-icon.idea:before
-  content: ""
+  a
+    font-size: 1em
+    color: $gray
 
-.type-icon.reply:before
-  content: ""
+.comments-header
+  $dark-gray: #777
 
-.type-icon.problem:before
-  content: ""
+  background-color: $silver
 
-  label[for=problem]:before
-    content: ""
+  border-top: 2px solid $gray
+  border-bottom: 2px solid $gray
 
-.types input#review:not(:checked) ~ .star-sel
-  display: none
+  margin-top: 1em
+  padding: 0.25em
 
-.types input#problem:not(:checked) ~ .bug-tip
-  display: none
+  p
+    margin: 0px 0px 0.25em
+    
+    color: $dark-gray
+    font-size: 1.5em
+    font-weight: bold
+
+  a
+    color: $dark-gray
+
+.comments-list
+  list-style: none
+
+  a
+    text-decoration: none
+
+  .comment-title
+    text-decoration: underline
+
+  .heart-count
+    margin-left: 0.25em
+    color: $red
+
+  a:visited .heart-count
+    color: $fuchsia
+
+  .post-count
+    margin-left: 0.25em
+    // color: $black
