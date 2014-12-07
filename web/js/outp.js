@@ -45,6 +45,8 @@ exports.setup = function () {
 var SHFR = 'https://use-socialhelp.sugarlabs.org';
 var SOCIALHELP = 'https://socialhelp.sugarlabs.org';
 
+var i18n = require('./i18n.js');
+
 exports.load = function (bundleId) {
   $('.comments').hide();
   $('.no-comments').hide();
@@ -62,14 +64,17 @@ exports.load = function (bundleId) {
       $('.no-comments').show();
 
       $('.no-comments a.start-conversation').attr('href',
-                                                  SHFR + '/goto/' + bundleId)
+                                                  SHFR + '/goto/' + bundleId);
       return;
     } else {
       $('.no-comments').hide();
       $('.comments').show();
 
-      $('.comments-header a').attr('href', SHFR + '/goto/' + bundleId)
-      $('.comments-header .count span').text(request.count)
+      $('.comments-header a').attr('href', SHFR + '/goto/' + bundleId);
+
+      var count = i18n.get('{} comments')
+                      .replace('{}', request.count.toString());
+      $('.comments-header .count').text(count);
     }
 
     $('.comments-list').html('')
@@ -109,7 +114,7 @@ var downloadCommentsError = function () {
     // TODO
 }
 
-},{}],3:[function(require,module,exports){
+},{"./i18n.js":4}],3:[function(require,module,exports){
 var mainActivity = require('./mainActivity.js');
 var i18n = require('./i18n.js');
 

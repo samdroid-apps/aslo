@@ -14,3 +14,4 @@ node_modules
 web/css/.sass-cache
 web/.sass-cache
 web/_site
+web/translations/*.json
