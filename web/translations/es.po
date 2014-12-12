@@ -1,0 +1,107 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: sam@sugarlabs.org\n"
+"POT-Creation-Date: 2014-12-06 23:06+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.11.0\n"
+
+msgid "Language Activities"
+msgstr ""
+
+msgid "Science Activities"
+msgstr ""
+
+msgid "Programming Activities"
+msgstr ""
+
+msgid "What's New:"
+msgstr ""
+
+msgid "No Comments"
+msgstr ""
+
+msgid "Media Activities"
+msgstr ""
+
+msgid "Social Help"
+msgstr ""
+
+msgid "Download Devel Version"
+msgstr ""
+
+msgid "Internet Activities"
+msgstr ""
+
+msgid "All Activities"
+msgstr ""
+
+msgid "Activities Home"
+msgstr ""
+
+msgid "Start the conversation on Social Help"
+msgstr ""
+
+msgid "Min. Sugar Version"
+msgstr ""
+
+msgid "System Activities"
+msgstr ""
+
+msgid "Music Activities"
+msgstr ""
+
+msgid "Sugar Activities"
+msgstr ""
+
+msgid "Office Activities"
+msgstr ""
+
+msgid "We can't find a version that will run with your system, be careful!"
+msgstr ""
+
+msgid "Search..."
+msgstr ""
+
+msgid "Robotics Activities"
+msgstr ""
+
+msgid "Maths Activities"
+msgstr ""
+
+msgid "Featured Activity"
+msgstr ""
+
+msgid "Games"
+msgstr ""
+
+msgid "Join the conversation on Social Help"
+msgstr ""
+
+msgid "Check it out on GitHub"
+msgstr ""
+
+msgid "Wiki"
+msgstr ""
+
+msgid "{} comments"
+msgstr ""
+
+msgid "Teacher Tools"
+msgstr ""
+
+msgid "Geography Activities"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Art Activities"
+msgstr ""
