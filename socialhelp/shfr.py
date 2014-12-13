@@ -29,13 +29,9 @@ def goto(id):
 MAX_TOPICS = 50
 
 def compress_forum_json(big_data):
-    users_list = big_data['users']
-    users = {i['id']:i for i in users_list}
-
-    if len(big_data['topic_list']) > MAX_TOPICS:
-        big_topics = big_data['topic_list'][:MAX_TOPICS]['topics']
-    else:
-        big_topics = big_data['topic_list']['topics']
+    big_topics = big_data['topic_list']['topics']
+    if len(big_topics) > MAX_TOPICS:
+        big_topics = big_topics[:MAX_TOPICS]
 
     topics = []
     for t in big_topics:
@@ -48,7 +44,8 @@ def compress_forum_json(big_data):
             's': t['slug'],
             'p': t['posts_count'],
             'l': t['like_count']})
-    return topics, len(big_data['topic_list'])-1
+    return topics, \
+           len(big_data['topic_list']['topics'])-1
 
 @app.route('/goto/<id>.json')
 @crossdomain('*')
