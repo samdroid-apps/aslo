@@ -4,104 +4,107 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sam@sugarlabs.org\n"
 "POT-Creation-Date: 2014-12-06 23:06+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2014-12-12 19:05+0000\n"
+"Last-Translator: Martin <tch@sugarlabs.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.11.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1418411104.000000\n"
 
 msgid "Language Activities"
-msgstr ""
+msgstr "Actividades de Lenguas"
 
 msgid "Science Activities"
-msgstr ""
+msgstr "Actividades de Ciencia"
 
 msgid "Programming Activities"
-msgstr ""
+msgstr "Actividades de Programación"
 
 msgid "What's New:"
-msgstr ""
+msgstr "¿Qué hay nuevo?"
 
 msgid "No Comments"
-msgstr ""
+msgstr "Sin comentarios"
 
 msgid "Media Activities"
-msgstr ""
+msgstr "Actividades de Multimedia"
 
 msgid "Social Help"
-msgstr ""
+msgstr "Ayuda Social"
 
 msgid "Download Devel Version"
-msgstr ""
+msgstr "Descarga la Versión en Desarrollo"
 
 msgid "Internet Activities"
-msgstr ""
+msgstr "Actividades de Internet"
 
 msgid "All Activities"
-msgstr ""
+msgstr "Todas las actividades"
 
 msgid "Activities Home"
-msgstr ""
+msgstr "Hogar de Actividades"
 
 msgid "Start the conversation on Social Help"
-msgstr ""
+msgstr "Inicia una conversación en Ayuda Social "
 
 msgid "Min. Sugar Version"
-msgstr ""
+msgstr "Versión mínima de Sugar"
 
 msgid "System Activities"
-msgstr ""
+msgstr "Actividades de Sistema"
 
 msgid "Music Activities"
-msgstr ""
+msgstr "Actividades de Música"
 
 msgid "Sugar Activities"
-msgstr ""
+msgstr "Actividades de Sugar"
 
 msgid "Office Activities"
-msgstr ""
+msgstr "Actividades de Ofimática"
 
 msgid "We can't find a version that will run with your system, be careful!"
 msgstr ""
+"No podemos encontrar una versión apropiada para tu sistema. ¡Ten cuidado!"
 
 msgid "Search..."
-msgstr ""
+msgstr "Búsqueda..."
 
 msgid "Robotics Activities"
-msgstr ""
+msgstr "Actividades de Robótica"
 
 msgid "Maths Activities"
-msgstr ""
+msgstr "Actividades de Matemática"
 
 msgid "Featured Activity"
-msgstr ""
+msgstr "Actividad Destacada"
 
 msgid "Games"
-msgstr ""
+msgstr "Juegos"
 
 msgid "Join the conversation on Social Help"
-msgstr ""
+msgstr "Únete a la conversación en Ayuda Social"
 
 msgid "Check it out on GitHub"
-msgstr ""
+msgstr "Consiguelo en GitHub"
 
 msgid "Wiki"
-msgstr ""
+msgstr "Wiki"
 
 msgid "{} comments"
-msgstr ""
+msgstr "{} comentarios"
 
 msgid "Teacher Tools"
-msgstr ""
+msgstr "Herramientas para Maestros"
 
 msgid "Geography Activities"
-msgstr ""
+msgstr "Actividades de Geografía"
 
 msgid "Download"
-msgstr ""
+msgstr "Descarga"
 
 msgid "Art Activities"
-msgstr ""
+msgstr "Actividades de Arte"
