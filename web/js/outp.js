@@ -155,8 +155,10 @@ exports.load = function (all, activities) {
 | current language.    |
 |======================|
 */
+
 // Add avaliable languages here
-var langsAvaliable = ['id'];
+var langsAvaliable = ['id', 'es', 'fr', 'hi', 'pt', 'bn', 'de', 'ar', 'ms'];
+
 exports.getLangToUse = function (langList) {
   if (langList === undefined) {
     var langList = langsAvaliable;
