@@ -22,7 +22,9 @@ LOG_FOLDER = '../logs/'
 if not os.path.isdir(LOG_FOLDER):
     os.mkdir('../logs')
 
-MY_ADDR = 'http://aslo-bot-master.sugarlabs.org'
+MY_ADDR = os.environ.get('ASLO_BOT_MASTER_ADDRESS',
+                         'http://aslo-bot-master.sugarlabs.org')
+DOWNLOADS_ROOT = os.environ.get('ASLO_DOWNLOADS_ROOT', MY_ADDR + '/uploads')
 
 def verify_repo(gh, bundle_id):
     with open(bundle_id + '.json') as f:
@@ -118,9 +120,9 @@ def done():
             f.write(file_)
 
         result['xo_url'] = \
-            '{}/uploads/{}_stable_{}.xo'.format(MY_ADDR, bundle_id, v)
+            '{}/{}_stable_{}.xo'.format(DOWNLOADS_ROOT, bundle_id, v)
         result['xo_url_latest'] = \
-            '{}/uploads/{}_latest.xo'.format(MY_ADDR, bundle_id)
+            '{}/{}_latest.xo'.format(DOWNLOADS_ROOT, bundle_id)
         result['xo_url_latest_timestamp'] = time.time()
 
         new_v_data = {'xo_url': result['xo_url'],
