@@ -15,14 +15,6 @@ module Jekyll
     end
 
     def convert(content)
-      if not Dir.exists? "./data"
-        `git clone https://github.com/samdroid-apps/sugar-activities data`
-      else
-        Dir.chdir("data"){
-          `git pull`
-        }
-      end
-
       activities = {}   
 
       Dir.glob "./data/*.json" do |path|
