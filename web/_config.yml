@@ -1,7 +1,0 @@
-name: The ASLO Blog
-markdown: redcarpet
-highlighter: true
-sass:
-    sass_dir: css
-
-permalink: /blog/:title
