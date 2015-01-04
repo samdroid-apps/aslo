@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 from sys import argv
 from glob import glob
@@ -9,7 +10,11 @@ activities = {}
 for path in glob('data/*.json'):
     with open(path) as f:
         data = load(f)
-    bundle_id = path.lstrip('data/').rstrip('.json')
+
+    match = re.match('data/(.+)\.json', path)
+    if not match:
+        continue
+    bundle_id = match.group(1)
 
     if bundle_id != 'featured':
         try:
