@@ -1,3 +1,20 @@
+# Copyright (C) Sam Parkinson 2014
+#
+# This file is part of ASLO.
+#
+# ASLO is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# ASLO is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
+
 import re
 import os
 import uuid
@@ -5,7 +22,7 @@ import hashlib
 
 import requests
 
-BASE_URL = 'http://raw.githubusercontent.com/SAMdroid-apps/sugar-activities/multi-file/'
+BASE_URL = 'http://raw.githubusercontent.com/SAMdroid-apps/sugar-activities/master/'
 # Don't steal this (for other apps)...
 #         you can get as many as you like for FREE
 AUTH = {'Authorization': 'Client-ID 7daeb235d4d80fc'}
