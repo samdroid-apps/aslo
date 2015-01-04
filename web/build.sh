@@ -11,7 +11,7 @@ mkdir $root/translations
 cp -r assets    $root/assets
 cp -r data      $root/data
 
-copy_files=(index.html)
+copy_files=(index.html body.html)
 for file in ${copy_files[*]}; do
     cp $file $root/$file
 done

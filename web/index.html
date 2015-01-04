@@ -1,139 +1,50 @@
 <!DOCTYPE html>
-
 <html>
   <head>
     <title i18n-content>Sugar Activities</title>
-    <meta name="google-site-verification" content="N88TI0Ry6QJPNgik3ZoaFZDnsrvjSNbE5qSJ8EoJFo4" />    
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width">
-    <meta charset="utf-8"> 
+    <meta charset="utf-8">
+    <style></style>
+    <script></script>
   </head>
-
   <body>
-    <nav>
-      <div>
-        <a class="red" href="/" i18n-content>Activities Home</a>
-        <a class="orange" href="http://wiki.sugarlabs.org/" i18n-content>Wiki</a>
-        <a class="purple last" href="https://socialhelp.sugarlabs.org" i18n-content>Social Help</a>
-      </div>
-    </nav>
+    <p>Loading...</p>
+    <p>Cargando...</p>
 
-    <div class="detail hide">
-      <div class="close"><i class="fa fa-arrow-circle-left fa-lg"></i></div>
-      <div class="error noversion">
-        <i class="fa fa-exclamation-triangle fa-lg"></i>
-        <span i18n-content>We can't find a version that will run with your system, be careful!</span>
-      </div>
-      <img class="icon"/><h1 class="title"></h1>
-      <div class="by"></div>
-      <div class="screenshots closed"></div>
-      <i class="fa fa-angle-double-down icon"></i>
-      <p class="description"></p>
-      <p class="whatsnewlabel"><b i18n-content>What's New:</b></p>
-      <p class="whatsnew"></p>
+    <script>
+var l = localStorage;
+var xhr = new XMLHttpRequest();
 
-      <a class="download">
-        <i class="fa fa-download fa-lg"></i>
-        <span i18n-content>Download</span>
-      </a><br/>
-      <p><span i18n-content>Min. Sugar Version</span> <b class="minversion"></b></p>
-      <a class="download-devel" i18n-content>Download Devel Version</a>
-      <a class="github">
-        <i class="fa fa-github-alt fa-lg"></i>
-        <span i18n-content>Check it out on GitHub</span>
-      </a>
+function insertCache() {
+    document.querySelector('body').innerHTML = l.html;
+    document.querySelector('head style').innerHTML = l.css;
+    f = new Function(l.js);
+    f();
+}
 
-      <div class="comments" style="display:none;">
-        <div class="comments-header">
-          <p class="count"></p>
-          <a href="https://use-socialhelp.sugarlabs.org" i18n-content>Join the conversation on Social Help</a>
-        </div>
+function xhrLoad(e) {
+    if (xhr.readyState === 4 || xhr.status === 200) {
+        var d = xhr.responseText;
+        lens = [parseInt(d.substr(0, 7)), parseInt(d.substr(7, 7)),
+                parseInt(d.substr(14, 7)), parseInt(d.substr(21, 7))];
+        l.js = d.substr(7*4, lens[0]);
+        l.css = d.substr(7*4+lens[0], lens[1]);
+        l.html = d.substr(7*4+lens[0]+lens[1], lens[2]);
+        l.data = d.substr(7*4+lens[0]+lens[1]+lens[2], lens[3]);
+        l.hasCache = 'true';
+        insertCache();
+    }
+}
 
-        <ul class="comments-list">
-        </ul>
-      </div>
-
-      <div class="no-comments" style="display:none;">
-        <i class="fa fa-comments-o"></i>
-        <p class="p-1" i18n-content>No Comments</p>
-        <p><a class="start-conversation" href="https://use-socialhelp.sugarlabs.org" i18n-content>Start the conversation on Social Help</a></p>
-      </div>
-        
-
-      <div class="close"><i class="fa fa-arrow-circle-left fa-lg"></i></div>
-    </div>
-
-    <div class="featured">
-      <a href="">
-        <p class="info" i18n-content>Featured Activity</p>
-
-        <div class="content">
-          <img class="icon"/>
-          <div class="right">
-            <h1></h1>
-            <p class="description"></p>
-          </div>
-        </div>
-
-        <br/>
-      </a>
-    </div>
-
-    <div class="all-activities">
-      <input class="search" type="search" placeholder="Search..."
-             i18n-placeholder/>
-      <div class="categories">
-        <i class="fa fa-check-square-o fa-2x any checked" i18n-title
-           title="All Activities" filter="any"></i>
-
-        <i class="fa fa-gamepad fa-2x" i18n-title
-           title="Games" filter="game"></i>
-
-        <i class="fa fa-code fa-2x" i18n-title
-           title="Programming Activities" filter="programming"></i>
-
-        <i class="fa fa-cogs fa-2x" i18n-title
-           title="Robotics Activities" filter="robotics"></i>
-
-        <i class="fa fa-globe fa-2x" i18n-title
-           title="Internet Activities" filter="internet"></i>
-
-        <i class="fa fa-flask fa-2x" i18n-title
-           title="Science Activities" filter="science"></i>
-
-        <i class="fa fa-money fa-2x" i18n-title
-           title="Maths Activities" filter="maths"></i>
-
-        <i class="fa fa-language fa-2x" i18n-title
-           title="Language Activities" filter="language"></i>
-
-        <i class="fa fa-map-marker fa-2x navy" 18n-title
-           title="Geography Activities" filter="geography"></i>
-
-        <i class="fa fa-pencil-square-o fa-2x" i18n-title
-           title="Office Activities" filter="documents"></i>
-
-        <i class="fa fa-music fa-2x" i18n-title
-           title="Music Activities" filter="music"></i>
-
-        <i class="fa fa-camera fa-2x" i18n-title
-           title="Media Activities" filter="media"></i>
-
-        <i class="fa fa-pencil fa-2x" i18n-title
-           title="Art Activities" filter="art"></i>
-
-        <i class="fa fa-wrench fa-2x" i18n-title
-           title="Teacher Tools" filter="teacher"></i>
-
-        <i class="fa fa-linux fa-2x" i18n-title
-           title="System Activities" filter="system"></i>
-      </div>
-
-      <ul class="activities">
-      </ul>
-    </div>
-
-    <script src="/main.js" async></script>
-    <link rel="stylesheet" href="/index.css"/>
+if (l.hasCache === 'true') {
+    insertCache();
+} else {
+    xhr.open('GET', '/bundle');
+    xhr.onload = xhrLoad;
+    xhr.onerror = function(e) {document.querySelector('body').innerHTML = xhr.statusText};
+    xhr.send(null);
+}
+    </script>
   </body>
 </html>

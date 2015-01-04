@@ -14,7 +14,7 @@ exports.add = function (container, bundleId) {
 
   var title = $('<span class=\'title\'>' + util.trans(data.title) + '</span>');
   ele.append(title);
-  $(container).append(ele);
+  container.append(ele);
 
   var l = (data.categories || ['none']).reverse();
   ele.addClass('category-' + l[1]);
@@ -30,12 +30,20 @@ exports.add = function (container, bundleId) {
 };
 
 exports.setup = function () {
-  activitiesData = $('body').data('activitiesData');
+  var activitiesData = $('body').data('activitiesData');
+  var oldContainer = $('ul.activities');
+  var container = $('<ul class="activities">');
+  container.hide();
+
   for (var key in activitiesData) {
     if (activitiesData.hasOwnProperty(key)) {
-      exports.add('.activities', key);
+      exports.add(container, key);
     }
   }
+
+  $('.all-activities').append(container);
+  container.show();
+  oldContainer.remove();
 
   featured.load($('body').data('featuredData'), activitiesData);
 };
