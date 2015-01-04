@@ -9,19 +9,14 @@ You can view it live at http://www.aslo.cf
 This uses a lot of preprocessors, so you will need to install them:
 
 	pip install polib
-	npm install watchify
+	npm install browserify
 	gem install sass
-	gem install jekyll
 
-Then you have to run them all
+Use the `build.sh` script to build the site.  Use your favourite HTTP server to
+serve the website:  `cd _site; python -m SimpleHTTPServer`.
 
-	cd aslo/web/js
-	watchify main.js -o outp.js -v &
-	cd ..
-	python compile_po.py
-	jekyll serve --watch
-
-Then go to http://0.0.0.0:4000 in your browser
+You may need to run `window.replaceCache()` in your browser to force the app
+level cache to reload.
 
 To update the pot file (should be done pre-commit):
 
