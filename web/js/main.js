@@ -42,6 +42,7 @@ var updateCache = function () {
     localStorage.data = d.substr(7*4+lens[0]+lens[1]+lens[2], lens[3]);
     localStorage.hasCache = 'true';
 
+    $('head css').html(localStorage.css);
     var datajson = JSON.parse(localStorage.data);
     $('body').data('activitiesData', datajson.activities);
     $('body').data('featuredData', datajson.featured);
