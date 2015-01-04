@@ -2,13 +2,14 @@ var SHFR = 'https://use-socialhelp.sugarlabs.org';
 var SOCIALHELP = 'https://socialhelp.sugarlabs.org';
 
 var i18n = require('./i18n.js');
+var cache = require('./cache.js');
 
 exports.load = function (bundleId) {
   $('.comments').hide();
   $('.no-comments').hide();
 
   var url = SHFR + '/goto/' + bundleId + '.json';
-  $.get(url).done(function (request) {
+  cache.get(url, function (request) {
     if (!request.success) {
       //  TODO
       return;
@@ -39,7 +40,7 @@ exports.load = function (bundleId) {
       var li = makeCommentItem(data[i]);
       $('.comments-list').append(li);
     }
-  }).fail(downloadCommentsError);
+  });
 };
 
 var makeCommentItem = function (data) {

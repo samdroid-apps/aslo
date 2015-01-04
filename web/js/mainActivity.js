@@ -1,10 +1,11 @@
 var util = require('./util.js');
 var comments = require('./comments.js');
 var i18n = require('./i18n.js');
+var cache = require('./cache.js');
 
 exports.downloadAndLoad = function (dataSoFar, bundleId, setUrl) {
   exports.load(dataSoFar, bundleId, setUrl, true);
-  $.ajax({ url: '/data/' + bundleId + '.json' }).done(function (data) {
+  cache.get('/data/' + bundleId + '.json', function (data) {
     exports.load(data, bundleId, false, false);
   });
 };

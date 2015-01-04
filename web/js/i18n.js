@@ -1,3 +1,5 @@
+var cache = require('./cache.js');
+
 /*
 |======================|
 | i18n VS util.getLang |
@@ -48,7 +50,7 @@ exports.setup = function () {
   }
 
   var url = '/translations/' + l + '.json';
-  $.get(url).done(function (data) {
+  cache.get(url, function (data) {
     $('body').data('translations', data);
     translateBody(data);
   });
