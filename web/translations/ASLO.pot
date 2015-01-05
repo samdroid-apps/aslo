@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: sam@sugarlabs.org\n"
-"POT-Creation-Date: 2014-12-06 23:06+0000\n"
-"PO-Revision-Date: 2014-12-06 23:06+0000\n"
+"POT-Creation-Date: 2015-01-05 01:19+0000\n"
+"PO-Revision-Date: 2015-01-05 01:19+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -51,6 +51,12 @@ msgstr ""
 msgid "System Activities"
 msgstr ""
 
+msgid "Licensed under the AGPLv3"
+msgstr ""
+
+msgid "Fork us on GitHub"
+msgstr ""
+
 msgid "Music Activities"
 msgstr ""
 
@@ -88,6 +94,9 @@ msgid "Wiki"
 msgstr ""
 
 msgid "{} comments"
+msgstr ""
+
+msgid "Reset Cache"
 msgstr ""
 
 msgid "Teacher Tools"

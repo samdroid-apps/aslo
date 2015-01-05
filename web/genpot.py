@@ -30,6 +30,8 @@ strings = []
 
 with open('index.html') as f:
     text = f.read()
+with open('body.html') as f:
+    text += f.read()
 
 # HTML tags with i18n content
 strings += list(get_strings(
