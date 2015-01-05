@@ -20,7 +20,9 @@
 exports.get = function (url, callback) {
   var key = 'HTTP_CACHE' + url;
   if (localStorage[key] !== undefined) {
-    callback(JSON.parse(localStorage[key]));
+    try {
+        callback(JSON.parse(localStorage[key]));
+    } catch (e) {};
   };
 
   $.get(url).done(function (response) {
