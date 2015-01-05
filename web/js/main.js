@@ -51,7 +51,7 @@ var goBasedOnUrl = function () {
   window.location.changedByProgram = false;
 };
 
-var updateCache = function () {
+var updateCache = function (doneCallback) {
   $.ajax({ url: '/bundle' }).done(function (d) {
     lens = [parseInt(d.substr(0, 7)), parseInt(d.substr(7, 7)),
             parseInt(d.substr(14, 7)), parseInt(d.substr(21, 7))];
@@ -67,7 +67,11 @@ var updateCache = function () {
     $('body').data('featuredData', datajson.featured);
     activityList.setup();
 
-    setTimeout(updateCache, 1000 * 60 * 5);  // 5 min
+    if (doneCallback !== undefined) {
+        doneCallback();
+    } else {
+        setTimeout(updateCache, 1000 * 60 * 5);  // 5 min
+    };
   });
 };
 
@@ -85,6 +89,12 @@ $(document).ready(function () {
     activityList.setup();
 
     setTimeout(updateCache, 1000 * 30);  // 30sec
+    $('.reset-cache').click(function () {
+      $('.reset-cache-icon').show();
+      updateCache(function () {
+        location.reload(false);
+      });
+    });
 
     setInterval(goBasedOnUrl, 750);
     goBasedOnUrl();

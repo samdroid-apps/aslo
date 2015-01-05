@@ -16,56 +16,27 @@
 // along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 
 @import colors
-@import activity_list
-@import detail
-@import nav
-@import comments
-@import featured
-@import syntax
-@import fa
-@import footer
+@import util
 
-body
-  font-family: sans-serif
-  background-color: #C0C0C0
+footer
+  padding-left: 0
+  padding-right: 0
+  margin-bottom: 0.5em
 
-  margin: 0
+  max-width: #{ $maxw }
+  +center()
 
-hr
-  margin: 15px 0
-  border: 1px solid $gray
+  a
+    display: block
+    float: left
 
-img
-  max-width: 100%
+    width: 30%
+    color: $black
+    text-decoration: underline
+    cursor: pointer
 
-.error
-  margin-top: 10px
+    &:hover
+      text-decoration: none
 
-  padding: 5px
-  background-color: $red
-  border-radius: 5px
-
-  color: $white
-  font-weight: bold
-
-.person
-  height: 2.5em
-  width: auto
-  border-radius: 2.5em
-  margin-right: 10px
-
-blockquote
-  background-color: $silver
-  color: #666
-  border-left: 8px solid $gray
-
-  padding: 5px !important
-  margin-top: 6px !important
-  margin-bottom: 6px !important
-  text-align: left
-
-  .fa-flag
-    display: none
-
-  a, a:visited
-    color: gray
+  a.reset-cache
+    width: auto
