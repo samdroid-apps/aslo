@@ -30,8 +30,10 @@ from build import compile_bundle
 # Fixes a weird bug... it might create some though :P
 os.environ['http_proxy'] = ''
 
-HOST = 'http://localhost:5001'
-#  HOST = 'http://aslo-bot-master.sugarlabs.org'
+if os.environ.get('ASLO_DEBUG', False):
+    HOST = 'http://localhost:5001'
+else:
+    HOST = 'http://aslo-bot-master.sugarlabs.org'
 XO_MIME = 'application/vnd.olpc-sugar'
 
 print 'Waiting for 1st task'
