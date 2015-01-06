@@ -32,6 +32,7 @@ along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
   <body>
     <p>Loading...</p>
     <p>Cargando...</p>
+    <p style="font-weight:bold;" id="prog">0%</p>
 
     <script>
 var l = localStorage;
@@ -59,12 +60,20 @@ function xhrLoad(e) {
     }
 }
 
+function updateProgress (e) {
+    if (e.lengthComputable) {
+        var p = Math.round((e.loaded / e.total) * 100).toString() + '%';
+        document.querySelector('#prog').innerHTML = p;
+    };
+};
+
 if (l.hasCache === 'true') {
     insertCache();
 } else {
     xhr.open('GET', '/bundle');
     xhr.onload = xhrLoad;
-    xhr.onerror = function(e) {document.querySelector('body').innerHTML = xhr.statusText};
+    xhr.onprogress = updateProgress;
+    xhr.onerror = function(e) {document.querySelector('body').innerHTML = '<p>Error</p>'};
     xhr.send(null);
 }
     </script>
