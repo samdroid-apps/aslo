@@ -169,4 +169,4 @@ def done():
     return 'You just did a task... congrats!'
 
 debug = os.path.isfile('debug')
-app.run(port=5001, debug=debug)
+app.run(port=5001, debug=debug, host='0.0.0.0')
