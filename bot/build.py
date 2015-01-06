@@ -19,17 +19,17 @@ import os
 from subprocess import call
 
 def compile_bundle():
-    call(['rm', '-r', 'dl/dist'])
+    call(['rm', '-rf', 'dl/dist'])
+
     # Common issue
     if not os.path.isdir('dl/po'):
         os.mkdir('dl/po')
 
-    os.chdir('dl')
-    call(['python', 'setup.py', 'dist_xo'])
-    os.chdir('..')
+    abs_path = os.path.join(os.getcwd(), 'dl')
+    call(['docker', 'run', 
+          '-v', abs_path + ':/activity', 'samdroid/activity-build'])
     
-    if os.path.isdir('dl/dist/'):
+    if os.path.isdir('dl/dist/') and len(os.listdir('dl/dist/')) == 1:
         f = os.path.join('dl/dist', os.listdir('dl/dist/')[0])
-        fo = open(f, 'rb')
-        return fo.read().encode('base64')
-    return ''
+        return open(f, 'rb')
+    return None

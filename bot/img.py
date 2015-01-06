@@ -22,7 +22,8 @@ import hashlib
 
 import requests
 
-BASE_URL = 'http://raw.githubusercontent.com/SAMdroid-apps/sugar-activities/master/'
+BASE_URL = ('http://raw.githubusercontent.com'
+            '/SAMdroid-apps/sugar-activities/master/')
 # Don't steal this (for other apps)...
 #         you can get as many as you like for FREE
 AUTH = {'Authorization': 'Client-ID 7daeb235d4d80fc'}

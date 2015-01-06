@@ -22,8 +22,8 @@ import uuid
 import threading
 from subprocess import call
 
-from flask import Flask, jsonify, abort, request, send_from_directory, Response
-from helpers import crossdomain
+from flask import Flask, jsonify, abort, request
+
 
 tasks_todo = {}  # bundle_id -> extra data
 tasks_sent = {}  # bundle_id -> code
@@ -31,20 +31,15 @@ tasks_sent = {}  # bundle_id -> code
 tasks_todo_lock = threading.Lock()
 git_lock = threading.Lock()
 
-UPLOADS_FOLDER = '../uploads/'
-if not os.path.isdir(UPLOADS_FOLDER):
-    os.mkdir('../uploads')
+OUT_FOLDER = 'out'
+if not os.path.isdir(OUT_FOLDER):
+    os.mkdir('out')
 
-LOG_FOLDER = '../logs/'
-if not os.path.isdir(LOG_FOLDER):
-    os.mkdir('../logs')
+DOWNLOADS_ROOT = os.environ.get('ASLO_DOWNLOADS_ROOT')
 
-MY_ADDR = os.environ.get('ASLO_BOT_MASTER_ADDRESS',
-                         'http://aslo-bot-master.sugarlabs.org')
-DOWNLOADS_ROOT = os.environ.get('ASLO_DOWNLOADS_ROOT', MY_ADDR + '/uploads')
 
 def verify_repo(gh, bundle_id):
-    with open(bundle_id + '.json') as f:
+    with open('git/{}.json'.format(bundle_id)) as f:
         try:
             j = json.load(f)
         except ValueError:
@@ -56,18 +51,20 @@ def verify_repo(gh, bundle_id):
 
 app = Flask(__name__)
 
+
 @app.route('/hook/<gh_user>/<gh_repo>/<bundle_id>', methods=['POST'])
 def hook(gh_user, gh_repo, bundle_id):
-    if not os.path.isfile(bundle_id + '.json'):
-        return ("Please add your thing first to our github, "
-                "then the bots will come and help you fill it out\n")
+    if not os.path.isfile('git/{}.json'.format(bundle_id)):
+        return ('Please add your activity first to our github, '
+                'then the bots will come and help you fill it out\n')
 
     if not verify_repo('{}/{}'.format(gh_user, gh_repo), bundle_id):
-        return ("You are using a different repo to the first one you used"
-                " OR the json in your file is invalid!\n\n"
-                "If this is an error in our system or "
-                "you really have made a change "
-                "**please create a github issue about it!**\n")
+        return ('You are using a different repo to the first one you used'
+                ' OR the json in your file is invalid!\n\n'
+                'If this is an error in our system or '
+                'you really have made a change '
+                '**please create a github issue about it!**\n'
+                'https://github.com/samdroid-apps/sugar-activities')
         
     print 'Hook call from', bundle_id
     task_id = str(uuid.uuid4())
@@ -77,21 +74,24 @@ def hook(gh_user, gh_repo, bundle_id):
         tasks_todo[bundle_id] = {'task_id': task_id,
                                  'gh': gh_user + '/' + gh_repo}
 
-    return "Cool Potatoes"
+    return 'Cool Potatoes'
+
 
 @app.route('/pull', methods=['GET', 'POST'])
 def pull():
-    """Go here every time a new activity is added to refresh the data"""
     with git_lock:
+        os.chdir('git')
         call(['git', 'pull'])
-    return "Cool Potatoes"
+        os.chdir('..')
+    return 'Cool Potatoes'
+
 
 @app.route('/task')
 def get_task():
     with tasks_todo_lock:
-        ts = tasks_todo.items()
-        if ts:
-          t = ts.pop(0)
+        tasks = tasks_todo.items()
+        if tasks:
+          t = tasks.pop(0)
           del tasks_todo[t[0]]
           return jsonify(bundle_id=t[0],
                          task_id=t[1]['task_id'],
@@ -99,58 +99,61 @@ def get_task():
         else:
              abort(404)
 
+
 @app.route('/done', methods=['POST'])
+def old_done():
+    return 'Deprecated, please update your bot'
+
+
+@app.route('/done2', methods=['POST'])
 def done():
-    data = request.get_json()
-    if not 'releases' in data['result']:
-        data['result']['releases'] = []
+    data = json.load(request.files['json'].stream)
+    result = data['result']
 
     bundle_id = data['bundle_id']
     task_id = data['task_id']
     if not tasks_sent.get(bundle_id, None) == task_id:
       return "Bad code :("
 
-    # LOCK
+    file_ = request.files['bundle']
+    version = result['version']
+    timestamp = int(time.time())
+    stable = '{}_v{}.xo'.format(bundle_id, version)
+    unstable = '{}_{}.xo'.format(bundle_id, timestamp)
+    stable_path = os.path.join(OUT_FOLDER, stable)
+    unstable_path = os.path.join(OUT_FOLDER, unstable)
+
+    os.chdir('git')
     git_lock.acquire()
-
     call(['git', 'pull'])
-    with open(bundle_id + '.json') as f:
-        current = json.load(f)
-    result = data['result']
 
-    file_ = data['file'].decode('base64')
-    if file_:
-        v = result['version']
-        sp = os.path.join(UPLOADS_FOLDER,
-                          '{}_stable_{}.xo'.format(bundle_id, v))
-        if not os.path.isfile(sp):
-            # If we havn't written version V
-            with open(sp, 'wb') as f:
-                f.write(file_)
-            result['xo_url_timestamp'] = time.time()
+    current = json.load(open(bundle_id + '.json'))
+    if 'releases' not in result:
+        result['releases'] = current.get('releases', [])
+    os.chdir('..')
 
-            # Approx size in bytes
-            result['xo_size'] = (len(file_) / 3) * 4
+    if not os.path.isfile(stable):
+        # If we havn't written this version
+        file_.save(stable_path)
+        result['xo_url_timestamp'] = timestamp
+        result['xo_url'] = '{}/{}'.format(DOWNLOADS_ROOT, stable)
+        result['xo_size'] = os.path.getsize(stable_path)
 
-        lp = os.path.join(UPLOADS_FOLDER, bundle_id + '_latest.xo')
-        with open(lp, 'wb') as f:
-            f.write(file_)
+        new_version = {'xo_url': stable,
+                       'version': version,
+                       'minSugarVersion': result.get('minSugarVersion'),
+                       'whats_new': result.get('whats_new', {}),
+                       'screenshots': result.get('screenshots', {})}
+        result['releases'].insert(0, new_version)
 
-        result['xo_url'] = \
-            '{}/{}_stable_{}.xo'.format(DOWNLOADS_ROOT, bundle_id, v)
-        result['xo_url_latest'] = \
-            '{}/{}_latest.xo'.format(DOWNLOADS_ROOT, bundle_id)
-        result['xo_url_latest_timestamp'] = time.time()
+        os.symlink(os.path.join(os.getcwd(), stable_path), unstable_path)
+    else:
+        file_.save(unstable_path)
+    result['xo_url_latest'] = '{}/{}'.format(DOWNLOADS_ROOT, unstable)
+    result['xo_url_latest_timestamp'] = timestamp
 
-        new_v_data = {'xo_url': result['xo_url'],
-                      'version': v,
-                      'minSugarVersion': result.get('minSugarVersion'),
-                      'whats_new': result.get('whats_new', {}),
-                      'screenshots': result.get('screenshots', [])}
-        result['releases'].insert(0, new_v_data)
-
+    os.chdir('git')
     current.update(result)
-
     with open(bundle_id + '.json', 'w') as f:
         json.dump(current, f, indent=4, sort_keys=True)
 
@@ -159,19 +162,11 @@ def done():
           'Bot from %s updated %s' % (
               request.headers.get('X-Forwarded-For', '?'),
               bundle_id)])
-    call(['git', 'push'])
+    # call(['git', 'push'])
 
     git_lock.release()
-    return "Cool Potatoes"
+    os.chdir('..')
+    return 'You just did a task... congrats!'
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    p = os.path.join(UPLOADS_FOLDER, filename)
-    if os.path.isfile(p):
-        with open(p, 'rb') as f:
-            b = f.read()
-        return Response(b, mimetype='application/vnd.olpc-sugar')
-    abort(404)
-
-debug = os.path.isfile('../debug')
+debug = os.path.isfile('debug')
 app.run(port=5001, debug=debug)
