@@ -16,9 +16,34 @@
 # along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from subprocess import call
+from subprocess import call, check_output, CalledProcessError
+from ConfigParser import ConfigParser
 
-def compile_bundle():
+
+def set_activity_metadata(bundle_id, gh):
+    section = 'Activity'
+    with open('dl/activity/activity.info') as f:
+        cp = ConfigParser()
+        cp.readfp(f)
+
+    try:
+        hash_ = check_output(['git', 'rev-parse', 'HEAD'])
+    except CalledProcessError:
+        hash_ = 'ERROR'
+    cp.set(section, 'git_hash', hash_)
+
+    if not cp.has_option(section, 'repository'):
+        cp.set(section, 'repositroy', 'https://github.com/{}'.format(gh))
+
+    cp.set(section, 'downloaded_via',
+           'https://activities-2.sugarlabs.org/view/{}'.format(bundle_id))
+
+    with open('dl/activity/activity.info', 'w') as f:
+        cp.write(f)
+
+def compile_bundle(bundle_id, gh):
+    set_activity_metadata(bundle_id, gh)
+
     call(['rm', '-rf', 'dl/dist'])
 
     # Common issue

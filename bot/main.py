@@ -61,7 +61,7 @@ while True:
             'bundle_id': task['bundle_id'],
             'task_id': task['task_id']}
     files = {'json': ('result.json', json.dumps(data))}
-    bundle = compile_bundle()
+    bundle = compile_bundle(task['bundle_id'], task['gh'])
     if not bundle:
         print 'Failed to build bundle'
         print 'Assuming buggy code, skipping'
