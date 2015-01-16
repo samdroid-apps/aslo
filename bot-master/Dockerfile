@@ -24,7 +24,7 @@ RUN pip install requests
 RUN git config --global user.name "ASLO Bots Uninted"
 RUN git config --global user.email "sam.parkinson3+aslobots@gmail.com"
 RUN git clone http://github.com/samdroid-apps/aslo /aslo
-RUN git clone http://github.com/samdroid-apps/sugar-activities /aslo/bot-master/git
+RUN git clone git@github.com:SAMdroid-apps/sugar-activities /aslo/bot-master/git
 
 RUN mkdir /aslo/bot-master/out
 VOLUME /aslo/bot-master/out
