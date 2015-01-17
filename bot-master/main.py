@@ -19,6 +19,7 @@ import os
 import time
 import json
 import uuid
+import shutil
 import threading
 from subprocess import call
 
@@ -65,7 +66,7 @@ def hook(gh_user, gh_repo, bundle_id):
                 'you really have made a change '
                 '**please create a github issue about it!**\n'
                 'https://github.com/samdroid-apps/sugar-activities')
-        
+
     print 'Hook call from', bundle_id
     task_id = str(uuid.uuid4())
     tasks_sent[bundle_id] = task_id
@@ -146,7 +147,7 @@ def done():
                        'screenshots': result.get('screenshots', {})}
         result['releases'].insert(0, new_version)
 
-        os.symlink(os.path.join(os.getcwd(), stable_path), unstable_path)
+        shutil.copy(stable_path, unstable_path)
     else:
         file_.save(unstable_path)
     result['xo_url_latest'] = '{}/{}'.format(DOWNLOADS_ROOT, unstable)
