@@ -27,7 +27,7 @@ RUN git clone http://github.com/samdroid-apps/aslo /aslo
 
 RUN git clone https://github.com/SAMdroid-apps/sugar-activities /aslo/bot-master/git
 WORKDIR /aslo/bot-master/git
-RUN git remote remove origin
+RUN git remote rm origin
 RUN git remote add origin git@github.com:SAMdroid-apps/sugar-activities.git
 WORKDIR /
 
