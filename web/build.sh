@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright (C) Sam Parkinson 2014
 #
 # This file is part of ASLO.
@@ -15,7 +16,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with ASLO.  If not, see <http:#www.gnu.org/licenses/>.
 
-#!/bin/sh
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 root=_site
