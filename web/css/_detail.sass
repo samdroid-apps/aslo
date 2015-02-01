@@ -17,15 +17,18 @@
 
 @import util
 
-.detail
+.close
+  font-size: 36px
+  margin-left: 10px
+  text-align: left
+
+.bubble
   display: block
   overflow: hidden
   clear: both
     
   position: relative
-  margin-top: 0
   
-  border-radius: 0 0 20px 20px
   background-color: rgba(255, 255, 255, 0.7)
 
   padding: 20px 0
@@ -34,14 +37,10 @@
 
   +center()
   text-align: center
-    
-  &.hide
-    display: none
-  
-  .close
-    font-size: 36px
-    margin-left: 10px
-    text-align: left
+
+.detail
+  margin-top: 0
+  border-radius: 0 0 20px 20px
     
   h1
     margin-bottom: 0

@@ -33,8 +33,10 @@ var goBasedOnUrl = function () {
 
   if (!window.location.pathname || window.location.pathname === '/') {
     document.title = i18n.get('Sugar Activities');
-    var container = $('.detail');
-    container.addClass('hide');
+    $('.detail').addClass('hide');
+    $('.comments-bubble').addClass('hide');
+    $('.featured').removeClass('hide');
+    $('.all-activities').removeClass('hide');
   }
 
   if (window.location.pathname && !window.location.changedByProgram) {

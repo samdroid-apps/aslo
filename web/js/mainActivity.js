@@ -42,10 +42,17 @@ exports.load = function (data, bundleId, setUrl, loadComments) {
   var container = $('.detail');
   container.removeClass('hide');
 
-  $('.close', container).click(function () {
+  $('.featured').addClass('hide');
+  $('.all-activities').addClass('hide');
+
+  $('.close').click(function () {
     history.pushState(null, null, '/');
     document.title = i18n.get('Sugar Activities');
+
+    $('.featured').removeClass('hide');
+    $('.all-activities').removeClass('hide');
     container.addClass('hide');
+    $('.comments-bubble').addClass('hide');
   });
 
   $('.title', container).html(util.trans(data.title));

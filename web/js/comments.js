@@ -34,6 +34,8 @@ exports.load = function (bundleId) {
       return;
     }
 
+    $('.comments-bubble').removeClass('hide');
+
     var data = request.data;
     if (data.length === 0) {
       $('.comments').hide();
