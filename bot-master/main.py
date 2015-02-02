@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
 import os
 import time
 import json
@@ -23,6 +24,7 @@ import shutil
 import threading
 from subprocess import call
 
+import requests
 from flask import Flask, jsonify, abort, request
 
 
@@ -53,27 +55,50 @@ def verify_repo(gh, bundle_id):
 app = Flask(__name__)
 
 
+@app.route('/hook', methods=['POST'])
+def hook_new():
+    if 'application/json' in request.headers.get('Content-Type'):
+        data = json.loads(request.data)
+    else:
+        data = json.loads(request.form['payload'])
+
+    gh = data['repository']['full_name']
+    r = requests.get('https://raw.githubusercontent.com/{}/master/activity'
+                     '/activity.info'.format(gh))
+    if r.ok:
+        m = re.compile('bundle_id\s+=\s+(.*)').search(r.text)
+        if m:
+            bundle_id = m.group(1).strip()
+            return hook_main(gh, bundle_id)
+        else:
+            return 'Please put a bundle id in your activity.info', 400
+    return 'Error finding bundle ID', 400
+
+
 @app.route('/hook/<gh_user>/<gh_repo>/<bundle_id>', methods=['POST'])
-def hook(gh_user, gh_repo, bundle_id):
+def hook_old(gh_user, gh_repo, bundle_id):
+    return hook_main(gh_user + '/' + gh_repo, bundle_id)
+
+
+def hook_main(gh, bundle_id):
     if not os.path.isfile('git/{}.json'.format(bundle_id)):
         return ('Please add your activity first to our github, '
-                'then the bots will come and help you fill it out\n')
+                'then the bots will come and help you fill it out\n'), 403
 
-    if not verify_repo('{}/{}'.format(gh_user, gh_repo), bundle_id):
+    if not verify_repo(gh, bundle_id):
         return ('You are using a different repo to the first one you used'
                 ' OR the json in your file is invalid!\n\n'
                 'If this is an error in our system or '
                 'you really have made a change '
-                '**please create a github issue about it!**\n'
-                'https://github.com/samdroid-apps/sugar-activities')
+                '**please create a GitHub issue about it!**\n'
+                'https://github.com/samdroid-apps/sugar-activities'), 400
 
     print 'Hook call from', bundle_id
     task_id = str(uuid.uuid4())
     tasks_sent[bundle_id] = task_id
 
     with tasks_todo_lock:
-        tasks_todo[bundle_id] = {'task_id': task_id,
-                                 'gh': gh_user + '/' + gh_repo}
+        tasks_todo[bundle_id] = {'task_id': task_id, 'gh': gh}
 
     return 'Cool Potatoes'
 
