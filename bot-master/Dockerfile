@@ -29,7 +29,6 @@ RUN git clone https://github.com/SAMdroid-apps/sugar-activities /aslo/bot-master
 WORKDIR /aslo/bot-master/git
 RUN git remote rm origin
 RUN git remote add origin git@github.com:SAMdroid-apps/sugar-activities.git
-RUN git branch --set-upstream master origin/master
 WORKDIR /
 
 RUN mkdir /aslo/bot-master/out

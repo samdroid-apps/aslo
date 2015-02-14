@@ -6,6 +6,7 @@ bot-master/rethinkdb_data
 bot-master/git
 bot-master/uploads
 bot-master/logs
+bot-master/out
 comments/email.password
 rethinkdb_data 
 debug

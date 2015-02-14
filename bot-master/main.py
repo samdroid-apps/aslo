@@ -188,7 +188,7 @@ def done():
           'Bot from %s updated %s' % (
               request.headers.get('X-Forwarded-For', '?'),
               bundle_id)])
-    call(['git', 'push'])
+    call(['git', 'push', '-u'])
 
     git_lock.release()
     os.chdir('..')
