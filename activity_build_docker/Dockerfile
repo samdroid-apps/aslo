@@ -35,4 +35,4 @@ RUN mkdir /activity
 VOLUME /activity
 
 WORKDIR /activity
-ENTRYPOINT ["sh", "-c", "python setup.py dist_xo --no-fail; chmod 777 /activity/*"]
+ENTRYPOINT ["sh", "-c", "python setup.py dist_xo --no-fail; chmod 777 /activity/*; rm -rf /activity/locale"]
