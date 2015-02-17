@@ -92,9 +92,12 @@ def get_activity_version(cp):
 
 def get_categories(cp):
     if not cp.has_option('Activity', 'categories'):
-        return None
+        if not cp.has_option('Activity', 'category'):
+            return None
 
-    c = cp.get('Activity', 'categories')
+        c = cp.get('Activity', 'category')
+    else:
+        c = cp.get('Activity', 'categories')
     return c.strip().split(' ')
 
 def get_news_file(path):
