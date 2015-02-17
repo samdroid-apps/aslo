@@ -107,7 +107,7 @@ def hook_main(gh, bundle_id):
 def pull():
     with git_lock:
         os.chdir('git')
-        call(['git', 'pull'])
+        call(['git', 'pull', 'origin', 'master'])
         os.chdir('..')
     return 'Cool Potatoes'
 
@@ -151,7 +151,7 @@ def done():
 
     os.chdir('git')
     git_lock.acquire()
-    call(['git', 'pull'])
+    call(['git', 'pull', 'origin', 'master'])
 
     current = json.load(open(bundle_id + '.json'))
     if 'releases' not in result:
@@ -188,7 +188,7 @@ def done():
           'Bot from %s updated %s' % (
               request.headers.get('X-Forwarded-For', '?'),
               bundle_id)])
-    call(['git', 'push', '-u'])
+    call(['git', 'push', 'origin', 'master'])
 
     git_lock.release()
     os.chdir('..')
