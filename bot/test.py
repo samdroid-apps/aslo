@@ -109,7 +109,7 @@ def get_news_file(path):
             if line.isdigit() and not started:
                 started = True
             elif line.isdigit():
-                return r
+                return r.strip('<br/>')
             elif line != '':
                 r = r + '<br/>' + line
             else:
