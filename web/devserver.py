@@ -4,7 +4,8 @@ import os
 app = Flask(__name__)
 
 @app.route('/')
-def static_index():
+@app.route('/view/<path>')
+def static_index(path=''):
     return send_file('index.html')
 
 @app.route('/bundle')
