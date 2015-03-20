@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 
-from flask import Flask
+from flask import Flask, send_file
 import os
 
 app = Flask(__name__)
 
-def send_file(path):
+def send_file_simple(path):
     with open(path) as f:
         return f.read()
 
@@ -32,7 +32,7 @@ def static_index(path=''):
 @app.route('/bundle')
 def bundle():
     os.system('bash build.sh --quick')
-    r = send_file('bundle')
+    r = send_file_simple('bundle')
     os.system(
         'rm bundle index.css.map index.css main.js update.json data.json')
     return r

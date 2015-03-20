@@ -42,7 +42,6 @@ function insertCache() {
     document.querySelector('body').innerHTML = l.html;
     document.querySelector('head style').innerHTML = l.css;
     // Comment the following for eaiser debugging
-    console.log(l.js);
     f = new Function(l.js);
     f();
 }
