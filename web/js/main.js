@@ -1,5 +1,5 @@
 /*
-* Copyright (C) Sam Parkinson 2014
+* Copyright (C) Sam Parkinson 2014-2015
 *
 * This file is part of ASLO.
 *
@@ -54,7 +54,7 @@ var goBasedOnUrl = function () {
 };
 
 var updateCache = function (doneCallback) {
-  $.ajax({ url: '/bundle' }).done(function (d) {
+  $.get('/bundle').done(function (d) {
     lens = [parseInt(d.substr(0, 7)), parseInt(d.substr(7, 7)),
             parseInt(d.substr(14, 7)), parseInt(d.substr(21, 7))];
     localStorage.js = d.substr(7*4, lens[0]);

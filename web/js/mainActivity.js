@@ -85,7 +85,8 @@ exports.load = function (data, bundleId, setUrl, loadComments) {
 
   $('.download', container).attr('href', versionData.xo_url);
 
-  if ($(util.trans(versionData.whats_new)).text()) {
+  var empty = util.trans(versionData.whats_new).replace(/<br\/>/g, '') === '';
+  if (empty) {
     $('.whatsnewlabel').show();
     $('.whatsnew', container).html(util.trans(versionData.whats_new));
   } else {

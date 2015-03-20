@@ -41,8 +41,9 @@ then
 fi
 
 sass css/index.sass $root/index.css
-cat js/lib/*.js         >> $root/main.js
-browserify js/main.js   >> $root/main.js
+cat js/lib/*.js               >> $root/main.js
+browserify js/main.js         >> $root/main.js
+echo "//# sourceURL=/main.js" >> $root/main.js
 
 for script in preprocessor/*.py; do
     python $script $root
