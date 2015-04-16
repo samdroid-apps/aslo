@@ -32,10 +32,7 @@ def static_index(path=''):
 @app.route('/bundle')
 def bundle():
     os.system('bash build.sh --quick')
-    r = send_file_simple('bundle')
-    os.system(
-        'rm bundle index.css.map index.css main.js update.json data.json')
-    return r
+    return send_file_simple('bundle')
 
 @app.route('/<path:path>')
 def static_file(path):
@@ -43,3 +40,4 @@ def static_file(path):
 
 if __name__ == "__main__":
     app.run()
+    os.system('rm bundle index.css.map index.css main.js update.json data.json')
