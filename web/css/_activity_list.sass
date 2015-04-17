@@ -47,8 +47,14 @@
     color: $white
     background-color: $y
 
+  .categories i[filter="#{ $cat }"]:hover
+    transform: scale(0.9) rotate(random(30) - 15 + deg)
+
   ul.activities > .activity.category-#{ $cat }
     background-color: $y
+
+  ul.activities > .activity.category-#{ $cat }:hover
+    transform: scale(0.9) rotate(random(6) - 3 + deg)
 
 +colorClass($red,     game)
 +colorClass($yellow,  programming)
@@ -87,10 +93,7 @@
     display: inline-block
 
     text-shadow: 0 0 0 transparent
-    transition: 0.5s ease all
-
-    &:hover
-      text-shadow: 1px 3px 3px $black
+    transition: 0.25s ease all
 
 ul.activities
   max-width: #{ $maxw }
@@ -115,6 +118,10 @@ ul.activities
     background-color: $blue
     text-decoration: none
 
+    transition: 0.25s ease all
+    &:hover
+      transform: scale(0.9) rotate(random(6) - 3 + deg)
+
     img.icon
       display: block
       +center()
@@ -134,8 +141,6 @@ ul.activities
       color: $white
       font-weight: bold
       font-size: 1.25em
-
-    +hover_shrink(0.95)
 
 
 .recommended-activities-container
