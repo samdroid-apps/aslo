@@ -81,7 +81,7 @@ var makeCommentItem = function (data) {
   link.append(heartCount);
 
   var postCount = $('<span class="post-count">');
-  postCount.text(data.l.toString());
+  postCount.text(data.p.toString());
   postCount.prepend($('<i class="fa fa-comment">'));
   link.append(postCount);
 
