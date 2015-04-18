@@ -21,8 +21,6 @@ import sys
 from pprint import pprint
 from ConfigParser import ConfigParser
 
-import requests
-
 from po_crawl import get_translation_for_field
 import img
 
@@ -34,12 +32,10 @@ def is_web(cp):
 
 GTK3_IMPORT_TYPES = {'sugar3': 3, 'from gi.repository import Gtk': 3,
                      'sugar.': 2, 'import pygtk': 2, 'pygtk.require': 2}
-def is_gtk3(bundle_path, bundle_id):
+def is_gtk3(bundle_path):
     setup_py_path = os.path.join(bundle_path, 'setup.py')
-    main_filename = '/'.join(bundle_id.split('.')[-1]) + '.py'
-    main_file_path = os.path.join(bundle_path, main_filename)
     all_files = os.listdir(bundle_path)
-    try_paths = [setup_py_path, main_file_path] + all_files
+    try_paths = [setup_py_path] + all_files
 
     for path in try_paths:
         if os.path.isfile(path):
@@ -54,13 +50,8 @@ def is_gtk3(bundle_path, bundle_id):
     return True
 
 OLD_TOOLBAR_SIGNS = ['activity.ActivityToolbox', 'gtk.Toolbar']
-def has_old_toolbars(bundle_path, bundle_id):
-    main_filename = '/'.join(bundle_id.split('.')[-1]) + '.py'
-    main_file_path = os.path.join(bundle_path, main_filename)
-    all_files = os.listdir(bundle_path)
-    try_paths = [main_file_path] + all_files
-
-    for path in try_paths:
+def has_old_toolbars(bundle_path):
+    for path in os.listdir(bundle_path):
         if os.path.isfile(path):
             with open(path) as f:
                 text = f.read()
@@ -68,14 +59,6 @@ def has_old_toolbars(bundle_path, bundle_id):
                     if sign in text:
                         return True
     return False
-
-
-def get_latest_version(gh):
-    resp = requests.get('https://api.github.com/repos/%s/tags' % gh)
-    if resp.ok:
-        if len(resp.json()):
-            return resp.json()[0]['name']
-    return None
 
 def get_activity_version(cp):
     if not cp.has_option('Activity', 'activity_version'):
@@ -125,9 +108,8 @@ def get_news():
         r[lang] = get_news_file('dl/NEWS.' + lang)
     return r
 
-def test_activity(bundle_id, gh):
+def get_activity_data(bundle_id, do_imgs=True):
     results = {}
-    results['github_url'] = gh
 
     with open('dl/activity/activity.info') as f:
         cp = ConfigParser()
@@ -147,26 +129,24 @@ def test_activity(bundle_id, gh):
 
         results['isWeb'] = is_web(cp)
 
-        results.update(img.get_imgs(cp, bundle_id))
+        if do_imgs:
+            results.update(img.get_imgs(cp, bundle_id))
 
-    results['isGTK3'] = is_gtk3('dl/', bundle_id)
-    results['hasOldToolbars'] = has_old_toolbars('dl/', bundle_id)
+    results['isGTK3'] = is_gtk3('dl/')
+    results['hasOldToolbars'] = has_old_toolbars('dl/')
 
     results['whats_new'] = get_news()
 
-    min_ = "0.100" if results['isWeb'] else (
-               "0.96" if results['isGTK3'] else (
-                   "0.86" if not results['hasOldToolbars'] else "0.82"
+    min_ = '0.100' if results['isWeb'] else (
+               '0.96' if results['isGTK3'] else (
+                   '0.86' if not results['hasOldToolbars'] else '0.82'
             ))
     results['minSugarVersion'] = min_
-                   
 
-    latest = get_latest_version(gh)
-    if latest: results['github_current_tag'] = latest
     return results
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print "Usage:\n\tpython test.py <bundle id> <github user/repo>"
-    else:
-        pprint(test_activity(sys.argv[1], sys.argv[2]))
+    do_imgs = '--imgs' in sys.argv
+    pprint(get_activity_data(
+        sys.argv[1] if do_imgs else 'org.sugarlabs.activities-2.test-bundle',
+        do_imgs=do_imgs))

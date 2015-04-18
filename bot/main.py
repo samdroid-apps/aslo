@@ -24,7 +24,7 @@ from subprocess import call
 
 import requests
 
-from test import test_activity
+from props import get_activity_data
 from build import compile_bundle
 
 # Fixes a weird bug... it might create some though :P
@@ -51,11 +51,12 @@ while True:
     call(['git', 'clone', 'https://www.github.com/' + task['gh'],
           'dl'])
     try:
-        result = test_activity(task['bundle_id'], task['gh'])
+        result = get_activity_data(task['bundle_id'])
     except Exception as e:
         print 'Failed processing bundle'
         print e
         sys.exit(1)
+    result['github_url'] = task['gh']
 
     data = {'result': result,
             'bundle_id': task['bundle_id'],
