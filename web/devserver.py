@@ -39,5 +39,5 @@ def static_file(path):
     return send_file(path)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
     os.system('rm bundle index.css.map index.css main.js update.json data.json')
