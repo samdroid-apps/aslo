@@ -86,7 +86,9 @@ exports.load = function (data, bundleId, setUrl, loadComments) {
   $('.download', container).attr('href', versionData.xo_url);
 
   var whatsNew = util.trans(versionData.whats_new);
-  var empty = whatsNew == undefined | whatsNew.replace(/<br\/>/g, '') === '';
+  var empty = whatsNew === undefined |
+              whatsNew === null |
+              whatsNew.replace(/<br\/>/g, '') === '';
   if (empty) {
     $('.whatsnewlabel').show();
     $('.whatsnew', container).html(whatsNew);
