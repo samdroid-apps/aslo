@@ -36,7 +36,7 @@ exports.add = function (container, bundleId) {
   container.append(ele);
 
   var l = (data.categories || ['none']).reverse();
-  ele.addClass('category-' + l[1]);
+  ele.addClass('category-' + l[0]);
 
   ele.attr('href', '/view/' + bundleId);
   ele.data('json', data);
