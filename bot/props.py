@@ -83,6 +83,12 @@ def get_categories(cp):
         c = cp.get('Activity', 'categories')
     return c.strip().split(' ')
 
+
+def get_mimetypes(cp):
+    if cp.has_option('Activity', 'mime_types'):
+        return cp.get('Activity', 'mime_types').split(';')
+    return []
+
 def get_news_file(path):
     with open(path) as f:
         r = ''
@@ -126,6 +132,10 @@ def get_activity_data(bundle_id, do_imgs=True):
 
         t = get_translation_for_field(cp, 'summary')
         if t: results['description'] = t
+
+        #  Most recent data should always overwrite
+        #  eg. activity dropped compatibility for opening objects
+        results['mimetypes'] = get_mimetypes(cp)
 
         results['isWeb'] = is_web(cp)
 
