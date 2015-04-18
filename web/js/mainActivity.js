@@ -85,10 +85,11 @@ exports.load = function (data, bundleId, setUrl, loadComments) {
 
   $('.download', container).attr('href', versionData.xo_url);
 
-  var empty = util.trans(versionData.whats_new).replace(/<br\/>/g, '') === '';
+  var whatsNew = util.trans(versionData.whats_new);
+  var empty = whatsNew == undefined | whatsNew.replace(/<br\/>/g, '') === '';
   if (empty) {
     $('.whatsnewlabel').show();
-    $('.whatsnew', container).html(util.trans(versionData.whats_new));
+    $('.whatsnew', container).html(whatsNew);
   } else {
     $('.whatsnewlabel').hide();
     $('.whatsnew').html('');
