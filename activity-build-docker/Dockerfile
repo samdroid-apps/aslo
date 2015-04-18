@@ -15,16 +15,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM fedora
+FROM fedora:21
 
 # Install Deps
-RUN yum install -y sugar-toolkit-gtk3
-RUN yum install -y patch git
+RUN yum install -y \
+    sugar-toolkit-gtk3 \
+    patch
 
 # Patch to add the --no-fail option
-WORKDIR /tmp
-RUN curl -O https://github.com/sugarlabs/sugar-toolkit-gtk3/pull/169.patch
-RUN patch /usr/lib/python2.7/site-packages/sugar3/activity/bundlebuilder.py < 169.patch
+RUN curl -O https://patch-diff.githubusercontent.com/raw/sugarlabs/sugar-toolkit-gtk3/pull/169.patch; \
+    patch /usr/lib/python2.7/site-packages/sugar3/activity/bundlebuilder.py
+        < 169.patch; \
+    rm 169.patch
 
 # Sugar lib (gtk2) dosn't seem to install properly
 # So we add a link that makes it sugar3
