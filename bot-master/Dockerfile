@@ -1,4 +1,4 @@
-# Copyright (C) Sam Parkinson 2014
+# Copyright (C) Sam Parkinson 2015
 #
 # This file is part of ASLO.
 #
@@ -15,27 +15,25 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM debian
+FROM python:2.7
 
-RUN apt-get update
-RUN apt-get install git python-flask python-pip -y --fix-missing
-RUN pip install requests
+RUN pip install requests flask
 
-RUN git config --global user.name "ASLO Bots Uninted"
-RUN git config --global user.email "sam.parkinson3+aslobots@gmail.com"
-RUN git clone http://github.com/samdroid-apps/aslo /aslo
+RUN git config --global user.name "aslo-bot"; \
+    git config --global user.email "sam.parkinson3+aslobots@gmail.com"
 
-RUN git clone https://github.com/SAMdroid-apps/sugar-activities /aslo/bot-master/git
+RUN git clone http://github.com/samdroid-apps/aslo /aslo; \
+    git clone https://github.com/SAMdroid-apps/sugar-activities /aslo/bot-master/git
+
 WORKDIR /aslo/bot-master/git
-RUN git remote rm origin
-RUN git remote add origin git@github.com:SAMdroid-apps/sugar-activities.git
-WORKDIR /
+RUN git remote rm origin; \
+    git remote add origin git@github.com:SAMdroid-apps/sugar-activities.git
 
 RUN mkdir /aslo/bot-master/out
 VOLUME /aslo/bot-master/out
 
-RUN rm -rf /root/.ssh
-RUN mkdir /root/.ssh
+RUN rm -rf /root/.ssh; \
+    mkdir /root/.ssh
 VOLUME /root/.ssh
 
 EXPOSE 5001
