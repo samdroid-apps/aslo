@@ -62,7 +62,15 @@ def hook_new():
     else:
         data = json.loads(request.form['payload'])
 
-    gh = data['repository']['full_name']
+    return run_hook_for_github_url(data['repository']['full_name'])
+
+
+@app.route('/hook/<gh_user>/<gh_repo>')
+def hook_gh(gh_user, gh_repo):
+    return run_hook_for_github_url(gh_user + '/' + gh_repo)
+
+
+def run_hook_for_github_url(gh):
     r = requests.get('https://raw.githubusercontent.com/{}/master/activity'
                      '/activity.info'.format(gh))
     if r.ok:
@@ -186,7 +194,7 @@ def done():
     call(['git', 'add', bundle_id + '.json'])
     call(['git', 'commit', '-m',
           'Bot from %s updated %s' % (
-              request.headers.get('X-Forwarded-For', '?'),
+              request.headers.get('X-Forwarded-For', 'Freedom'),  # FIXME
               bundle_id)])
     call(['git', 'push', 'origin', 'master'])
 
