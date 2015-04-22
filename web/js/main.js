@@ -53,19 +53,35 @@ var goBasedOnUrl = function () {
   window.location.changedByProgram = false;
 };
 
+var insertCache = function (d, depth) {
+  try {
+    lens = [parseInt(d.substr(0, 7)), parseInt(d.substr(7, 7)),
+            parseInt(d.substr(14, 7)), parseInt(d.substr(21, 7))];
+    localStorage.js = d.substr(7*4, lens[0]);
+    var css = d.substr(7*4+lens[0], lens[1]);
+    localStorage.css = css;
+    localStorage.html = d.substr(7*4+lens[0]+lens[1], lens[2]);
+    localStorage.data = d.substr(7*4+lens[0]+lens[1]+lens[2], lens[3]);
+    localStorage.hasCache = 'true';
+  } catch (e) {
+    if (depth === 2) {
+      // Last ditch attempt
+      localStorage.clear();
+      window.location.reload();
+    }
+
+    localStorage.clear();
+    insertCache(d, 2);
+  }
+};
+
 var updateCache = function (doneCallback) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/bundle');
   xhr.onload = function (d) {
     if (xhr.readyState === 4 || xhr.status === 200) {
       var d = xhr.responseText;
-      lens = [parseInt(d.substr(0, 7)), parseInt(d.substr(7, 7)),
-              parseInt(d.substr(14, 7)), parseInt(d.substr(21, 7))];
-      localStorage.js = d.substr(7*4, lens[0]);
-      localStorage.css = d.substr(7*4+lens[0], lens[1]);
-      localStorage.html = d.substr(7*4+lens[0]+lens[1], lens[2]);
-      localStorage.data = d.substr(7*4+lens[0]+lens[1]+lens[2], lens[3]);
-      localStorage.hasCache = 'true';
+      insertCache(d);
 
       $('head css').html(localStorage.css);
       var datajson = JSON.parse(localStorage.data);
@@ -85,7 +101,6 @@ var updateCache = function (doneCallback) {
 
 window.replaceCache = updateCache;
 
-var dataUrl = '/data.json';
 $(document).ready(function () {
   if (window.location.pathname === '/' || window.location.pathname.substr(0, 5) === '/view') {
     var list = $('.activities');

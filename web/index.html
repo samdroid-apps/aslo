@@ -51,11 +51,31 @@ function xhrLoad(e) {
         var d = xhr.responseText;
         lens = [parseInt(d.substr(0, 7)), parseInt(d.substr(7, 7)),
                 parseInt(d.substr(14, 7)), parseInt(d.substr(21, 7))];
-        l.js = d.substr(7*4, lens[0]);
-        l.css = d.substr(7*4+lens[0], lens[1]);
-        l.html = d.substr(7*4+lens[0]+lens[1], lens[2]);
-        l.data = d.substr(7*4+lens[0]+lens[1]+lens[2], lens[3]);
-        l.hasCache = 'true';
+
+        var i = 0;
+        while (true) {
+            try {
+                l.js = d.substr(7*4, lens[0]);
+                l.css = d.substr(7*4+lens[0], lens[1]);
+                console.log( d.substr(7*4+lens[0], lens[1]).length);
+                l.html = d.substr(7*4+lens[0]+lens[1], lens[2]);
+                l.data = d.substr(7*4+lens[0]+lens[1]+lens[2], lens[3]);
+                l.hasCache = 'true';
+                break;
+            } catch (e) {
+                // No more local storage space :(
+                console.log(e);
+                l.clear();
+            }
+            i++;
+            if (i === 5) {
+                document.body.innerHTML =
+                    '<p>Attempted to set localStorage 5 times, errors all \
+                        times</p> \
+                     <p><pre>' + e + '</pre></p>';
+                return;
+            }
+        }
         insertCache();
     }
 }
@@ -73,7 +93,7 @@ if (l.hasCache === 'true') {
     xhr.open('GET', '/bundle');
     xhr.onload = xhrLoad;
     xhr.onprogress = updateProgress;
-    xhr.onerror = function(e) {document.querySelector('body').innerHTML = '<p>Error</p>'};
+    xhr.onerror = function(e) {document.body.innerHTML = '<p>Error</p>'};
     xhr.send(null);
 }
     </script>

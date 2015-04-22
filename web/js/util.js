@@ -1,5 +1,5 @@
 /*
-* Copyright (C) Sam Parkinson 2014
+* Copyright (C) Sam Parkinson 2015
 *
 * This file is part of ASLO.
 *
@@ -16,6 +16,11 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+exports.makeIconURL = function (str) {
+  return 'data:image/svg+xml;base64,' +
+         window.btoa(unescape(encodeURIComponent(str || '')));
+}
 
 exports.repeatS = function (s, t) {
   var r = '';

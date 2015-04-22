@@ -17,6 +17,7 @@
 * along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+var util = require('./util.js');
 var mainActivity = require('./mainActivity.js');
 var i18n = require('./i18n.js');
 
@@ -42,5 +43,5 @@ exports.load = function (all, activities) {
 
   $('.featured h1').html(data.title);
   $('.featured .description').html(data.description);
-  $('.featured img').attr('src', activities[data.id].icon);
+  $('.featured img').attr('src', util.makeIconURL(activities[data.id].icon));
 };

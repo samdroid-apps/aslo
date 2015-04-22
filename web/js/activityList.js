@@ -1,5 +1,5 @@
 /*
-* Copyright (C) Sam Parkinson 2014
+* Copyright (C) Sam Parkinson 2015
 *
 * This file is part of ASLO.
 *
@@ -28,7 +28,7 @@ exports.add = function (container, bundleId) {
   var data = activitiesData[bundleId];
 
   var icon = $('<img class=\'icon\' />');
-  icon.attr('src', data.icon);
+  icon.attr('src', util.makeIconURL(data.icon));
   ele.append(icon);
 
   var title = $('<span class=\'title\'>' + util.trans(data.title) + '</span>');
