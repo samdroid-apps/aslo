@@ -69,9 +69,7 @@ def get_imgs(cp, bundle_id):
         return results
 
     with open(os.path.join('dl/activity/', icon_name)) as f:
-        icon = f.read()
-    url = 'data:image/svg+xml;base64,' + icon.encode('base64')
-    results.update({'icon': url})
+        results['icon'] = f.read().replace('"', '\'')
     return results
 
 def upload_screenshots(activity):
