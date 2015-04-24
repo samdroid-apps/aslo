@@ -1,4 +1,4 @@
-# Copyright (C) Sam Parkinson 2014
+# Copyright (C) Sam Parkinson 2015
 #
 # This file is part of ASLO.
 #
@@ -15,16 +15,19 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM debian
+FROM python:2.7
 
-RUN apt-get update
-RUN apt-get install git python-flask python-cairosvg python-pip -y --fix-missing
-RUN pip install requests
+RUN apt-get install python-cairosvg; \
+    pip install requests flask cairosvg
 
-RUN git clone http://github.com/samdroid-apps/aslo /aslo
-RUN git clone http://github.com/samdroid-apps/sugar-activities /activities
+RUN git clone http://github.com/samdroid-apps/aslo /aslo; \
+    git clone http://github.com/samdroid-apps/sugar-activities /activities
+
+RUN rm -rf /root/.ssh; \
+    mkdir /root/.ssh
+VOLUME /root/.ssh
 
 ENV DATA_DIR /activities
+WORKDIR /aslo/socialhelp
 EXPOSE 8000
-
-CMD cd aslo/socialhelp; python shfr.py
+CMD python shfr.py

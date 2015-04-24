@@ -79,7 +79,7 @@ def goto_json(id):
 def pull():
     oldwd = os.getcwd()
     os.chdir(DATA_DIR)
-    call(['git', 'pull'])
+    call(['git', 'pull', 'origin', 'master'])
     os.chdir(oldwd)
 
     fc.main()

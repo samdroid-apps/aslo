@@ -1,4 +1,4 @@
-# Copyright (C) Sam Parkinson 2014
+# Copyright (C) Sam Parkinson 2015
 #
 # This file is part of ASLO.
 #
@@ -75,16 +75,21 @@ def create_category(name, logo_bytes):
         'enabled': 'true'
     })
 
+
 def scan_activity(data_file):
     activity = json.load(open(data_file))
 
     if activity.get('socialhelp_category'):
         json.dump(activity, open(data_file, 'w'), indent=4, sort_keys=True)
-        return
+        return False
+
+    if activity.get('title') is None:
+        # This activity needs to be built!
+        return False
 
     name = activity['title'].get('en-US') or activity['title'].get('en_US')
     if not name:
-        return
+        return False
 
     if category_exists(name.lower().replace(' ', '-')):
         id = name.lower().replace(' ', '-')
@@ -92,32 +97,43 @@ def scan_activity(data_file):
         json.dump(activity, open(data_file, 'w'), indent=4, sort_keys=True)
         return 
 
-    b64 = activity['icon'].strip('data:image/svg+xml;base64,')
-    xml = b64decode(b64)
-    logo = svg2png(bytestring=xml)
+    icon = activity.get('icon')
+    if icon is None:
+        return False
+
+    try:
+        logo = svg2png(bytestring=xml)
+    except Exception as e:
+        print 'Error with activity', name, 'is', e
+        return False
 
     create_category(name, logo)
 
     id = name.lower().replace(' ', '-')
     activity['socialhelp_category'] = id
     json.dump(activity, open(data_file, 'w'))
+    return True
+
 
 def main():
-    # config = json.load(open('config.json'))
     API_KEY = os.environ['API_KEY']
     DATA_DIR = os.environ['DATA_DIR']
 
+    commit = False
     for i in (os.path.join(DATA_DIR, f) for f in os.listdir(DATA_DIR)
               if os.path.isfile(os.path.join(DATA_DIR, f))):
         if i.endswith('.json') and 'featured.json' not in i:
-            scan_activity(i)
+            if scan_activity(i):
+                commit = True
 
-    oldwd = os.getcwd()
-    os.chdir(DATA_DIR)
-    call(['git', 'commit', '-a', '-m',
-          'Updated activity social help mappings'])
-    call(['git', 'push'])
-    os.chdir(oldwd)
+    if commit:
+        oldwd = os.getcwd()
+        os.chdir(DATA_DIR)
+        call(['git', 'commit', '-a', '-m',
+              'Updated activity social help mappings'])
+        call(['git', 'push', 'origin', 'master'])
+        os.chdir(oldwd)
+
 
 if __name__ == '__main__':
     main()
