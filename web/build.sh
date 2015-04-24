@@ -14,19 +14,18 @@
 # GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with ASLO.  If not, see <http:#www.gnu.org/licenses/>.
+# along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
-if [ $1 == "--quick" ]
+if [[ $1 == "--quick" ]]
 then root="."
 else root="_site"
 fi
 
-# cd data; git pull; cd ..
+if [[ $1 == "--from-container" ]]
+then root="_site/out"
+fi
 
-if [ $1 != "--quick" ]
+if [[ $1 != "--quick" ]]
 then
     rm -rf $root
     mkdir $root
@@ -43,8 +42,9 @@ fi
 sass css/index.sass $root/index.css
 cat js/lib/*.js               >> $root/main.js
 browserify js/main.js         >> $root/main.js
-echo "//# sourceURL=/main.js" >> $root/main.js
+echo "//# sourceURL=http://127.0.1/main.js" >> $root/main.js
 
 for script in preprocessor/*.py; do
     python $script $root
 done
+python preprocessor/bundle.py.last $root
