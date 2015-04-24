@@ -23,7 +23,7 @@ RUN apt-get update; \
 RUN npm install -g browserify
 RUN mv /usr/bin/nodejs /usr/bin/node
 
+RUN git clone https://github.com/samdroid-apps/aslo /aslo
 VOLUME /aslo/web/_site
 EXPOSE 5000
-RUN git clone https://github.com/samdroid-apps/aslo /aslo
 CMD python /aslo/web-autorebuild/main.py
