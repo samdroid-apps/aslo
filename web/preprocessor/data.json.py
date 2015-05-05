@@ -22,13 +22,14 @@ from sys import argv
 from glob import glob
 from json import load, dump
 
+root = sys.argv[1]
 activities = {}
 
-for path in glob('data/*.json'):
+for path in glob(os.path.join(root, 'data/*.json')):
     with open(path) as f:
         data = load(f)
 
-    match = re.match('data/(.+)\.json', path)
+    match = re.search('data/(.+)\.json', path)
     if not match:
         continue
     bundle_id = match.group(1)
@@ -44,8 +45,8 @@ for path in glob('data/*.json'):
             # This activity must still be being processed
             continue
 
-with open('data/featured.json') as f:
+with open(os.path.join(root, 'data/featured.json')) as f:
     featured = load(f)
 
-with open(os.path.join(sys.argv[1], 'data.json'), 'w') as f:
+with open(os.path.join(root, 'data.json'), 'w') as f:
     dump({'activities': activities, 'featured': featured}, f)

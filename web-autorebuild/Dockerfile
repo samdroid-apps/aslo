@@ -20,10 +20,10 @@ FROM python:2.7
 RUN pip install Flask
 RUN apt-get update; \
     apt-get install ruby-sass npm -y
-RUN npm install -g browserify
-RUN mv /usr/bin/nodejs /usr/bin/node
+RUN npm install -g browserify; \
+    mv /usr/bin/nodejs /usr/bin/node
 
-RUN git clone https://github.com/samdroid-apps/aslo /aslo
-VOLUME /aslo/web/_site
+RUN git clone https://github.com/samdroid-apps/aslo /aslo; \
+    git clone https://github.com/samdroid-apps/sugar-activities /aslo/web/data
 EXPOSE 5000
 CMD python /aslo/web-autorebuild/main.py
