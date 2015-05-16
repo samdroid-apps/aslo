@@ -1,4 +1,4 @@
-# Copyright (C) Sam Parkinson 2014
+# Copyright (C) Sam Parkinson 2015
 #
 # This file is part of ASLO.
 #
@@ -17,21 +17,17 @@
 
 FROM fedora:21
 
-# Install Deps
-RUN yum install -y \
-    sugar-toolkit-gtk3 \
-    patch
+# Install dependancies
+RUN yum install -y git
 
-# Patch to add the --no-fail option
-RUN curl -O https://patch-diff.githubusercontent.com/raw/sugarlabs/sugar-toolkit-gtk3/pull/169.patch; \
-    patch /usr/lib/python2.7/site-packages/sugar3/activity/bundlebuilder.py
-        < 169.patch; \
-    rm 169.patch
+RUN git clone --depth=1 https://github.com/sugarlabs/sugar-toolkit-gtk3; \
+    mv sugar-toolkit-gtk3/src/sugar3 /usr/lib/python2.7/site-packages/sugar3; \
+    rm -rf sugar-toolkit-gtk3
 
 # Sugar lib (gtk2) dosn't seem to install properly
 # So we add a link that makes it sugar3
-RUN rm -rf /usr/lib/python2.7/site-packages/sugar
-RUN ln -s /usr/lib/python2.7/site-packages/sugar3 /usr/lib/python2.7/site-packages/sugar
+RUN rm -rf /usr/lib/python2.7/site-packages/sugar; \
+    ln -s /usr/lib/python2.7/site-packages/sugar3 /usr/lib/python2.7/site-packages/sugar
 
 RUN mkdir /activity
 VOLUME /activity
