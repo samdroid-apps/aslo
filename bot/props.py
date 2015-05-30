@@ -137,21 +137,21 @@ def get_activity_data(bundle_id, do_imgs=True):
         #  eg. activity dropped compatibility for opening objects
         results['mimetypes'] = get_mimetypes(cp)
 
-        results['isWeb'] = is_web(cp)
+        results['is_web'] = is_web(cp)
 
         if do_imgs:
             results.update(img.get_imgs(cp, bundle_id))
 
-    results['isGTK3'] = is_gtk3('dl/')
-    results['hasOldToolbars'] = has_old_toolbars('dl/')
+    results['is_gtk3'] = is_gtk3('dl/')
+    results['has_old_toolbars'] = has_old_toolbars('dl/')
 
     results['whats_new'] = get_news()
 
-    min_ = '0.100' if results['isWeb'] else (
-               '0.96' if results['isGTK3'] else (
-                   '0.86' if not results['hasOldToolbars'] else '0.82'
+    min_ = '0.100' if results['is_web'] else (
+               '0.96' if results['is_gtk3'] else (
+                   '0.86' if not results['has_old_toolbars'] else '0.82'
             ))
-    results['minSugarVersion'] = min_
+    results['min_sugar_version'] = min_
 
     return results
 

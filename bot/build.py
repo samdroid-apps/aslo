@@ -16,24 +16,54 @@
 # along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from subprocess import call, check_output, CalledProcessError
 from ConfigParser import ConfigParser
+from contextlib import contextmanager
+from subprocess import call, check_output, CalledProcessError
 
 
-def set_activity_metadata(bundle_id, gh):
+def get_bundle_filename(bundle_id, metadata):
+    '''
+    Returns:
+        * filename: str
+        * new stable release: bool
+    '''
+    current = metadata.get('version')
+    releases = metadata.get('releases', [])
+    if releases:
+        latest = releases[0]
+        if latest.get('version') == current:
+            # Just a random build
+            name = '{}_{}.xo'.format(bundle_id, get_current_commit())
+            return name, False
+    return '{}_v{}.xo'.format(bundle_id, current), True
+
+
+@contextmanager
+def cd(to):
+    old = os.getcwd()
+    os.chdir(to)
+    yield
+    os.chdir(old)
+
+
+def get_current_commit():
+    with cd('dl'):
+        try:
+            return check_output(['git', 'rev-parse', 'HEAD']).strip()
+        except CalledProcessError:
+            return '?????'
+
+
+def set_activity_metadata(bundle_id, clone_url):
     section = 'Activity'
     with open('dl/activity/activity.info') as f:
         cp = ConfigParser()
         cp.readfp(f)
 
-    try:
-        hash_ = check_output(['git', 'rev-parse', 'HEAD'])
-    except CalledProcessError:
-        hash_ = 'ERROR'
-    cp.set(section, 'git_hash', hash_)
+    cp.set(section, 'git_hash', get_current_commit())
 
     if not cp.has_option(section, 'repository'):
-        cp.set(section, 'repositroy', 'https://github.com/{}'.format(gh))
+        cp.set(section, 'repositroy', clone_url)
 
     cp.set(section, 'downloaded_via',
            'https://activities-2.sugarlabs.org/view/{}'.format(bundle_id))
@@ -41,8 +71,8 @@ def set_activity_metadata(bundle_id, gh):
     with open('dl/activity/activity.info', 'w') as f:
         cp.write(f)
 
-def compile_bundle(bundle_id, gh):
-    set_activity_metadata(bundle_id, gh)
+def compile_bundle(bundle_id, clone_url):
+    set_activity_metadata(bundle_id, clone_url)
 
     call(['rm', '-rf', 'dl/dist'])
 
@@ -55,6 +85,7 @@ def compile_bundle(bundle_id, gh):
           '-v', abs_path + ':/activity', 'samdroid/activity-build'])
     
     if os.path.isdir('dl/dist/') and len(os.listdir('dl/dist/')) == 1:
-        f = os.path.join('dl/dist', os.listdir('dl/dist/')[0])
-        return open(f, 'rb')
+        path = os.path.join('dl/dist', os.listdir('dl/dist/')[0])
+        with open(path, 'rb') as f:
+            return f.read()
     return None

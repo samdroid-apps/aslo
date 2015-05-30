@@ -19,70 +19,65 @@ import os
 import sys
 import json
 import time
+import pprint
 import socket
 from subprocess import call
 
 import requests
+import fedmsg
+fedmsg.init(name='test' if os.environ.get('ASLO_DEBUG') else 'prod')
 
 from props import get_activity_data
-from build import compile_bundle
+from build import compile_bundle, get_bundle_filename
 
-# Fixes a weird bug... it might create some though :P
-os.environ['http_proxy'] = ''
 
-if os.environ.get('ASLO_DEBUG', False):
-    HOST = 'http://localhost:5001'
-else:
-    HOST = 'http://aslo-bot-master.sugarlabs.org'
-XO_MIME = 'application/vnd.olpc-sugar'
+DL_ROOT = 'https://download.sugarlabs.org/activities2'
+
 
 print 'Waiting for 1st task'
-while True:
-    try:
-        r = requests.get(HOST + '/task')
-    except requests.exceptions.ConnectionError, e:
+for name, endpoint, topic, msg in fedmsg.tail_messages():
+    if topic != 'org.sugarlabs.prod.hookin.hookS' or \
+       msg['msg'].get('bundle_id') is None:
         continue
-    if r.status_code == 404:
-        time.sleep(7)
-        continue
-    task = r.json()
 
-    print 'Now mining: {} ({})'.format(task['bundle_id'], task['gh'])
-    call(['git', 'clone', 'https://www.github.com/' + task['gh'],
-          'dl'])
-    try:
-        result = get_activity_data(task['bundle_id'])
-    except Exception as e:
-        print 'Failed processing bundle'
-        print e
-        sys.exit(1)
-    result['github_url'] = task['gh']
+    clone_url = msg['msg']['clone_url']
+    bundle_id = msg['msg']['bundle_id']
 
-    data = {'result': result,
-            'bundle_id': task['bundle_id'],
-            'task_id': task['task_id']}
-    files = {'json': ('result.json', json.dumps(data))}
-    bundle = compile_bundle(task['bundle_id'], task['gh'])
+    print 'Now mining: {} ({})'.format(bundle_id, clone_url)
+    call(['rm', '-rf', 'dl'])
+    call(['git', 'clone', clone_url, 'dl'])
+
+    result = get_activity_data(bundle_id)
+    filename, new_release = get_bundle_filename(bundle_id, result)
+
+    bundle = compile_bundle(bundle_id, clone_url)
     if not bundle:
         print 'Failed to build bundle'
         print 'Assuming buggy code, skipping'
         continue
-    files['bundle'] = ('bundle.xo', bundle, XO_MIME)
 
-    try_ = 0
-    while True:
-        try:
-            try_ += 1
-            r = requests.post(HOST + '/done2', files=files)
-            print r.status_code, r.text
-            break
-        except Exception as e:
-            if try_ == 10:
-                print 'Failed to upload result after 10 trys'
-                print e
-                sys.exit(2)
+    # TODO: Replace github_url with clone_homepage
+    result['github_url'] = clone_url.lstrip('https://github.com/')
+    v_name = '' if new_release else '_latest'
+    result['xo_url' + v_name] = '{}/{}'.format(DL_ROOT, filename)
+    result['xo{}_timestamp'.format(v_name)] = time.time()
+    result['xo{}_size'.format(v_name)] = len(bundle)
 
-    bundle.close()
-    call(['rm', '-rf', 'dl'])
+    if new_release or result.get('releases') is None:
+        if result.get('releases') is None:
+            result['releases'] = []
 
-    print 'Mined 1 activity:', task['bundle_id'], task['gh']
+        new_version = {'xo_url': result['xo_url'],
+                       'version': result['version'],
+                       'min_sugar_version': result.get('min_sugar_version'),
+                       'whats_new': result.get('whats_new', {}),
+                       'screenshots': result.get('screenshots', {})}
+        result['releases'].insert(0, new_version)
+
+    data = {'result': result,
+            'bundle_id': bundle_id,
+            'bundle_filename': filename,
+            'bundle': bundle}
+    fedmsg.publish(topic='result', modname='aslo-bot', msg=msg)
+
+    print 'Mined activity:', bundle_id
