@@ -19,6 +19,8 @@ FROM fedora:22
 RUN dnf install python-pip fedmsg git -y
 
 RUN git clone https://github.com/samdroid-apps/sugar-activities /activities
+ENV ASLO_ACTIVITIES_ROOT /activities
+
 ADD . /aslo/hookin
 RUN pip install -r /aslo/hookin/requirements.txt
 
