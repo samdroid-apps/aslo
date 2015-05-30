@@ -14,17 +14,13 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
+FROM fedora:22
 
-FROM python:2.7
+RUN dnf install python-pip fedmsg git -y
 
 RUN git clone https://github.com/samdroid-apps/sugar-activities /activities
-ENV ASLO_ACTIVITIES_ROOT /activities
-RUN apt-get update; \
-    apt-get install python-fedmsg -y
-
 ADD . /aslo/hookin
 RUN pip install -r /aslo/hookin/requirements.txt
 
 EXPOSE 5000
 CMD python /aslo/hookin/main.py
-# docker run -d -v /etc/fedmsg.d:/etc/fedmsg.d -p 9441:9441 -p 5004:5000 docker-test/hookin

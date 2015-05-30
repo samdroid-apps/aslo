@@ -1,0 +1,7 @@
+hookin:
+  build: .
+  volumes:
+    - /etc/fedmsg.d:/etc/fedmsg.d
+  ports:
+    - "5004:5000"
+    - "9441:9441"
