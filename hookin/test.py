@@ -16,8 +16,8 @@ class ServerTestCase(unittest.TestCase):
         main.app.config['TESTING'] = True
         self.app = main.app.test_client()
 
-        self._fedmsg = main.hook_call_to_bus.func_globals['fedmsg']
-        self._fedmsg.publish = Mock()
+        self._producer = main.hook_call_to_bus.func_globals['producer']
+        self._producer.produce = Mock()
 
     @responses.activate
     def test_good_from_url(self):
@@ -28,10 +28,9 @@ class ServerTestCase(unittest.TestCase):
         r = self.app.get('/hook/sugarlabs/browse-activity')
         self.assertEqual(r.status, '200 OK')
 
-        self._fedmsg.publish.assert_called_with(
-            modname='hookin', topic='hookS',
-            msg={'clone_url': 'https://github.com/sugarlabs/browse-activity',
-                 'bundle_id':  'org.laptop.WebActivity'})
+        self._producer.produce.assert_called_with([json.dumps(
+            {'clone_url': 'https://github.com/sugarlabs/browse-activity',
+             'bundle_id':  'org.laptop.WebActivity'})])
 
     @responses.activate
     def test_bad_from_url(self):
@@ -42,10 +41,9 @@ class ServerTestCase(unittest.TestCase):
         r = self.app.get('/hook/sugarlabs/browse-activity')
         self.assertEqual(r.status, '200 OK')
 
-        self._fedmsg.publish.assert_called_with(
-            modname='hookin', topic='hookS',
-            msg={'clone_url': 'https://github.com/sugarlabs/browse-activity',
-                 'info':  _INVALID_BUNDLE_ERROR})
+        self._producer.produce.assert_called_with([json.dumps(
+            {'clone_url': 'https://github.com/sugarlabs/browse-activity',
+             'info':  _INVALID_BUNDLE_ERROR})])
 
     @responses.activate
     def test_not_activity_from_url(self):
@@ -56,9 +54,8 @@ class ServerTestCase(unittest.TestCase):
         r = self.app.get('/hook/sugarlabs/sugar')
         self.assertEqual(r.status, '200 OK')
 
-        self._fedmsg.publish.assert_called_with(
-            modname='hookin', topic='hookS',
-            msg={'clone_url': 'https://github.com/sugarlabs/sugar'})
+        self._producer.produce.assert_called_with([json.dumps(
+            {'clone_url': 'https://github.com/sugarlabs/sugar'})])
 
     @responses.activate
     def test_good_from_body(self):
@@ -71,10 +68,9 @@ class ServerTestCase(unittest.TestCase):
                           headers={'Content-Type': 'application/json'})
         self.assertEqual(r.status, '200 OK')
 
-        self._fedmsg.publish.assert_called_with(
-            modname='hookin', topic='hookS',
-            msg={'clone_url': 'https://github.com/sugarlabs/browse-activity',
-                 'bundle_id':  'org.laptop.WebActivity'})
+        self._producer.produce.assert_called_with([json.dumps(
+            {'clone_url': 'https://github.com/sugarlabs/browse-activity',
+             'bundle_id':  'org.laptop.WebActivity'})])
 
     @responses.activate
     def test_pull(self):

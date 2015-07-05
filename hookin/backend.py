@@ -4,8 +4,10 @@ import json
 import requests
 from contextlib import contextmanager
 
-import fedmsg
-fedmsg.init(name='test' if os.environ.get('ASLO_DEBUG') else 'prod')
+from pykafka import KafkaClient
+client = KafkaClient(hosts='freedom.sugarlabs.org:9092')
+topic = client.topics['org.sugarlabs.hook']
+producer = topic.get_producer()
 
 
 ACTIVITIES = os.environ.get('ASLO_ACTIVITIES_ROOT')
@@ -90,4 +92,4 @@ def hook_call_to_bus(url):
         msg['bundle_id'] = bundle_id
     elif bundle_id:
         msg['info'] = _INVALID_BUNDLE_ERROR
-    fedmsg.publish(topic='hookS', modname='hookin', msg=msg)
+    producer.produce([json.dumps(msg)])

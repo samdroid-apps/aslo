@@ -2,4 +2,4 @@ Flask
 requests
 mock
 responses
-fedmsg
+pykafka
