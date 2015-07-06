@@ -81,7 +81,7 @@ def compile_bundle(bundle_id, clone_url):
         os.mkdir('dl/po')
 
     abs_path = os.path.join(os.getcwd(), 'dl')
-    call(['docker', 'run', 
+    call(['wrapdocker', 'run',
           '-v', abs_path + ':/activity', 'samdroid/activity-build'])
     
     if os.path.isdir('dl/dist/') and len(os.listdir('dl/dist/')) == 1:

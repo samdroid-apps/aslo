@@ -1,4 +1,4 @@
-# Copyright (C) Sam Parkinson 2014
+# Copyright (C) Sam Parkinson 2015
 #
 # This file is part of ASLO.
 #
@@ -22,26 +22,43 @@ import time
 import pprint
 import socket
 from subprocess import call
+from base64 import b64encode
 
 import requests
-import fedmsg
-fedmsg.init(name='test' if os.environ.get('ASLO_DEBUG') else 'prod')
+from pykafka import KafkaClient
 
 from props import get_activity_data
 from build import compile_bundle, get_bundle_filename
 
 
+client = KafkaClient(hosts='freedom.sugarlabs.org:9092')
+#consumer = client.topics['org.sugarlabs.hook'].get_balanced_consumer(
+#    consumer_group='aslo-bots',
+#    auto_commit_enable=True,
+#    zookeeper_connect='freedom.sugarlabs.org:2181')
+consumer = client.topics['org.sugarlabs.hook'].get_simple_consumer(
+    consumer_group='aslo-bots-uninted')
+producer = client.topics['org.sugarlabs.aslo-changes'].get_producer()
+
 DL_ROOT = 'https://download.sugarlabs.org/activities2'
 
 
 print 'Waiting for 1st task'
-for name, endpoint, topic, msg in fedmsg.tail_messages():
-    if topic != 'org.sugarlabs.prod.hookin.hookS' or \
-       msg['msg'].get('bundle_id') is None:
+# FIXME:  Don't consume all messages since the begining of time, only
+#         messages sent after we start running
+for msg in consumer:
+    print msg, msg.value
+    try:
+        value = json.loads(msg.value)
+    except ValueError:
+        print 'Invalid json in message', msg.offset, msg.value
+        continue
+    if value.get('bundle_id') is None:
+        print 'No bundle id in message', value
         continue
 
-    clone_url = msg['msg']['clone_url']
-    bundle_id = msg['msg']['bundle_id']
+    clone_url = value['clone_url']
+    bundle_id = value['bundle_id']
 
     print 'Now mining: {} ({})'.format(bundle_id, clone_url)
     call(['rm', '-rf', 'dl'])
@@ -77,7 +94,7 @@ for name, endpoint, topic, msg in fedmsg.tail_messages():
     data = {'result': result,
             'bundle_id': bundle_id,
             'bundle_filename': filename,
-            'bundle': bundle}
-    fedmsg.publish(topic='result', modname='aslo-bot', msg=msg)
+            'bundle': b64encode(bundle)}
+    producer.produce([json.dumps(data)])
 
     print 'Mined activity:', bundle_id
