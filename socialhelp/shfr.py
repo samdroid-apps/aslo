@@ -37,6 +37,8 @@ def index():
 
 @app.route('/goto/<id>')
 def goto(id):
+    if id == 'None':
+        return redirect('{}/c/{}'.format(SOCIALHELP, 'sugar-shell'))
     if id in mappings:
         return redirect('{}/c/{}'.format(SOCIALHELP, mappings[id]))
     else:
