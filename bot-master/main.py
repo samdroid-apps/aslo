@@ -1,4 +1,4 @@
-# Copyright (C) Sam Parkinson 2014
+# Copyright (C) Sam Parkinson 2015
 #
 # This file is part of ASLO.
 #
@@ -15,192 +15,80 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 
-import re
 import os
-import time
 import json
-import uuid
-import shutil
-import threading
+from threading import Lock
 from subprocess import call
+from base64 import b64decode
+from contextlib import contextmanager
 
-import requests
-from flask import Flask, jsonify, abort, request
-
-
-tasks_todo = {}  # bundle_id -> extra data
-tasks_sent = {}  # bundle_id -> code
-
-tasks_todo_lock = threading.Lock()
-git_lock = threading.Lock()
-
-OUT_FOLDER = 'out'
-if not os.path.isdir(OUT_FOLDER):
-    os.mkdir('out')
-
-DOWNLOADS_ROOT = os.environ.get('ASLO_DOWNLOADS_ROOT')
+from pykafka import KafkaClient
 
 
-def verify_repo(gh, bundle_id):
-    with open('git/{}.json'.format(bundle_id)) as f:
-        try:
-            j = json.load(f)
-        except ValueError:
-            return False
-
-        if not 'github_url' in j:
-            return True
-        return j['github_url'] == gh
-
-app = Flask(__name__)
+git_lock = Lock()
+BUNDLES = os.environ.get('ASLO_BUNDLES_ROOT')
+ACTIVITIES = os.environ.get('ASLO_ACTIVITIES_ROOT')
 
 
-@app.route('/hook', methods=['POST'])
-def hook_new():
-    if 'application/json' in request.headers.get('Content-Type'):
-        data = json.loads(request.data)
-    else:
-        data = json.loads(request.form['payload'])
-
-    return run_hook_for_github_url(data['repository']['full_name'])
+@contextmanager
+def cd(to):
+    old = os.getcwd()
+    os.chdir(to)
+    yield
+    os.chdir(old)
 
 
-@app.route('/hook/<gh_user>/<gh_repo>')
-def hook_gh(gh_user, gh_repo):
-    return run_hook_for_github_url(gh_user + '/' + gh_repo)
-
-
-def run_hook_for_github_url(gh):
-    r = requests.get('https://raw.githubusercontent.com/{}/master/activity'
-                     '/activity.info'.format(gh))
-    if r.ok:
-        m = re.compile('bundle_id\s+=\s+(.*)').search(r.text)
-        if m:
-            bundle_id = m.group(1).strip()
-            return hook_main(gh, bundle_id)
-        else:
-            return 'Please put a bundle id in your activity.info', 400
-    return 'Error finding bundle ID', 400
-
-
-@app.route('/hook/<gh_user>/<gh_repo>/<bundle_id>', methods=['POST'])
-def hook_old(gh_user, gh_repo, bundle_id):
-    return hook_main(gh_user + '/' + gh_repo, bundle_id)
-
-
-def hook_main(gh, bundle_id):
-    if not os.path.isfile('git/{}.json'.format(bundle_id)):
-        return ('Please add your activity first to our github, '
-                'then the bots will come and help you fill it out\n'), 403
-
-    if not verify_repo(gh, bundle_id):
-        return ('You are using a different repo to the first one you used'
-                ' OR the json in your file is invalid!\n\n'
-                'If this is an error in our system or '
-                'you really have made a change '
-                '**please create a GitHub issue about it!**\n'
-                'https://github.com/samdroid-apps/sugar-activities'), 400
-
-    print 'Hook call from', bundle_id
-    task_id = str(uuid.uuid4())
-    tasks_sent[bundle_id] = task_id
-
-    with tasks_todo_lock:
-        tasks_todo[bundle_id] = {'task_id': task_id, 'gh': gh}
-
-    return 'Cool Potatoes'
-
-
-@app.route('/pull', methods=['GET', 'POST'])
 def pull():
     with git_lock:
-        os.chdir('git')
-        call(['git', 'pull', 'origin', 'master'])
-        os.chdir('..')
-    return 'Cool Potatoes'
+        with cd(ACTIVITIES):
+            call(['git', 'pull', 'origin', 'master'])
 
 
-@app.route('/task')
-def get_task():
-    with tasks_todo_lock:
-        tasks = tasks_todo.items()
-        if tasks:
-          t = tasks.pop(0)
-          del tasks_todo[t[0]]
-          return jsonify(bundle_id=t[0],
-                         task_id=t[1]['task_id'],
-                         gh=t[1]['gh'])
-        else:
-             abort(404)
-
-
-@app.route('/done', methods=['POST'])
-def old_done():
-    return 'Deprecated, please update your bot'
-
-
-@app.route('/done2', methods=['POST'])
-def done():
-    data = json.load(request.files['json'].stream)
+def save(data):
     result = data['result']
-
     bundle_id = data['bundle_id']
-    task_id = data['task_id']
-    if not tasks_sent.get(bundle_id, None) == task_id:
-      return "Bad code :("
+    commit_message = data['commit_message']
+    print 'Saving new data for {}: "{}"'.format(bundle_id, commit_message)
 
-    file_ = request.files['bundle']
-    version = result['version']
-    timestamp = int(time.time())
-    stable = '{}_v{}.xo'.format(bundle_id, version)
-    unstable = '{}_{}.xo'.format(bundle_id, timestamp)
-    stable_path = os.path.join(OUT_FOLDER, stable)
-    unstable_path = os.path.join(OUT_FOLDER, unstable)
+    filename = data.get('bundle_filename')
+    if filename:
+        data = b64decode(data['bundle'])
+        with open(os.path.join(BUNDLES, filename), 'wb') as f:
+            f.write(data)
 
-    os.chdir('git')
-    git_lock.acquire()
-    call(['git', 'pull', 'origin', 'master'])
+    pull()
+    with git_lock:
+        with cd(ACTIVITIES):
+            if os.path.isfile(bundle_id + '.json'):
+                current = json.load(open(bundle_id + '.json'))
+            else:
+                current = {}
+            current.update(result)
+            with open(bundle_id + '.json', 'w') as f:
+                json.dump(current, f, indent=4, sort_keys=True)
 
-    current = json.load(open(bundle_id + '.json'))
-    if 'releases' not in result:
-        result['releases'] = current.get('releases', [])
-    os.chdir('..')
+            call(['git', 'add', bundle_id + '.json'])
+            call(['git', 'commit', '-m', commit_message])
+            # call(['git', 'push', 'origin', 'master'])
 
-    if not os.path.isfile(stable):
-        # If we havn't written this version
-        file_.save(stable_path)
-        result['xo_url_timestamp'] = timestamp
-        result['xo_url'] = '{}/{}'.format(DOWNLOADS_ROOT, stable)
-        result['xo_size'] = os.path.getsize(stable_path)
 
-        new_version = {'xo_url': stable,
-                       'version': version,
-                       'minSugarVersion': result.get('minSugarVersion'),
-                       'whats_new': result.get('whats_new', {}),
-                       'screenshots': result.get('screenshots', {})}
-        result['releases'].insert(0, new_version)
+if __name__ == '__main__':
+    client = KafkaClient(hosts='freedom.sugarlabs.org:9092')
+    topic = client.topics['org.sugarlabs.aslo-changes']
+    consumer = topic.get_balanced_consumer(
+        consumer_group='aslo-bot-master',
+        auto_commit_enable=True,
+        zookeeper_connect='freedom.sugarlabs.org:2181',
+        fetch_message_max_bytes=50000000)
 
-        shutil.copy(stable_path, unstable_path)
-    else:
-        file_.save(unstable_path)
-    result['xo_url_latest'] = '{}/{}'.format(DOWNLOADS_ROOT, unstable)
-    result['xo_url_latest_timestamp'] = timestamp
-
-    os.chdir('git')
-    current.update(result)
-    with open(bundle_id + '.json', 'w') as f:
-        json.dump(current, f, indent=4, sort_keys=True)
-
-    call(['git', 'add', bundle_id + '.json'])
-    call(['git', 'commit', '-m',
-          'Bot from %s updated %s' % (
-              request.headers.get('X-Forwarded-For', 'Freedom'),  # FIXME
-              bundle_id)])
-    call(['git', 'push', 'origin', 'master'])
-
-    git_lock.release()
-    os.chdir('..')
-    return 'You just did a task... congrats!'
-
-debug = os.path.isfile('debug')
-app.run(port=5001, debug=debug, host='0.0.0.0')
+    while True:
+        msg = consumer.consume()
+        try:
+            data = json.loads(msg.value)
+        except ValueError:
+            print 'Invalid json in message', msg.offset, msg.value
+            continue
+        try:
+            save(data)
+        except Exception as e:
+            print 'Error processing {}: {}'.format(msg.offset, e)

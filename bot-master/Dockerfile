@@ -17,27 +17,25 @@
 
 FROM python:2.7
 
-RUN pip install requests flask
-
 RUN git config --global user.name "aslo-bot"; \
     git config --global user.email "sam.parkinson3+aslobots@gmail.com"
 
-RUN git clone http://github.com/samdroid-apps/aslo /aslo; \
-    git clone https://github.com/SAMdroid-apps/sugar-activities /aslo/bot-master/git
-
-WORKDIR /aslo/bot-master/git
-RUN git remote rm origin; \
+RUN git clone https://github.com/SAMdroid-apps/sugar-activities /activities; \
+    cd /activities; \
+    git remote rm origin; \
     git remote add origin git@github.com:SAMdroid-apps/sugar-activities.git
+ENV ASLO_ACTIVITIES_ROOT /activities
 
-RUN mkdir /aslo/bot-master/out
-VOLUME /aslo/bot-master/out
+RUN mkdir /bundles
+VOLUME /bundles
+ENV ASLO_BUNDLES_ROOT /bundles
 
 RUN rm -rf /root/.ssh; \
     mkdir /root/.ssh
 VOLUME /root/.ssh
 
-EXPOSE 5001
+ADD . /aslo/botmaster
+RUN pip install -r /aslo/botmaster/requirements.txt
 
 USER root
-WORKDIR /aslo/bot-master
-CMD python main.py
+CMD python /aslo/botmaster/main.py

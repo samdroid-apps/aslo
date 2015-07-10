@@ -1,0 +1,5 @@
+botmaster:
+  build: .
+  volumes:
+   - /srv/activities2:/out
+   - /home/sam/bot-master-ssh/:/root/.ssh
