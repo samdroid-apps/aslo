@@ -23,7 +23,7 @@ RUN git config --global user.name "aslo-bot"; \
 RUN git clone https://github.com/SAMdroid-apps/sugar-activities /activities; \
     cd /activities; \
     git remote rm origin; \
-    git remote add origin git@github.com:SAMdroid-apps/sugar-activities.git
+    git remote add origin git@github.com:samdroid-apps/sugar-activities.git
 ENV ASLO_ACTIVITIES_ROOT /activities
 
 RUN mkdir /bundles
