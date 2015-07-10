@@ -61,7 +61,7 @@ def _verify_repo_for_bundle_id(url, id):
 
         if not 'github_url' in j:
             return True
-        return j['github_url'] == url
+        return j['github_url'].lower() == url.lower()
     return False
 
 
