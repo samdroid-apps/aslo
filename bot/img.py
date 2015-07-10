@@ -28,7 +28,7 @@ BASE_URL = ('http://raw.githubusercontent.com'
 #         you can get as many as you like for FREE
 AUTH = {'Authorization': 'Client-ID 7daeb235d4d80fc'}
 
-def get_activity_data(bundle_id):
+def get_current_activity_data(bundle_id):
     r = requests.get(BASE_URL + bundle_id + '.json')
     if not r.ok:
         return {}
@@ -54,7 +54,7 @@ def upload_image(img_name, current_hash):
 
 def get_imgs(cp, bundle_id):
     results = {}
-    activity = get_activity_data(bundle_id)
+    activity = get_current_activity_data(bundle_id)
     if os.path.isdir('dl/screenshots'):
         results.update(upload_screenshots(activity))
 

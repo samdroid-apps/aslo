@@ -1,37 +1,11 @@
-# Mining Activities
+# ASLO Bot
 
-Do you have some spare compute power?
-Why not help ASLO by mining activities!
+The ASLO Bot builds activities and generates metadata from their code.
+It is notifyed of changes via the kafka message queue and then posts
+it's result on the message queue for the bot master to commit.
 
-# Install
+It runs inside a docker container.  Docker-compose does not properly
+display the container's output, so it can be invoked using:
 
-First you will need to install [Docker][1].  Tutorials for
-[Fedora][2] and [Ubuntu][3].  You should also consider making
-[docker accessable from non root users][4], as the bot will
-need to use docker to isolate activity builds from your system.
-
-Then you need to install the activity build docker environemnt:
-
-    docker pull samdroid/activity-build
-
-And make sure you have the other deps:
-
-* Git
-* Requests (Py2): `pip install requests`
-* PoLib (Py2): `pip install polib`
-
-Then just run `python2 main.py` and off you mine!
-
-If you have any issues please create a GitHub issue, or
-contact me.
-
-NOTE: On systems with SELinux you need to change the permisions
-of the bot's home directory (so that the activity build
-docker can access the source code):
-
-    chcon -Rt svirt_sandbox_file_t /home/sam/aslo/bot
-
-[1]: http://www.docker.io/
-[2]: http://docs.docker.io/installation/fedora/
-[3]: http://docs.docker.io/installation/ubuntulinux/
-[4]: http://askubuntu.com/questions/477551/how-can-i-use-docker-without-sudo
+    docker-compose build
+    docker run --privileged --tty -v /var/lib/docker:/var/lib/docker bot_bot

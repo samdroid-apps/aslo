@@ -27,17 +27,16 @@ from base64 import b64encode
 import requests
 from pykafka import KafkaClient
 
+from img import get_current_activity_data
 from props import get_activity_data
 from build import compile_bundle, get_bundle_filename
 
 
 client = KafkaClient(hosts='freedom.sugarlabs.org:9092')
-#consumer = client.topics['org.sugarlabs.hook'].get_balanced_consumer(
-#    consumer_group='aslo-bots',
-#    auto_commit_enable=True,
-#    zookeeper_connect='freedom.sugarlabs.org:2181')
-consumer = client.topics['org.sugarlabs.hook'].get_simple_consumer(
-    consumer_group='aslo-bots-uninted')
+consumer = client.topics['org.sugarlabs.hook'].get_balanced_consumer(
+    consumer_group='aslo-bot-union',
+    auto_commit_enable=True,
+    zookeeper_connect='freedom.sugarlabs.org:2181')
 producer = client.topics['org.sugarlabs.aslo-changes'].get_producer()
 
 DL_ROOT = 'https://download.sugarlabs.org/activities2'
@@ -46,8 +45,8 @@ DL_ROOT = 'https://download.sugarlabs.org/activities2'
 print 'Waiting for 1st task'
 # FIXME:  Don't consume all messages since the begining of time, only
 #         messages sent after we start running
-for msg in consumer:
-    print msg, msg.value
+while True:
+    msg = consumer.consume()
     try:
         value = json.loads(msg.value)
     except ValueError:
@@ -64,7 +63,8 @@ for msg in consumer:
     call(['rm', '-rf', 'dl'])
     call(['git', 'clone', clone_url, 'dl'])
 
-    result = get_activity_data(bundle_id)
+    result = get_current_activity_data(bundle_id)
+    result.update(get_activity_data(bundle_id))
     filename, new_release = get_bundle_filename(bundle_id, result)
 
     bundle = compile_bundle(bundle_id, clone_url)
@@ -73,12 +73,14 @@ for msg in consumer:
         print 'Assuming buggy code, skipping'
         continue
 
-    # TODO: Replace github_url with clone_homepage
+    result['clone_homepage'] = clone_url
     result['github_url'] = clone_url.lstrip('https://github.com/')
-    v_name = '' if new_release else '_latest'
-    result['xo_url' + v_name] = '{}/{}'.format(DL_ROOT, filename)
-    result['xo{}_timestamp'.format(v_name)] = time.time()
-    result['xo{}_size'.format(v_name)] = len(bundle)
+    commit_message = 'Rebuild development copy of {}'.format(bundle_id)
+
+    version_name = '' if new_release else '_latest'
+    result['xo_url' + version_name] = '{}/{}'.format(DL_ROOT, filename)
+    result['xo{}_timestamp'.format(version_name)] = time.time()
+    result['xo{}_size'.format(version_name)] = len(bundle)
 
     if new_release or result.get('releases') is None:
         if result.get('releases') is None:
@@ -90,11 +92,16 @@ for msg in consumer:
                        'whats_new': result.get('whats_new', {}),
                        'screenshots': result.get('screenshots', {})}
         result['releases'].insert(0, new_version)
+        commit_message = 'Release {} version {}\n\n{}'.format(
+            bundle_id, result['version'], result.get('whats_new', {}) \
+                .get('en-US', '').replace('<br/>', '\n'))
+        commit_message = commit_message.strip()
 
     data = {'result': result,
             'bundle_id': bundle_id,
             'bundle_filename': filename,
-            'bundle': b64encode(bundle)}
+            'bundle': b64encode(bundle),
+            'commit_message': commit_message}
     producer.produce([json.dumps(data)])
 
     print 'Mined activity:', bundle_id
