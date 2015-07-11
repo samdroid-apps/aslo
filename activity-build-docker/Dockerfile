@@ -15,27 +15,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
 
-# Copyright (C) Sam Parkinson 2015
-#
-# This file is part of ASLO.
-#
-# ASLO is free software: you can redistribute it and/or modify it under
-# the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# ASLO is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
-
 FROM fedora:22
 
-# Install dependancies
-RUN dnf install -y git
+RUN dnf install -y \
+        git \
+        gettext  # required by sugar toolkit
 
 RUN git clone --depth=1 https://github.com/sugarlabs/sugar-toolkit-gtk3; \
     mv sugar-toolkit-gtk3/src/sugar3 /usr/lib/python2.7/site-packages/sugar3; \
