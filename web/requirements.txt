@@ -1,0 +1,7 @@
+Flask
+pykafka
+Flask-Babel
+git+https://github.com/mitsuhiko/jinja2.git
+
+mock
+responses

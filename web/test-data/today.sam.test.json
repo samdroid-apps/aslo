@@ -1,0 +1,90 @@
+{
+    "extended_info": "TEST",
+    "by": [
+        {
+            "email": "sam.parkinson3@gmail.com", 
+            "name": "Sam", 
+            "page": "https://www.github.com/samdroid-apps"
+        }
+    ], 
+    "categories": [
+        "documents", 
+        "creative"
+    ], 
+    "clone_homepage": "https://github.com/samdroid-apps/sugar-slides", 
+    "description": {
+        "en-US": "Eaisly make beautiful presentations"
+    }, 
+    "github_current_tag": "v2", 
+    "github_url": "amdroid-apps/sugar-slides", 
+    "hasOldToolbars": false, 
+    "has_old_toolbars": false, 
+    "icon": "<?xml version='1.0' ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd' [\n\t<!ENTITY stroke_color '#010101'>\n\t<!ENTITY fill_color '#FFFFFF'>\n]>\n<svg\n   xmlns:dc='http://purl.org/dc/elements/1.1/'\n   xmlns:cc='http://creativecommons.org/ns#'\n   xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'\n   xmlns:svg='http://www.w3.org/2000/svg'\n   xmlns='http://www.w3.org/2000/svg'\n   xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd'\n   xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape'\n   height='55px'\n   viewBox='0 0 55 55'\n   width='55px'\n   stroke-linecap='round'\n   stroke-linejoin='round'\n   stroke-width='3.5'\n   stroke='#000'\n   fill='#eee'\n   id='svg2985'\n   version='1.1'\n   inkscape:version='0.48.4 r9939'\n   sodipodi:docname='activity-icon.svg'><metadata\n   id='metadata2997'>\n  <rdf:RDF>\n    <cc:Work\n       rdf:about=''>\n      <dc:format>image/svg+xml</dc:format>\n      <dc:type\n         rdf:resource='http://purl.org/dc/dcmitype/StillImage' />\n    </cc:Work>\n  </rdf:RDF>\n</metadata>\n<defs\n   id='defs2995' />\n<sodipodi:namedview\n   pagecolor='#ffffff'\n   bordercolor='#666666'\n   borderopacity='1'\n   objecttolerance='10'\n   gridtolerance='10'\n   guidetolerance='10'\n   inkscape:pageopacity='0'\n   inkscape:pageshadow='2'\n   inkscape:window-width='1280'\n   inkscape:window-height='745'\n   id='namedview2993'\n   showgrid='false'\n   showguides='true'\n   inkscape:guide-bbox='true'\n   inkscape:zoom='6.9419819'\n   inkscape:cx='1.6475888'\n   inkscape:cy='29.205517'\n   inkscape:window-x='0'\n   inkscape:window-y='27'\n   inkscape:window-maximized='1'\n   inkscape:current-layer='svg2985' />\n\n`  <rect\n   fill='&fill_color;'\n   stroke='&stroke_color;'\n   style='fill-opacity:1;stroke-width:3.5;stroke-linecap:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none'\n   id='rect3001-9-0'\n   width='40.864159'\n   height='34.464157'\n   x='-3.0492306'\n   y='13.757218'\n   ry='3.378839'\n   rx='4.00629'\n   transform='matrix(0.98480775,-0.17364817,0.17364817,0.98480775,0,0)' />\n<rect\n   fill='&fill_color;'\n   stroke='&stroke_color;'\n   style='fill-opacity:1;stroke-width:3.5;stroke-linecap:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none'\n   id='rect3001-9'\n   width='40.864159'\n   height='34.464157'\n   x='16.349497'\n   y='4.2065687'\n   ry='3.378839'\n   rx='4.00629'\n   transform='matrix(0.98480775,0.17364818,-0.17364818,0.98480775,0,0)' />\n<rect\n   stroke='&fill_color;'\n   fill='&stroke_color;'\n   style='fill-opacity:1;stroke-width:3.5;stroke-linecap:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none'\n   id='rect3001'\n   width='40.864159'\n   height='34.464157'\n   x='7.0679216'\n   y='10.267921'\n   ry='3.378839'\n   rx='4.00629' />\n<g\n   fill='&fill_color;'\n   style='font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill-opacity:1;stroke:none;font-family:Sans'\n   id='text3003'>\n  <path\n     d='m 34.304687,16.585937 0,3.078125 c -1.197932,-0.572896 -2.328139,-0.999979 -3.390625,-1.28125 -1.062512,-0.281228 -2.088553,-0.421853 -3.078125,-0.421875 -1.718758,2.2e-5 -3.046882,0.333355 -3.984375,1 -0.927089,0.666687 -1.39063,1.614602 -1.390625,2.84375 -5e-6,1.031267 0.307287,1.812516 0.921875,2.34375 0.624994,0.520848 1.802076,0.942723 3.53125,1.265625 l 1.90625,0.390625 c 2.354153,0.44793 4.088526,1.239596 5.203125,2.375 1.124983,1.12501 1.687482,2.635425 1.6875,4.53125 -1.8e-5,2.260421 -0.760434,3.973961 -2.28125,5.140625 -1.510431,1.166667 -3.729179,1.75 -6.65625,1.75 -1.104175,0 -2.281257,-0.125 -3.53125,-0.375 -1.239588,-0.249999 -2.526045,-0.619791 -3.859375,-1.109375 l 0,-3.25 c 1.281247,0.718754 2.536454,1.26042 3.765625,1.625 1.22916,0.364586 2.437492,0.546878 3.625,0.546875 1.802072,3e-6 3.192696,-0.354164 4.171875,-1.0625 0.979152,-0.708329 1.468735,-1.718745 1.46875,-3.03125 -1.5e-5,-1.145825 -0.354181,-2.041658 -1.0625,-2.6875 -0.69793,-0.645823 -1.84897,-1.130198 -3.453125,-1.453125 l -1.921875,-0.375 c -2.354173,-0.468738 -4.057296,-1.203113 -5.109375,-2.203125 -1.052085,-0.999986 -1.578127,-2.390609 -1.578125,-4.171875 -2e-6,-2.06248 0.723956,-3.687479 2.171875,-4.875 1.458328,-1.187476 3.463534,-1.781226 6.015625,-1.781249 1.093739,2.3e-5 2.208321,0.09898 3.34375,0.296875 1.135402,0.197939 2.29686,0.494814 3.484375,0.890624'\n     fill='&fill_color;'\n     id='path3812' />\n</g>\n</svg>\n", 
+    "iconHash": "e27c7f96e55ef5a437b17e0b0831acba", 
+    "isGTK3": true, 
+    "isWeb": true, 
+    "is_gtk3": true, 
+    "is_web": true, 
+    "mimetypes": [], 
+    "minSugarVersion": "0.100", 
+    "min_sugar_version": "0.100", 
+    "releases": [
+        {
+            "minSugarVersion": "0.100", 
+            "screenshots": {
+                "en": [
+                    "http://i.imgur.com/MPIUvb3.png", 
+                    "http://i.imgur.com/1Cq2A0l.png", 
+                    "http://i.imgur.com/NH6VyHC.png", 
+                    "http://i.imgur.com/hrybPO3.png"
+                ]
+            }, 
+            "version": 2, 
+            "whats_new": {}, 
+            "xo_url": "me.samdroid.sugar.slides_v2.xo"
+        }, 
+        {
+            "minSugarVersion": "0.100", 
+            "screenshots": {
+                "en": [
+                    "http://i.imgur.com/NMXHYMP.png", 
+                    "http://i.imgur.com/qx35DBQ.png", 
+                    "http://i.imgur.com/PB3XwQJ.png", 
+                    "http://i.imgur.com/C8JE0B7.png"
+                ]
+            }, 
+            "version": 2, 
+            "whats_new": {}, 
+            "xo_url": "https://download.sugarlabs.org/activities2/me.samdroid.sugar.slides_stable_2.xo"
+        }
+    ], 
+    "screenshots": {
+        "en": [
+            "http://i.imgur.com/NH6VyHC.png", 
+            "http://i.imgur.com/1Cq2A0l.png", 
+            "http://i.imgur.com/hrybPO3.png", 
+            "http://i.imgur.com/MPIUvb3.png"
+        ]
+    }, 
+    "screenshotsHashes": {
+        "en": {
+            "3f8099b29a07127adbb7d7b332de5521": "http://i.imgur.com/1Cq2A0l.png", 
+            "449d644388ac95151e8d44968db24864": "http://i.imgur.com/hrybPO3.png", 
+            "881986a943ea7fa22d91bda921d4279f": "http://i.imgur.com/NH6VyHC.png", 
+            "df2d421f9c66ce8be3c0b9472a0fa382": "http://i.imgur.com/MPIUvb3.png"
+        }
+    }, 
+    "socialhelp_category": "slides", 
+    "title": {
+        "en-US": "Slides"
+    }, 
+    "version": 2, 
+    "whats_new": {}, 
+    "xo_latest_size": 821724, 
+    "xo_latest_timestamp": 1436493250.632958, 
+    "xo_size": 27095, 
+    "xo_url": "http://download.sugarlabs.org/activities2/me.samdroid.sugar.slides_v2.xo", 
+    "xo_url_latest": "https://download.sugarlabs.org/activities2/me.samdroid.sugar.slides_20aaeaea287a1594bb51aeb26afbd3ba2465a94f.xo", 
+    "xo_url_latest_timestamp": 1422699756, 
+    "xo_url_timestamp": 1422699756
+}

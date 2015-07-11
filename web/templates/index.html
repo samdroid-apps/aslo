@@ -1,0 +1,64 @@
+<!--
+Copyright (C) Sam Parkinson 2015
+
+This file is part of ASLO.
+
+ASLO is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ASLO is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+{% extends "base.html" %}
+{% from "activity-list.html" import activities_list %}
+
+{% block title %}{{ _("Page %(number)s", number=page_number) }}{% endblock %}
+{% block body %}
+  {% if page_number is equalto 1 %}
+    {% with f = l(featured) %}
+    <div class="featured"
+         style="background: {{ f.get('bg') }};
+                background-size: {{ f.get('bg_size') }}">
+      <a href="/view/{{ f.get('id') }}">
+        <p class="info">{{ _("Featured Activity") }}</p>
+        <div class="content">
+          <img class="icon" src="{{ embed_icon(f.get('icon')) | safe }}" />
+          <div class="right">
+            <h1>{{ f.get('title') }}</h1>
+            <p class="description">{{ f.get('description') }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endwith %}
+  {% else %}
+    <!-- Floats? -->
+    <div class="featured"></div>
+    <h1 class="page-number">{{ _("Page %(number)s", number=page_number) }}</h1>
+  {% endif %}
+
+  {{ activities_list(activities) }}
+
+  <div class="page-controls">
+    {% if page_number is equalto 1 %}{% else %}
+      <a class="prev" href="/page/{{ page_number - 1 }}">
+        <i class="fa fa-arrow-circle-left"></i>
+        {{ _("Previous page") }}
+      </a>
+    {% endif %}
+    {% if not_last_page %}
+      <a class="next" href="/page/{{ page_number + 1 }}">
+        <i class="fa fa-arrow-circle-right"></i>
+        {{ _("Next page") }}
+      </a>
+    {% endif %}
+  </div>
+{% endblock %}

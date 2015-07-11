@@ -1,0 +1,40 @@
+<!--
+Copyright (C) Sam Parkinson 2015
+
+This file is part of ASLO.
+
+ASLO is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ASLO is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+{% extends "base.html" %}
+{% from "activity-list.html" import activities_list %}
+
+{% block title %}{{ _("Search Results") }}{% endblock %}
+{% block body %}
+  <!-- Floats? -->
+  <div class="featured"></div>
+
+  {{ activities_list(activities, category, query) }}
+  {% if activities is equalto [] %}
+  <div class="no-results no-comments">
+    <i class="fa fa-street-view"></i>
+    <p class="p-1">{{ _("No Matching Activities") }}</p>
+  </div>
+  {% endif %}
+
+  <div class="back-footer">
+    <a href="/">{{ _("Back to the Index") }}</a>
+  </div>
+{% endblock %}
+

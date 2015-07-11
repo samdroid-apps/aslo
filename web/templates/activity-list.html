@@ -1,0 +1,85 @@
+<!--
+Copyright (C) Sam Parkinson 2015
+
+This file is part of ASLO.
+
+ASLO is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ASLO is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+{% macro activities_list(activities, category="", query="") -%}
+<div class="all-activities">
+  <form action="/search" method="GET">
+    <input placeholder="{{ _("Search...") }}" name="query" type="search"
+           value="{{ query }}"/>
+    <select name="category">{% with c = category %}
+      <option value="" {% if c is equalto "" %}selected=true{% endif %}>
+        {{ _("All Activities") }}
+      </option>
+      <option value="game" {% if c is equalto "game" %}selected{% endif %}>
+        {{ _("Games") }}
+      </option>
+      <option value="programming" {% if c is equalto "programming" %}selected{% endif %}>
+        {{ _("Programming Activities") }}
+      </option>
+      <option value="robotics" {% if c is equalto "robotics" %}selected{% endif %}>
+        {{ _("Robotics Activities") }}
+      </option>
+      <option value="internet" {% if c is equalto "internet" %}selected{% endif %}>
+        {{ _("Internet Activities") }}
+      </option>
+      <option value="science" {% if c is equalto "science" %}selected{% endif %}>
+        {{ _("Science Activities") }}
+      </option>
+      <option value="maths" {% if c is equalto "maths" %}selected{% endif %}>
+        {{ _("Maths Activities") }}
+      </option>
+      <option value="language" {% if c is equalto "language" %}selected{% endif %}>
+        {{ _("Language Activities") }}
+      </option>
+      <option value="geography" {% if c is equalto "geography" %}selected{% endif %}>
+        {{ _("Geography Activities") }}
+      </option>
+      <option value="documents" {% if c is equalto "documents" %}selected{% endif %}>
+        {{ _("Office Activities") }}
+      </option>
+      <option value="music" {% if c is equalto "music" %}selected{% endif %}>
+        {{ _("Music Activities") }}
+      </option>
+      <option value="media" {% if c is equalto "media" %}selected{% endif %}>
+        {{ _("Media Activities") }}
+      </option>
+      <option value="art" {% if c is equalto "art" %}selected{% endif %}>
+        {{ _("Art Activities") }}
+      </option>
+      <option value="teacher" {% if c is equalto "teacher" %}selected{% endif %}>
+        {{ _("Teacher Tools") }}
+      </option>
+      <option value="system" {% if c is equalto "system" %}selected{% endif %}>
+        {{ _("System Activities") }}
+      </option>
+    {% endwith %}</select>
+  </form>
+
+  <ul class="activities">
+  {% for id, a in activities %}
+    <a class="activity {% for c in reversed(a.get('categories')) %}
+              category-{{ c }} {% endfor %}"
+        href="/view/{{ id }}">
+      <img class="icon" src="{{ embed_icon(a.get('icon')) }}" />
+      <span class="title">{{ l(a.get('title')) }}</span>
+    </a>
+  {% endfor %}
+  </ul>
+</div>
+{%- endmacro %}

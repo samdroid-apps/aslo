@@ -1,0 +1,79 @@
+// Copyright (C) Sam Parkinson 2014
+//
+// This file is part of ASLO.
+//
+// ASLO is free software: you can redistribute it and/or modify it under
+// the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// ASLO is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
+
+@import util
+
+.bubble
+  display: block
+  overflow: hidden
+  clear: both
+    
+  position: relative
+  
+  background-color: rgba(255, 255, 255, 0.7)
+
+  padding: 20px 0
+  max-width: #{ $maxw }
+  height: auto
+
+  +center()
+  text-align: center
+
+$big_size: 1.5em
+
+.detail
+  margin-top: 0
+  border-radius: 0 0 20px 20px
+    
+  h1
+    margin-bottom: 0
+  
+  .by
+    margin-bottom: $big_size/2
+    a
+      color: $gray
+    a:nth-child(1n+2)
+      padding-left: $big_size/4
+
+  .screenshots
+    overflow: auto
+    margin-bottom: $big-size/2
+
+  .screenshot
+    width: 50%
+    float: left
+
+  .screenshots.odd .screenshot:last-child
+    margin-left: 25%
+
+  .screenshots + *
+    clear: both
+      
+  .description
+    font-size: $big_size
+      
+  .download
+    +cool_button()
+    font-size: $big_size*1.5
+
+  .left
+    width: 50%
+    float: left
+
+  .left + .right
+    width: 50%
+    float: right

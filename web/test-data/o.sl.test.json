@@ -1,0 +1,99 @@
+{
+    "by": [
+        {
+            "name": "Sam", 
+            "page": "https://github.com/samdroid-apps"
+        }
+    ], 
+    "categories": [
+        "documents", 
+        "teacher"
+    ], 
+    "description": {
+        "en-US": "Need a bibliography?  Bibliography Activity can help you manage and create a Harvard style bibliography!"
+    }, 
+    "github_url": "SAMdroid-apps/bibliography-activity", 
+    "hasOldToolbars": false, 
+    "icon": "<svg enable-background='new 0 0 55 55' viewBox='0 0 55 55' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><path d='m27.376 7.598v39.802' stroke-width='3.5' fill='#fff' stroke='#000' id='a'/></defs><g display='inline' transform='matrix(.5 0 0 .5.139 25.424)'><g stroke-width='3.5' fill='#fff' stroke='#000'><circle cy='27.5' r='19.903' cx='27.375'/><path d='m27.376 7.598c0 0-11.205 8.394-11.205 19.976 0 11.583 11.205 19.829 11.205 19.829'/><path d='m27.376 7.598c0 0 11.07 9.141 11.07 19.976 0 10.839-11.07 19.829-11.07 19.829'/></g><use xlink:href='#a'/><use xlink:href='#a'/><use xlink:href='#a'/><path stroke-width='3.5' d='m7.472 27.5h39.808' fill='#fff' stroke='#000'/></g><g stroke-width='3.5' display='block' stroke='#000' transform='matrix(.5 0 0 .5 25.06 24.668)'><g fill='#fff'><path d='m36.519 37.13c0 .008-.031.047-.034.049-.055.07-.131.113-.196.162-.012.016-.012.035-.022.043l-7.826 5.04c-.096.064-.218.053-.307-.02-.087-.072-.115-.191-.069-.295l3.475-8.266 2.088-2.717 10.192-13.495v-11.537h-20.944l-11.944 11.939v30.887h32.887v-21.11l-5.469 7.05z'/><path d='m43.818 17.626l-10.192 13.495-2.088 2.717-3.475 8.266c-.046.104-.018.223.069.295.089.072.211.084.307.02l7.826-5.04c.011-.008.011-.027.022-.043.065-.049.142-.092.196-.162.003-.002.034-.041.034-.049l1.831-2.271 5.469-7.05 8.01-10.329c.022-.023.149-.203.149-.203.096-.161.148-.345.148-.556 0-.061 0-.118-.012-.176-.087-.763-.715-1.682-1.639-2.413-.923-.728-1.969-1.123-2.728-1.034-.326.042-.789.375-.789.375z'/></g><path d='m10.932 18.03h11.944v-11.942' fill='none'/></g><path d='m3.01 8.499h22v16h-22z'/><g transform='matrix(.46375 0 0 .46375-38.03-79.56)'><path d='m102.66 205.69c-2.07-.034-3.716-1.688-3.685-3.698.032-2.104 1.733-3.761 3.821-3.724 2.029.035 3.687 1.721 3.681 3.739-.005 2.099-1.685 3.72-3.817 3.683' fill='#fff'/><path d='m135.95 225.73h-47.46v-36.834h47.46v36.834zm-44.811-2.651h42.16v-31.533h-42.16z'/><path d='m131.27 221.05h-38.11v-27.484h38.11zm-36.811-1.301h35.511v-24.883h-35.511z'/><circle cy='180.13' r='2.114' cx='112.22'/><path d='m101.31 190.44c-.256 0-.512-.098-.707-.293-.391-.391-.391-1.023 0-1.414l6.623-6.623c.391-.391 1.023-.391 1.414 0 .391.391.391 1.023 0 1.414l-6.623 6.623c-.195.195-.451.293-.707.293'/><path d='m122.92 190.44c-.256 0-.512-.098-.707-.293l-6.624-6.623c-.391-.39-.391-1.023 0-1.414.391-.391 1.023-.391 1.414 0l6.624 6.623c.391.391.391 1.023 0 1.414-.195.195-.451.293-.707.293'/><g fill='#fff'><path d='m109.11 216.68h21.45l-.22 3.72h-36.53v-7.07z'/><path d='m122.5 199.13l4.82 13.52h-3.75v4.03h-1.96v-4.03h-3.89z'/><path d='m112.76 205.47l3.26 9.13h-2.54v2.72h-1.32v-2.72h-2.63z'/></g></g><g stroke-width='3.5' display='inline' stroke='#000' stroke-linejoin='round' transform='matrix(.5 0 0 .5 24.897.648)'><g fill='#fff'><path d='m27.904 11.02h-.002c0-.002-1.71-2.053-9.376-2.504-7.666-.449-11.683 1.602-11.686 1.603-1.898.619-3.495 1.735-3.495 3.494v27.702c0 2.025 1.235 3.494 3.495 3.494.003 0 4.41-1.35 10-1.35 5.589-.001 11.06 2.253 11.06 2.253'/><path d='m27.898 11.02c0-.002 1.715-2.053 9.377-2.504 7.668-.449 11.686 1.602 11.688 1.603 1.897.619 3.494 1.735 3.494 3.494v27.702c0 2.025-1.233 3.494-3.494 3.494-.003 0-4.409-1.35-10-1.35-5.589-.001-11.06 2.253-11.06 2.253'/></g><g fill='none' stroke-linecap='round'><path d='m27.898 11.02l.002 34.697'/><path d='m32.566 44.27c0 0-.031 2.906-4.666 2.906-4.632 0-4.663-2.906-4.663-2.906'/></g></g></svg>", 
+    "isGTK3": true, 
+    "isWeb": false, 
+    "minSugarVersion": "0.96", 
+    "releases": [
+        {
+            "minSugarVersion": "0.96", 
+            "screenshots": {
+                "en": [
+                    "http://i.imgur.com/e0aYm6B.png", 
+                    "http://i.imgur.com/VS5bt6h.png", 
+                    "http://i.imgur.com/gHKy3oW.png"
+                ]
+            }, 
+            "version": 2, 
+            "whats_new": {}, 
+            "xo_url": "org.sugarlabs.BibliographyActivity_v2.xo"
+        }, 
+        {
+            "minSugarVersion": "0.96", 
+            "screenshots": {
+                "en": [
+                    "http://i.imgur.com/dnidQkK.png", 
+                    "http://i.imgur.com/fFTJ5w7.png", 
+                    "http://i.imgur.com/QLhTpzN.png"
+                ]
+            }, 
+            "version": 2, 
+            "whats_new": {}, 
+            "xo_url": "org.sugarlabs.BibliographyActivity_v2.xo"
+        }, 
+        {
+            "minSugarVersion": "0.96", 
+            "screenshots": {
+                "en": [
+                    "http://i.imgur.com/Wfpj7Vx.png", 
+                    "http://i.imgur.com/4az2Fsd.png", 
+                    "http://i.imgur.com/dwJSLdl.png"
+                ]
+            }, 
+            "version": 2, 
+            "whats_new": {}, 
+            "xo_url": "org.sugarlabs.BibliographyActivity_v2.xo"
+        }, 
+        {
+            "minSugarVersion": "0.96", 
+            "screenshots": {
+                "en": [
+                    "http://i.imgur.com/EP7TGWw.png", 
+                    "http://i.imgur.com/xPfP0fr.png", 
+                    "http://i.imgur.com/E1pFHZ8.png"
+                ]
+            }, 
+            "version": 2, 
+            "whats_new": {}, 
+            "xo_url": "out/org.sugarlabs.BibliographyActivity_v2.xo"
+        }
+    ], 
+    "screenshots": {
+        "en": [
+            "http://i.imgur.com/e0aYm6B.png", 
+            "http://i.imgur.com/VS5bt6h.png", 
+            "http://i.imgur.com/gHKy3oW.png"
+        ]
+    }, 
+    "screenshotsHashes": {
+        "en": {
+            "6ad3c4a3e72db8102507749a9294c229": "http://i.imgur.com/VS5bt6h.png", 
+            "8d1d8709a8278ac1ec8be08a1e4482e9": "http://i.imgur.com/gHKy3oW.png", 
+            "d9a86c3d3a2210821c362ead53477f02": "http://i.imgur.com/e0aYm6B.png"
+        }
+    }, 
+    "title": {
+        "en-US": "Bibliography"
+    }, 
+    "version": 2, 
+    "whats_new": {}, 
+    "xo_size": 169496, 
+    "xo_url": "http://download.sugarlabs.org/activities2/org.sugarlabs.BibliographyActivity_v2.xo", 
+    "xo_url_latest": "http://download.sugarlabs.org/activities2/org.sugarlabs.BibliographyActivity_1421459181.xo", 
+    "xo_url_latest_timestamp": 1421459181, 
+    "xo_url_timestamp": 1421459181
+}

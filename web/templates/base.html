@@ -1,0 +1,42 @@
+<!--
+Copyright (C) Sam Parkinson 2015
+
+This file is part of ASLO.
+
+ASLO is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ASLO is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %} - {{ _("Sugar Activities") }}</title>
+    <link rel="stylesheet" href="/static-cache/index.css">
+</head>
+<body>
+    <nav><div>
+        <a class="red" href="/">{{ _("Activities Home") }}</a>
+        <a class="orange" href="http://wiki.sugarlabs.org/">{{ _("Wiki") }}</a>
+        <a class="purple last" href="https://socialhelp.sugarlabs.org">{{ _("Social Help") }}</a>
+    </div></nav>
+
+    {% block body %}{% endblock %}
+
+    <footer>
+        <a href="https://tldrlegal.com/l/agpl3" i18n-content>{{ _("Licensed under the AGPLv3") }}</a>
+        <a href="https://github.com/SAMdroid-apps/aslo" i18n-content>{{ _("Fork us on GitHub") }}</a>
+        <a href="https://github.com/SAMdroid-apps/sugar-activities#sugar-activities">{{ _("Add your Activity") }}</a>
+    </footer>
+</body>
+</html>
+

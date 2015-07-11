@@ -1,0 +1,128 @@
+<!--
+Copyright (C) Sam Parkinson 2015
+
+This file is part of ASLO.
+
+ASLO is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ASLO is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with ASLO.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+{% extends "base.html" %}
+
+{% block title %}{{ _("%(activity)s Activity",
+                      activity=l(activity.get('title'))) }}{% endblock %}
+{% block body %}
+
+  <div class="detail bubble">{% with a = activity %}
+    <!--<div style="display: block;" class="error noversion">
+      <i class="fa fa-exclamation-triangle fa-lg"></i>
+      <span i18n-content="">We can't find a version that will run with your system, be careful!</span>
+    </div>-->
+
+    <h1 class="title">{{ l(a.get('title')) }} {{ a.get('version') }}</h1>
+    <div class="by">{% for p in a.get('by', []) %}
+      <a href="{{ p.get('page') }}">{{ p.get('name') }}</a>
+    {% endfor %}</div>
+
+    <p class="description">{{ l(a.get('description')) }}</p>
+    {% with screenshots = l(a.get('screenshots')) %}
+      <div class="screenshots {% if screenshots|length is odd %}odd{% endif %}">
+      {% for url in screenshots %}
+        <img src="{{ url }}" class="screenshot">
+      {% endfor %}
+      </div>
+    {% endwith %}
+
+    {% if l(a.get('whats_new')) is equalto '' %}
+    {% elif l(a.get('whats_new')) is equalto None %}{% else %}
+    <div class="whatsnew left">
+      <b>
+        {{ _("What's new in version %(number)s", number=a.get('version')) }}
+      </b>
+      <p>{{ l(a.get('whats_new')) | safe }}</p>
+    </div>
+    {% endif %}
+
+    <div class="right">
+      <a href="{{ a.get('xo_url') }}" class="download">
+        <i class="fa fa-download fa-lg"></i>
+        <span i18n-content="">Download</span>
+      </a><br>
+
+      <p>
+        <span>{{ _("This activity requires Sugar %(version)s", version=(
+                   a.get('min_sugar_version') or a.get('minSugarVersion')))}}
+        </span>
+      </p>
+
+      <p>
+        <span>{{ _("Last updated %(timedelta)s ago",
+                   timedelta=datetime.fromtimestamp(a.get('xo_url_timestamp'))
+                   | timedeltaformat)}}
+        </span>
+      </p>
+
+      <a href="{{ a.get('xo_url_latest') }}">
+        {{ _("Latest development version") }}
+      </a>
+      <a href="https://www.github.com/{{ a.get('github_url') }}">
+        <i class="fa fa-github-alt fa-lg"></i>
+        <span i18n-content="">GitHub</span>
+      </a>
+    </div>
+  {% endwith %}</div>
+
+  {% if socialhelp.success is equalto True %}
+  <div class="comments-bubble bubble">
+  {% if socialhelp.count is equalto 0 %}
+    <div class="no-comments">
+      <i class="fa fa-comments-o"></i>
+      <p class="p-1">{{ _("No Comments") }}</p>
+      <p><a class="start-conversation"
+            href="https://use-socialhelp.sugarlabs.org/goto/{{ bundle_id }}">
+          {{ _("Start the conversation on Social Help") }}
+      </a></p>
+    </div>
+  {% else %}
+    <div class="comments">
+      <div class="comments-header">
+        <p class="count">{{ ngettext(
+          "%(num)d Comment", "%(num)d Comments", socialhelp.count) }}
+        </p>
+        <a href="https://use-socialhelp.sugarlabs.org/goto/{{ bundle_id }}">
+          {{ _("Join the conversation on Social Help") }}
+        </a>
+      </div>
+
+      <ul class="comments-list">
+      {% for comment in socialhelp.data %}
+        <li><a href="https://socialhelp.sugarlabs.org/t/{{ comment.s }}">
+          <span class="comment-title">{{ comment.t }}</span>
+          {% if comment.l is equalto 0 %}{% else %}
+            <span class="heart-count">
+              <i class="fa fa-heart"></i>{{ comment.l }}
+            </span>
+          {% endif %}
+          {% if comment.p is equalto 0 %}{% else %}
+            <span class="post-count">
+              <i class="fa fa-comment"></i>{{ comment.p }}
+            </span>
+          {% endif %}
+        </a></li>
+      {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  </div>
+  {% endif %}
+{% endblock %}
