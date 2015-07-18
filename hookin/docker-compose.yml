@@ -1,4 +1,0 @@
-hookin:
-  build: .
-  ports:
-    - "5004:5000"

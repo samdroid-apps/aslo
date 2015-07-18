@@ -69,7 +69,7 @@ def save(data):
 
             call(['git', 'add', bundle_id + '.json'])
             call(['git', 'commit', '-m', commit_message])
-            # call(['git', 'push', 'origin', 'master'])
+            call(['git', 'push', 'origin', 'master'])
 
 
 if __name__ == '__main__':

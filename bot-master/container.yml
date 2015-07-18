@@ -1,0 +1,6 @@
+volumes:
+ - /srv/activities2:/out
+ - /home/sam/bot-master-ssh/:/root/.ssh
+
+memory: 128m
+cpu: 10

@@ -1,0 +1,8 @@
+ports:
+ - 5003:8000
+volumes:
+ - /home/sam/bot-master-ssh/:/root/.ssh
+env-file: /srv/socialhelp/discourse-api-env.txt
+
+memory: 128m
+cpu: 10

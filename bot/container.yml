@@ -1,0 +1,6 @@
+volumes:
+ - /var/lib/docker:/var/lib/docker
+privileged: true
+
+memory: 128m
+cpu: 10
